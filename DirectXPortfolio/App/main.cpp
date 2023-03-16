@@ -10,12 +10,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ int       nCmdShow)
 {
 
-	std::string Str = "aaaaa bbbbb ccccc";
-	GameEngineSerializer Data;
-	Data.Write(Str);
-
-	GameEngineFile NewFile = GameEngineFile("D:\\AAAA.txt");
-	NewFile.Save(Data);
-	
 }
 
