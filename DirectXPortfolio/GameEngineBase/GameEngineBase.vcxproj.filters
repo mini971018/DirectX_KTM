@@ -11,19 +11,19 @@
       <Filter>String</Filter>
     </ClCompile>
     <ClCompile Include="GameEnginePath.cpp">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineFile.cpp">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineDirectory.cpp">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineRandom.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineSerializer.cpp">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineTime.cpp">
       <Filter>Time</Filter>
@@ -43,19 +43,19 @@
       <Filter>String</Filter>
     </ClInclude>
     <ClInclude Include="GameEnginePath.h">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineFile.h">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineDirectory.h">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineRandom.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineSerializer.h">
-      <Filter>Debug\IO%28File%29</Filter>
+      <Filter>IO%28File%29</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineTime.h">
       <Filter>Time</Filter>
@@ -74,11 +74,11 @@
     <Filter Include="String">
       <UniqueIdentifier>{557f9c6c-2a9e-40e8-9980-0ac42daa4826}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IO%28File%29">
+      <UniqueIdentifier>{fd2da30f-43c8-40aa-84ce-9d81d85250b0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{28f62796-1428-4e66-98e0-f556fc4d23d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Debug\IO%28File%29">
-      <UniqueIdentifier>{fd2da30f-43c8-40aa-84ce-9d81d85250b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
