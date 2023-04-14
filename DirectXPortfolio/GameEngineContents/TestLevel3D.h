@@ -16,7 +16,7 @@ public:
 	TestLevel3D& operator=(TestLevel3D&& _Other) noexcept = delete;
 
 protected:
-	void Loading() override;
+	void Start() override;
 
 private:
 

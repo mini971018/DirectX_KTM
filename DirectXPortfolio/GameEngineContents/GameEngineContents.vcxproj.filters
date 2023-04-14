@@ -8,6 +8,7 @@
     <ClInclude Include="TestLevel3D.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -17,6 +18,7 @@
     <ClCompile Include="TestLevel3D.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">

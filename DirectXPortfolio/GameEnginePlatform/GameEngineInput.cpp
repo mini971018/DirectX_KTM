@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "GameEngineInput.h"
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
@@ -118,10 +119,8 @@ void GameEngineInput::CreateKey(const std::string_view& _Name, int _Key)
 
 	if (Keys.end() != Keys.find(UpperName))
 	{
-		MsgAssert("이미 존재하는 이름의 크기를 또 만들려고 했습니다.");
+		MsgAssert("이미 존재하는 이름의 키를 또 만들려고 했습니다.");
 	}
-
-	_Key = toupper(_Key);
 
 	Keys[UpperName].Key = _Key;
 }

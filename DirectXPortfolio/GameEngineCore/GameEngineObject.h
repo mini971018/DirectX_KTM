@@ -1,11 +1,14 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
-#include <list>
-#include <memory>
+#include "GameEngineObjectBase.h"
+#include "GameEngineTransform.h"
+#include <GameEngineCore/GameEngineNameObject.h>
 
 // 설명 :
-class GameEngineObject
+class GameEngineObject : public GameEngineObjectBase, public GameEngineNameObject
 {
+	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineObject();
@@ -21,72 +24,13 @@ public:
 	GameEngineObject& operator=(const GameEngineObject& _Other) = delete;
 	GameEngineObject& operator=(GameEngineObject&& _Other) noexcept = delete;
 
-	int GetOrder()
+	GameEngineTransform* GetTransform()
 	{
-		return Order;
+		return &Transform;
 	}
 
-	void SetOrder(int _Order)
-	{
-		Order = _Order;
-	}
-
-	void On() 
-	{
-		IsActive = true;
-	}
-
-	void Off()
-	{
-		IsActive = false;
-	}
-
-	void Death()
-	{
-		IsDeath = true;
-	}
-
-	//                 "드래곤"
-	// 동적할당 1번을 줄이려고.
-	void SetName(const std::string_view& _Name) 
-	{
-		Name = _Name;
-	}
-
-	void SetParent(GameEngineObject* _Parent)
-	{
-		Parent = _Parent;
-	}
-
-	GameEngineObject* GetParent()
-	{
-		return Parent;
-	}
-
-protected:
-	virtual void Start() {}
-	virtual void Update(float _DeltaTime) {}
-	virtual void Render(float _DeltaTime) {}
 
 private:
-	std::string Name = "";
-	bool IsActive = true; // 켜졌다 꺼졌다
-	bool IsDeath = false; // 죽었다 살았다
-	int Order = 0;
-
-	GameEngineObject* Parent = nullptr;
-
-	std::list<std::shared_ptr<GameEngineObject>> Child;
-
-////////////////////////////////////////////////////////////// Transform 기하구조
-
-public:
-	float4 GetPos() 
-	{
-		return Pos;
-	}
-
-private:
-	float4 Pos;
+	GameEngineTransform Transform;
 
 };

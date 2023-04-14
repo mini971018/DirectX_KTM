@@ -1,12 +1,13 @@
 #pragma once
-#include "GameEngineObject.h"
+#include "GameEngineUpdateObject.h"
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
 
 // Ό³Έν :
 class GameEngineActor;
-class GameEngineLevel : public GameEngineObject
+class GameEngineCamera;
+class GameEngineLevel : public GameEngineUpdateObject
 {
 	friend class GameEngineCore;
 
@@ -45,19 +46,24 @@ public:
 
 		ActorInit(NewActor, _Order, this);
 
-		Actors[_Order].push_back(NewActor);
 
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
 
+	std::shared_ptr<class GameEngineCamera> GetMainCamera() 
+	{
+		return MainCamera;
+	}
+
 protected:
-	virtual void Loading() = 0;
-
-	void Update(float _DeltaTime) override;
-
-	void Render(float _DeltaTime) override;
+	virtual void Start() = 0;
+	void Update(float _DeltaTime);
+	void Render(float _DeltaTime);
 
 private:
+	std::shared_ptr<GameEngineCamera> MainCamera;
+	std::shared_ptr<GameEngineCamera> UICamera;
+
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);

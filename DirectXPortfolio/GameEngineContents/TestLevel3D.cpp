@@ -9,7 +9,7 @@ TestLevel3D::~TestLevel3D()
 {
 }
 
-void TestLevel3D::Loading()
+void TestLevel3D::Start()
 {
 	std::shared_ptr<TestObject1> TestObject = CreateActor<TestObject1>();
 
