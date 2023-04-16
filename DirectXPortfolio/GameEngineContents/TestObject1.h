@@ -16,10 +16,15 @@ public:
 	TestObject1& operator=(TestObject1&& _Other) noexcept = delete;
 
 protected:
+	void Start();
 	void Update(float _Delta) {}
 	void Render(float _Delta) override;
 
 private:
+	std::shared_ptr<class GameEngineRenderer> Render0;
+	std::shared_ptr<class GameEngineRenderer> Render1;
+	std::shared_ptr<class GameEngineRenderer> Render2;
+
 
 };
 
