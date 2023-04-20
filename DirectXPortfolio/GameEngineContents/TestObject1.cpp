@@ -1,4 +1,5 @@
 #include "TestObject1.h"
+#include "PrecompileHeader.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
@@ -14,10 +15,11 @@ void TestObject1::Start()
 {
 	Render0 = CreateComponent<GameEngineRenderer>();
 	Render0->SetPipeLine("2DTexture");
-	Render1 = CreateComponent<GameEngineRenderer>();
-	Render1->SetPipeLine("2DTexture");
-	Render2 = CreateComponent<GameEngineRenderer>();
-	Render2->SetPipeLine("2DTexture");
+
+	float4 TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+
+	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
 
 	//Render1->GetTransform()->DebugOn();
 	//Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
