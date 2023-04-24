@@ -17,6 +17,7 @@ void TestObject1::Start()
 	Render0->SetPipeLine("2DTexture");
 
 	float4 TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
 	//Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 
 	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
