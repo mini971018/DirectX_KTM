@@ -16,6 +16,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		ContentsCore::GameStart,
 		ContentsCore::GameEnd,
 		{0, 0},
-		{1600, 900});
+		{1920, 1080});
 }
 

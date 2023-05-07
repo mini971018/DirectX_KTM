@@ -30,12 +30,10 @@ void TestLevel3D::Start()
 		}
 	}
 
-
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 
 	std::shared_ptr<TestObject1> TestObject = CreateActor<TestObject1>();
-
 }
 

@@ -55,7 +55,16 @@ public:
 		return MainCamera;
 	}
 
+	std::shared_ptr<GameEngineLevel> GetSharedThis()
+	{
+		return Shared_This_dynamic_pointer<GameEngineLevel>();
+	}
+
 protected:
+	// 레벨이 바뀌어서 시작할때
+	virtual void LevelChangeStart();
+	virtual void LevelChangeEnd();
+
 	virtual void Start() = 0;
 	void Update(float _DeltaTime);
 	void Render(float _DeltaTime);
@@ -67,6 +76,10 @@ private:
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
 
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
+
+	void ActorUpdate(float _DeltaTime);
+	void ActorRender(float _DeltaTime);
+	void ActorRelease();
 
 };
 

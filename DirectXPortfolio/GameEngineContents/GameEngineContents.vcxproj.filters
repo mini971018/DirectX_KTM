@@ -3,35 +3,53 @@
   <ItemGroup>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="TestObject1.h">
-      <Filter>Object\Test</Filter>
+      <Filter>Levels\Test\Object\Test</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="TestLevel3D.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
-    <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="OpeningLevel.h">
+      <Filter>Levels\Opening</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="TestObject1.cpp">
-      <Filter>Object\Test</Filter>
+      <Filter>Levels\Test\Object\Test</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="TestLevel3D.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="OpeningLevel.cpp">
+      <Filter>Levels\Opening</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
       <UniqueIdentifier>{3d17108a-64cc-412c-add8-c9f82f90c9e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{5daad51f-e26a-4b96-a088-a6c58794ff5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Levels\Test">
       <UniqueIdentifier>{2b81ff5b-b766-4324-af42-410a64193b9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Test">
+    <Filter Include="Levels\Test\Object">
+      <UniqueIdentifier>{5daad51f-e26a-4b96-a088-a6c58794ff5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Test\Object\Test">
       <UniqueIdentifier>{39a607fd-dbf6-4187-9dd5-615f359dfdc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Opening">
+      <UniqueIdentifier>{196c3313-5e8d-4762-b449-e5dfd0e38dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\AddLevelsFilter">
+      <UniqueIdentifier>{141c214f-ad41-447d-9e30-31fbd5e17fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\AddLevelsFilter\Object">
+      <UniqueIdentifier>{e23cfe87-df75-418f-8fed-eaea62659893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Opening\Object">
+      <UniqueIdentifier>{fff91752-be0c-43f3-bca7-b6421eb7cd1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

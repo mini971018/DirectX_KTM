@@ -9,16 +9,18 @@
 #include "GameEngineVertex.h"
 
 #include "GameEngineMesh.h"
+#include "GameEngineBlend.h"
 #include "GameEngineTexture.h"
-#include "GameEngineRenderTarget.h"
-#include "GameEngineVertexBuffer.h"
-#include "GameEngineIndexBuffer.h"
-#include "GameEngineRenderingPipeLine.h"
+#include "GameEngineDepthState.h"
 #include "GameEngineRasterizer.h"
+#include "GameEngineIndexBuffer.h"
 #include "GameEnginePixelShader.h"
-#include "GameEngineConstantBuffer.h"
-
 #include "GameEngineVertexShader.h"
+#include "GameEngineVertexBuffer.h"
+#include "GameEngineRenderTarget.h"
+#include "GameEngineConstantBuffer.h"
+#include "GameEngineRenderingPipeLine.h"
+
 
 
 void GameEngineCore::CoreResourcesInit()
@@ -83,8 +85,6 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		// 
-
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -111,12 +111,62 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, {1.0f, 1.0f} };
 		ArrVertex[3] = { { -0.5f, -0.5f, 0.0f }, {0.0f, 1.0f} };
 
-		std::vector<UINT> ArrIndex = {0, 1, 2, 0, 2, 3};
+		std::vector<UINT> ArrIndex = { 0, 1, 2, 0, 2, 3 };
 
 		GameEngineVertexBuffer::Create("Rect", ArrVertex);
 		GameEngineIndexBuffer::Create("Rect", ArrIndex);
 
 	}
+
+	{
+		// 블랜드
+		D3D11_BLEND_DESC Desc = { 0, };
+
+		// 자동으로 알파부분을 제거해서 출력해주는 건데
+		// 졸라느립니다.
+		// Desc.AlphaToCoverageEnable = false;
+
+		// 
+		Desc.AlphaToCoverageEnable = false;
+		// 블랜드를 여러개 넣을거냐
+		// TRUE면 블랜드를 여러개 넣습니다.
+		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
+		Desc.IndependentBlendEnable = false;
+
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+
+		GameEngineBlend::Create("AlphaBlend", Desc);
+	}
+
+
+
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+		//BOOL DepthEnable;
+		//D3D11_DEPTH_WRITE_MASK DepthWriteMask;
+		//D3D11_COMPARISON_FUNC DepthFunc;
+		//BOOL StencilEnable;
+		//UINT8 StencilReadMask;
+		//UINT8 StencilWriteMask;
+		//D3D11_DEPTH_STENCILOP_DESC FrontFace;
+		//D3D11_DEPTH_STENCILOP_DESC BackFace;
+
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		Desc.StencilEnable = false;
+
+		GameEngineDepthState::Create("EngineDepth", Desc);
+	}
+
 
 	{
 		// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
@@ -165,7 +215,7 @@ void GameEngineCore::CoreResourcesInit()
 		NewDir.Move("EngineResources");
 		NewDir.Move("Shader");
 
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx"});
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
 		std::shared_ptr<GameEngineVertexShader> VertexShader = GameEngineVertexShader::Load(Files[0].GetFullPath(), "Texture_VS");
 
@@ -216,10 +266,10 @@ void GameEngineCore::CoreResourcesInit()
 
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
 		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 		Desc.FrontCounterClockwise = FALSE;
 
-		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("EngineBase", Desc);
+		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 
 
@@ -230,21 +280,27 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetVertexBuffer("Rect");
 			Pipe->SetIndexBuffer("Rect");
 			Pipe->SetVertexShader("TextureShader.hlsl");
-			Pipe->SetRasterizer("EngineBase");
+			Pipe->SetRasterizer("Engine2DBase");
 			Pipe->SetPixelShader("TextureShader.hlsl");
+			Pipe->SetBlendState("AlphaBlend");
+			Pipe->SetDepthState("EngineDepth");
 		}
 	}
 }
 
 void GameEngineCore::CoreResourcesEnd()
 {
-	GameEngineConstantBuffer::ResourcesClear();
-	GameEnginePixelShader::ResourcesClear();
-	GameEngineRasterizer::ResourcesClear();
-	GameEngineVertexShader::ResourcesClear();
-	GameEngineIndexBuffer::ResourcesClear();
-	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineMesh::ResourcesClear();
+	GameEngineBlend::ResourcesClear();
 	GameEngineTexture::ResourcesClear();
+	GameEngineDepthState::ResourcesClear();
+	GameEngineRasterizer::ResourcesClear();
+	GameEngineIndexBuffer::ResourcesClear();
+	GameEnginePixelShader::ResourcesClear();
+	GameEngineVertexShader::ResourcesClear();
+	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineRenderTarget::ResourcesClear();
+	GameEngineConstantBuffer::ResourcesClear();
+	GameEngineRenderingPipeLine::ResourcesClear();
+
 }

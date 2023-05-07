@@ -20,7 +20,7 @@ void TestObject1::Start()
 	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
 	//Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
 
-	Render0->GetTransform()->SetLocalScale({ 100.0f, 100.0f , 100.0f });
+	Render0->GetTransform()->SetLocalScale({ 61.0f, 130.0f , 100.0f });
 
 	//Render1->GetTransform()->DebugOn();
 	//Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
