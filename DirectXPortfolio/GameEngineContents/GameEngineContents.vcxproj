@@ -161,7 +161,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="OpeningLevel.h">
+    <ClInclude Include="MainMenuLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -183,7 +183,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="OpeningLevel.cpp">
+    <ClCompile Include="MainMenuLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

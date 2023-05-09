@@ -1,23 +1,20 @@
-#include "TestLevel3D.h"
+#include "MainMenuLevel.h"
 
 #include "PrecompileHeader.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 
-#include "TestObject1.h"
-
-
-TestLevel3D::TestLevel3D() 
+MainMenuLevel::MainMenuLevel() 
 {
 }
 
-TestLevel3D::~TestLevel3D() 
+MainMenuLevel::~MainMenuLevel() 
 {
 }
 
-void TestLevel3D::Start()
+void MainMenuLevel::Start()
 {
-	/*{
+	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -32,8 +29,4 @@ void TestLevel3D::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
-*/
-
-	std::shared_ptr<TestObject1> TestObject = CreateActor<TestObject1>();
 }
-
