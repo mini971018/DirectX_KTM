@@ -34,6 +34,6 @@ void TestLevel3D::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	*/
 
-	std::shared_ptr<TestObject1> TestObject = CreateActor<TestObject1>();
+	//std::shared_ptr<TestObject1> TestObject = CreateActor<TestObject1>();
 }
 

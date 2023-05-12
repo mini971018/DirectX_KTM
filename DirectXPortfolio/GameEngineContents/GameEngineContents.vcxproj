@@ -165,6 +165,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MenuBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MenuTitle.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrecompileHeader.h">
       <SubType>
       </SubType>
@@ -184,6 +192,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MainMenuLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MenuBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MenuTitle.cpp">
       <SubType>
       </SubType>
     </ClCompile>
