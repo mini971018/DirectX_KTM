@@ -1,6 +1,7 @@
+#include "PrecompileHeader.h"
+
 #include "MainMenuLevel.h"
 
-#include "PrecompileHeader.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineInput.h>

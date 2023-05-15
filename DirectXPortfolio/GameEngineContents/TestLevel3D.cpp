@@ -1,6 +1,7 @@
+#include "PrecompileHeader.h"
+
 #include "TestLevel3D.h"
 
-#include "PrecompileHeader.h"
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
 

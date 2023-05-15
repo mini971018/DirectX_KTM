@@ -1,5 +1,6 @@
-#include "TestObject1.h"
 #include "PrecompileHeader.h"
+
+#include "TestObject1.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
@@ -15,6 +16,9 @@ void TestObject1::Start()
 {
 	Render0 = CreateComponent<GameEngineRenderer>();
 	Render0->SetPipeLine("2DTexture");
+
+	//std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
+	//GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
 
 	float4 TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");

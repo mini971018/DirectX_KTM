@@ -1,6 +1,7 @@
+#include "PrecompileHeader.h"
+
 #include "MenuTitle.h"
 
-#include "PrecompileHeader.h"
 #include <GameEngineCore/GameEngineRenderer.h>
 
 MenuTitle::MenuTitle() 
