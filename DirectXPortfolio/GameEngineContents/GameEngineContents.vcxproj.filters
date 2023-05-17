@@ -18,6 +18,15 @@
     <ClInclude Include="MenuTitle.h">
       <Filter>Levels\MainMenu\Object</Filter>
     </ClInclude>
+    <ClInclude Include="HollowKnightLevel.h">
+      <Filter>Levels\PlayLevel\HollowKnight</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Levels\PlayLevel\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="HollowKnightBossRoom.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -37,16 +46,19 @@
     <ClCompile Include="MenuTitle.cpp">
       <Filter>Levels\MainMenu\Object</Filter>
     </ClCompile>
+    <ClCompile Include="HollowKnightLevel.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Levels\PlayLevel\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="HollowKnightBossRoom.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
       <UniqueIdentifier>{3d17108a-64cc-412c-add8-c9f82f90c9e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels\AddLevelsFilter">
-      <UniqueIdentifier>{141c214f-ad41-447d-9e30-31fbd5e17fdb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels\AddLevelsFilter\Object">
-      <UniqueIdentifier>{e23cfe87-df75-418f-8fed-eaea62659893}</UniqueIdentifier>
     </Filter>
     <Filter Include="Levels\MainMenu">
       <UniqueIdentifier>{196c3313-5e8d-4762-b449-e5dfd0e38dd2}</UniqueIdentifier>
@@ -62,6 +74,18 @@
     </Filter>
     <Filter Include="Levels\Test\Object\Test">
       <UniqueIdentifier>{39a607fd-dbf6-4187-9dd5-615f359dfdc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel">
+      <UniqueIdentifier>{790f5937-90ff-4d3f-92bc-0ea3a45aaec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\HollowKnight">
+      <UniqueIdentifier>{141c214f-ad41-447d-9e30-31fbd5e17fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\HollowKnight\Object">
+      <UniqueIdentifier>{e23cfe87-df75-418f-8fed-eaea62659893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\Player">
+      <UniqueIdentifier>{a4c2b976-7376-444f-a3eb-d1268d0fc38b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

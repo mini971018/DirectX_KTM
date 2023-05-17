@@ -19,5 +19,5 @@ void MenuTitle::Start()
 
 	TitleImage->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
 	TitleImage->GetTransform()->SetLocalScale({ 1199, 463 });
-	TitleImage->GetTransform()->AddLocalPosition({ 0, 200 });
+	TitleImage->GetTransform()->AddLocalPosition({ 0, 200, -70 });
 }

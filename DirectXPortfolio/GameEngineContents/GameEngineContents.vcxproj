@@ -169,6 +169,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="HollowKnightBossRoom.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="HollowKnightLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MainMenuLevel.h">
       <SubType>
       </SubType>
@@ -178,6 +186,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MenuTitle.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -199,6 +211,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="HollowKnightBossRoom.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HollowKnightLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MainMenuLevel.cpp">
       <SubType>
       </SubType>
@@ -208,6 +228,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MenuTitle.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -1,24 +1,22 @@
 #include "PrecompileHeader.h"
 
-#include "MainMenuLevel.h"
+#include "HollowKnightLevel.h"
 
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
-#include <GameEnginePlatform/GameEngineInput.h>
-#include <GameEngineCore\GameEngineCore.h>
 
-#include "MenuBG.h"
-#include "MenuTitle.h"
+#include "Player.h"
+#include "HollowKnightBossRoom.h"
 
-MainMenuLevel::MainMenuLevel() 
+HollowKnightLevel::HollowKnightLevel() 
 {
 }
 
-MainMenuLevel::~MainMenuLevel() 
+HollowKnightLevel::~HollowKnightLevel() 
 {
 }
 
-void MainMenuLevel::Start()
+void HollowKnightLevel::Start()
 {
 	//메인 메뉴에서 사용될 리소스 가져옴
 	{
@@ -26,7 +24,7 @@ void MainMenuLevel::Start()
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
-		NewDir.Move("MainMenu");
+		NewDir.Move("HollowKnight");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 
@@ -39,17 +37,14 @@ void MainMenuLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
-	//메인 메뉴 오브젝트 생성
+	//오브젝트 생성
 	{
-		std::shared_ptr<MenuBG> Background = CreateActor<MenuBG>();
-		std::shared_ptr<MenuTitle> Title = CreateActor<MenuTitle>();
+		std::shared_ptr PlayerActor = CreateActor<Player>(1);
+		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 	}
 }
 
-void MainMenuLevel::Update(float _DeltaTime)
+void HollowKnightLevel::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsDown("ChangeNextLevel"))
-	{
-		GameEngineCore::ChangeLevel("HollowKnightLevel");
-	}
+
 }
