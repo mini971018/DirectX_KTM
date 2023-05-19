@@ -22,5 +22,8 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineRenderer>  MainRoomImage;
+
+	std::shared_ptr<class GameEngineRenderer>  Layer1;
+	std::shared_ptr<class GameEngineRenderer>  Layer2;
 };
 
