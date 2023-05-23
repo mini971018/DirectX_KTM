@@ -38,6 +38,7 @@ GameEngineRenderer::GameEngineRenderer()
 
 GameEngineRenderer::~GameEngineRenderer() 
 {
+
 }
 
 void GameEngineRenderer::Start()

@@ -7,6 +7,7 @@
 
 #include "Player.h"
 #include "HollowKnightBossRoom.h"
+#include "ContentsEnum.h"
 
 HollowKnightLevel::HollowKnightLevel() 
 {
@@ -35,11 +36,12 @@ void HollowKnightLevel::Start()
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
+	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ -1540, -210, -1000.0f });
 
 	//오브젝트 생성
 	{
-		std::shared_ptr PlayerActor = CreateActor<Player>(1);
+		std::shared_ptr PlayerActor = CreateActor<Player>(PlayRenderOrder::Player);
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 	}
 }

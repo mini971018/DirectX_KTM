@@ -17,13 +17,12 @@ public:
 
 protected:
 	void Start();
-	void Update(float _Delta) override {}
+	void Update(float _Delta) override;
 	void Render(float _Delta) override {}
 
 private:
 	std::shared_ptr<class GameEngineRenderer>  MainRoomImage;
 
-	std::shared_ptr<class GameEngineRenderer>  Layer1;
-	std::shared_ptr<class GameEngineRenderer>  Layer2;
+	void CreateMap();
 };
 

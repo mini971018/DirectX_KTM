@@ -9,6 +9,7 @@
 
 #include "MenuBG.h"
 #include "MenuTitle.h"
+#include "ContentsEnum.h"
 
 MainMenuLevel::MainMenuLevel() 
 {
@@ -36,13 +37,14 @@ void MainMenuLevel::Start()
 		}
 	}
 
+	//GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 	//메인 메뉴 오브젝트 생성
 	{
-		std::shared_ptr<MenuBG> Background = CreateActor<MenuBG>();
-		std::shared_ptr<MenuTitle> Title = CreateActor<MenuTitle>();
+		std::shared_ptr<MenuBG> Background = CreateActor<MenuBG>(UIRenderOrder::Background);
+		std::shared_ptr<MenuTitle> Title = CreateActor<MenuTitle>(UIRenderOrder::Title);
 	}
 }
 
