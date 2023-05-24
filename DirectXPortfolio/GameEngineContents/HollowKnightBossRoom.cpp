@@ -86,37 +86,39 @@ void HollowKnightBossRoom::CreateMap()
 
 
 		//블러 추가
-		std::shared_ptr<class GameEngineRenderer> Chain6 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
-		Chain6->SetPipeLine("2DTexture");
-
-		Chain6->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
-		Chain6->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
-		Chain6->GetTransform()->SetWorldPosition({ 156, -156, 250 });
-		Chain6->GetTransform()->SetWorldRotation({ 0, 0, -15 });
-
-		std::shared_ptr<class GameEngineRenderer> Chain7 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
-		Chain7->SetPipeLine("2DTexture");
-
-		Chain7->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
-		Chain7->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
-		Chain7->GetTransform()->SetWorldPosition({ 756, -156, 250 });
-		Chain7->GetTransform()->SetWorldRotation({ 0, 0, 15 });
-
 		std::shared_ptr<class GameEngineRenderer> Chain8 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
 		Chain8->SetPipeLine("2DTexture");
 
 		Chain8->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
 		Chain8->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
-		Chain8->GetTransform()->SetWorldPosition({ -156, -156, 350 });
-		Chain8->GetTransform()->SetWorldRotation({ 0, 0, -15 });
+		Chain8->GetTransform()->SetWorldPosition({ -156, -156, 550 });
+		Chain8->GetTransform()->SetWorldRotation({ 0, 0, -10 });
 
 		std::shared_ptr<class GameEngineRenderer> Chain9 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
 		Chain9->SetPipeLine("2DTexture");
 
 		Chain9->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
 		Chain9->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
-		Chain9->GetTransform()->SetWorldPosition({ 556, -156, 350 });
-		Chain9->GetTransform()->SetWorldRotation({ 0, 0, 15 });
+		Chain9->GetTransform()->SetWorldPosition({ 756, -156, 550 });
+		Chain9->GetTransform()->SetWorldRotation({ 0, 0, 10 });
+
+
+		std::shared_ptr<class GameEngineRenderer> Chain6 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
+		Chain6->SetPipeLine("2DTexture");
+
+		Chain6->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
+		Chain6->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
+		Chain6->GetTransform()->SetWorldPosition({ 156, -156, 750 });
+		Chain6->GetTransform()->SetWorldRotation({ 0, 0, -8 });
+
+		std::shared_ptr<class GameEngineRenderer> Chain7 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
+		Chain7->SetPipeLine("2DTexture");
+
+		Chain7->GetShaderResHelper().SetTexture("DiffuseTex", "Chain.png");
+		Chain7->GetTransform()->SetLocalScale({ 26, 1448 });    //(190, 256)
+		Chain7->GetTransform()->SetWorldPosition({ 556, -156, 750 });
+		Chain7->GetTransform()->SetWorldRotation({ 0, 0, 8 });
+
 
 
 		std::shared_ptr<class GameEngineRenderer> Chain10 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
@@ -137,14 +139,14 @@ void HollowKnightBossRoom::CreateMap()
 
 		BG5->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG5->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG5->GetTransform()->SetWorldPosition({ 300, -52, 750 });
+		BG5->GetTransform()->SetWorldPosition({ 300, -52, 950 });
 
 		std::shared_ptr<class GameEngineRenderer> BG6 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
 		BG6->SetPipeLine("2DTexture");
 
 		BG6->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG6->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG6->GetTransform()->SetWorldPosition({ 750, -52, 650 });
+		BG6->GetTransform()->SetWorldPosition({ 750, -52, 850 });
 
 
 		std::shared_ptr<class GameEngineRenderer> BG3 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);  
@@ -152,7 +154,7 @@ void HollowKnightBossRoom::CreateMap()
 
 		BG3->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG3->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
-		BG3->GetTransform()->SetWorldPosition({ -122, -52, 550 });
+		BG3->GetTransform()->SetWorldPosition({ -122, -52, 800 });
 
 
 		std::shared_ptr<class GameEngineRenderer> BG4 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
@@ -160,7 +162,7 @@ void HollowKnightBossRoom::CreateMap()
 
 		BG4->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG4->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG4->GetTransform()->SetWorldPosition({ 1300, -52, 550 });
+		BG4->GetTransform()->SetWorldPosition({ 1300, -52, 800 });
 
 
 		std::shared_ptr<class GameEngineRenderer> BG1 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
@@ -168,7 +170,7 @@ void HollowKnightBossRoom::CreateMap()
 
 		BG1->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG1->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
-		BG1->GetTransform()->SetWorldPosition({ -822, -52, 400 });
+		BG1->GetTransform()->SetWorldPosition({ -822, -52, 750 });
 
 
 		std::shared_ptr<class GameEngineRenderer> BG2 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
@@ -176,7 +178,25 @@ void HollowKnightBossRoom::CreateMap()
 
 		BG2->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
 		BG2->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG2->GetTransform()->SetWorldPosition({ 1950, -52, 400 });
+		BG2->GetTransform()->SetWorldPosition({ 1950, -52, 750 });
+
+
+
+		std::shared_ptr<class GameEngineRenderer> BG1_1 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
+		BG1_1->SetPipeLine("2DTexture");
+
+		BG1_1->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
+		BG1_1->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
+		BG1_1->GetTransform()->SetWorldPosition({ -1422, -52, 550 });
+
+
+		std::shared_ptr<class GameEngineRenderer> BG2_1 = CreateComponent<GameEngineRenderer>(PlayRenderOrder::Background);
+		BG2_1->SetPipeLine("2DTexture");
+
+		BG2_1->GetShaderResHelper().SetTexture("DiffuseTex", "BG1.png");
+		BG2_1->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
+		BG2_1->GetTransform()->SetWorldPosition({ 2550, -52, 550 });
+
 	}
 
 	// 기둥
