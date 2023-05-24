@@ -13,4 +13,5 @@ enum class PlayRenderOrder
 	Background,
 	Map,
 	Player,
+	UpperLayer,
 };
