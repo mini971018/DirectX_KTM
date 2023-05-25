@@ -26,6 +26,7 @@ void HollowKnightLevel::Start()
 		NewDir.Move("ContentResources");
 		NewDir.Move("Texture");
 		NewDir.Move("HollowKnight");
+		NewDir.Move("BossRoom");
 
 		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
 

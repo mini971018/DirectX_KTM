@@ -170,6 +170,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="HollowKnightBossOrangeBlob.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HollowKnightBossRoom.h">
       <SubType>
       </SubType>
@@ -209,6 +213,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HollowKnightBossOrangeBlob.cpp">
       <SubType>
       </SubType>
     </ClCompile>

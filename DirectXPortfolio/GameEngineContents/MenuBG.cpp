@@ -16,8 +16,7 @@ void MenuBG::Start()
 {
 	BackGroundImage = CreateComponent<GameEngineSpriteRenderer>();
 
-	BackGroundImage->SetTexture("MenuBG.png");
-	BackGroundImage->GetTransform()->SetLocalScale({1930, 1080});
+	BackGroundImage->SetScaleToTexture("MenuBG.png");
 	BackGroundImage->GetTransform()->AddLocalPosition({ 0, 0, -70 });  //원본 크기 기준 z -> -70.0f
 
 }

@@ -28,6 +28,9 @@
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="HollowKnightBossOrangeBlob.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -54,6 +57,9 @@
       <Filter>Levels\PlayLevel\Player</Filter>
     </ClCompile>
     <ClCompile Include="HollowKnightBossRoom.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="HollowKnightBossOrangeBlob.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
   </ItemGroup>

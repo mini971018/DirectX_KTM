@@ -18,8 +18,7 @@ void MenuTitle::Start()
 {
 	TitleImage = CreateComponent<GameEngineSpriteRenderer>();
 
-	TitleImage->SetTexture("MenuTitle.png");
-	TitleImage->GetTransform()->SetLocalScale({ 1199, 463 });
+	TitleImage->SetScaleToTexture("MenuTitle.png");
 
 	TitleImage->GetTransform()->AddLocalPosition({ 0, 200, -70 });
 }
