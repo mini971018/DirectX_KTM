@@ -315,6 +315,15 @@ void HollowKnightBossRoom::CreateMap()
 		Rag17->GetTransform()->SetWorldPosition({ 200, 500, 550 });
 	}
 
+	//¹Ù´Ú
+	{
+		std::shared_ptr<class GameEngineSpriteRenderer> FloorEmblem = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+		FloorEmblem->SetTexture("FloorEmblem.png");
+		FloorEmblem->GetTransform()->SetLocalScale({ 1024, 256 });
+		FloorEmblem->SetScaleRatio(1.5f);
+		FloorEmblem->GetTransform()->SetWorldPosition({ 575, -675, -140 });
+	}
+
 	MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
 	MainRoomImage->SetTexture("HollowKnightBossRoomMain.png");
 
