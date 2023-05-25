@@ -23,7 +23,7 @@ void ContentsCore::GameStart()
 {
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<HollowKnightLevel>();
-	GameEngineCore::CreateLevel<TestLevel3D>();
+	//GameEngineCore::CreateLevel<TestLevel3D>();
 
 	GameEngineCore::ChangeLevel("MainMenuLevel");
 }
@@ -35,8 +35,6 @@ void ContentsCore::GameEnd()
 
 void ContentsCore::ContentsResourcesCreate()
 {
-	// 텍스처 로드만 각 레벨별로 하고 정리하는 습관을 들이세요.
-
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");

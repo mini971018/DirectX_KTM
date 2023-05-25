@@ -21,7 +21,7 @@ protected:
 	void Render(float _Delta) override {}
 
 private:
-	std::shared_ptr<class GameEngineRenderer>  MainRoomImage;
+	std::shared_ptr<class GameEngineSpriteRenderer>  MainRoomImage;
 
 	void CreateMap();
 };

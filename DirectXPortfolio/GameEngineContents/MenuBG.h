@@ -21,6 +21,6 @@ protected:
 	void Render(float _Delta) override {}
 
 private:
-	std::shared_ptr<class GameEngineRenderer>  BackGroundImage;
+	std::shared_ptr<class GameEngineSpriteRenderer>  BackGroundImage;
 };
 
