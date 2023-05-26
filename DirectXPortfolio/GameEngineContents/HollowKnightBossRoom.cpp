@@ -160,11 +160,11 @@ void HollowKnightBossRoom::CreateMap()
 		std::shared_ptr<class GameEngineSpriteRenderer> Pillar1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 		Pillar1->SetScaleToTexture("Pillar.png");
 		Pillar1->SetFlipX();
-		Pillar1->GetTransform()->SetWorldPosition({ 1971, -120, 300 });
+		Pillar1->GetTransform()->SetWorldPosition({ 2021, -120, 90 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Pillar2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 		Pillar2->SetScaleToTexture("Pillar.png");
-		Pillar2->GetTransform()->SetWorldPosition({ -836, -94, 300 });
+		Pillar2->GetTransform()->SetWorldPosition({ -936, -104, 90 });
 	}
 
 	//Ãµ¸·
@@ -355,8 +355,8 @@ void HollowKnightBossRoom::CreateMap()
 					Vine01_1Blob05Render->GetTransform()->SetLocalRotation({ 0, 0, -110 });
 				}
 
-				Vine01_1->GetTransform()->SetWorldPosition({ -1000, -490, 80 });
-				Vine01_1->GetTransform()->SetWorldRotation({ 0, 0, 20 });
+				Vine01_1->GetTransform()->SetWorldPosition({ -1100, -490, 80 });
+				Vine01_1->GetTransform()->SetWorldRotation({ 0, 0, 35 });
 			}
 
 			{
@@ -444,8 +444,8 @@ void HollowKnightBossRoom::CreateMap()
 		std::shared_ptr<HollowKnightBossOrangeBlob> BlurBlob01 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
 		std::shared_ptr<class GameEngineSpriteRenderer> BlurBlob01Renderer = BlurBlob01->CreateBlobActor(OrangeBlobType::LargeBlob03);
 		BlurBlob01Renderer->SetFlipX();
-		BlurBlob01Renderer->SetScaleRatio(3.0f);
-		BlurBlob01->GetTransform()->SetWorldPosition({ -1150, -800, 299 });
+		BlurBlob01Renderer->SetScaleRatio(2.5f);
+		BlurBlob01->GetTransform()->SetWorldPosition({ -1050, -700, 89 });
 	}
 
 	MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
