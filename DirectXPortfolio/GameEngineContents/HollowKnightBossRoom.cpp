@@ -160,11 +160,11 @@ void HollowKnightBossRoom::CreateMap()
 		std::shared_ptr<class GameEngineSpriteRenderer> Pillar1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 		Pillar1->SetScaleToTexture("Pillar.png");
 		Pillar1->SetFlipX();
-		Pillar1->GetTransform()->SetWorldPosition({ 1971, -120, 60 });
+		Pillar1->GetTransform()->SetWorldPosition({ 1971, -120, 300 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Pillar2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 		Pillar2->SetScaleToTexture("Pillar.png");
-		Pillar2->GetTransform()->SetWorldPosition({ -836, -94, 60 });
+		Pillar2->GetTransform()->SetWorldPosition({ -836, -94, 300 });
 	}
 
 	//천막
@@ -295,7 +295,7 @@ void HollowKnightBossRoom::CreateMap()
 		Floor2->GetTransform()->SetWorldPosition({ 127, -653, -100 });
 	}
 
-	//Blob
+	//Blob , Vine
 	{
 		std::shared_ptr<HollowKnightBossOrangeBlob> Blob01 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
 		std::shared_ptr<class GameEngineSpriteRenderer> Blob01Renderer = Blob01->CreateBlobActor(OrangeBlobType::LargeBlob01);
@@ -317,12 +317,135 @@ void HollowKnightBossRoom::CreateMap()
 		std::shared_ptr<class GameEngineSpriteRenderer> Blob05Renderer = Blob05->CreateBlobActor(OrangeBlobType::LargeBlob03);
 		Blob05->GetTransform()->SetWorldPosition({ 2100, -597, -68 });
 
+		// 덩굴과 함께있는 Blob
+		{
+			{
+				std::shared_ptr<GameEngineActor> Vine01_1 = GetLevel()->CreateActor<GameEngineActor>();
+				std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Render = Vine01_1->CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+				Vine01_1Render->SetScaleToTexture("Vine01.png");
+
+				//Blob들
+				{
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_1Blob01 = Vine01_1->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_1Blob01->GetTransform()->SetParent(Vine01_1->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Blob01Render = Vine01_1Blob01->CreateBlobActor(OrangeBlobType::SmallBlob02);
+					Vine01_1Blob01Render->GetTransform()->SetLocalPosition({ -34, 73, 1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_1Blob02 = Vine01_1->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_1Blob02->GetTransform()->SetParent(Vine01_1->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Blob02Render = Vine01_1Blob02->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_1Blob02Render->GetTransform()->SetLocalPosition({ -26, 125, 1 });
+					Vine01_1Blob02Render->GetTransform()->SetLocalRotation({ 0, 0, -135 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_1Blob03 = Vine01_1->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_1Blob03->GetTransform()->SetParent(Vine01_1->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Blob03Render = Vine01_1Blob03->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_1Blob03Render->GetTransform()->SetLocalPosition({ 1, 163, -5 });
+					Vine01_1Blob03Render->GetTransform()->SetLocalRotation({ 0, 0, -135 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_1Blob04 = Vine01_1->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_1Blob04->GetTransform()->SetParent(Vine01_1->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Blob04Render = Vine01_1Blob04->CreateBlobActor(OrangeBlobType::SmallBlob02);
+					Vine01_1Blob04Render->GetTransform()->SetLocalPosition({ -60, -60, 1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_1Blob05 = Vine01_1->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_1Blob05->GetTransform()->SetParent(Vine01_1->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_1Blob05Render = Vine01_1Blob05->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_1Blob05Render->GetTransform()->SetLocalPosition({ 63, -133, -1 });
+					Vine01_1Blob05Render->GetTransform()->SetLocalRotation({ 0, 0, -110 });
+				}
+
+				Vine01_1->GetTransform()->SetWorldPosition({ -1000, -490, 80 });
+				Vine01_1->GetTransform()->SetWorldRotation({ 0, 0, 20 });
+			}
+
+			{
+				std::shared_ptr<GameEngineActor> Vine01_2 = GetLevel()->CreateActor<GameEngineActor>();
+				std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Render = Vine01_2->CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+				Vine01_2Render->SetScaleToTexture("Vine01.png");
+
+				//Blob들
+				{
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_2Blob01 = Vine01_2->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_2Blob01->GetTransform()->SetParent(Vine01_2->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Blob01Render = Vine01_2Blob01->CreateBlobActor(OrangeBlobType::SmallBlob02);
+					Vine01_2Blob01Render->GetTransform()->SetLocalPosition({ -34, 73, 1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_2Blob02 = Vine01_2->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_2Blob02->GetTransform()->SetParent(Vine01_2->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Blob02Render = Vine01_2Blob02->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_2Blob02Render->GetTransform()->SetLocalPosition({ -26, 125, 1 });
+					Vine01_2Blob02Render->GetTransform()->SetLocalRotation({ 0, 0, -135 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_2Blob03 = Vine01_2->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_2Blob03->GetTransform()->SetParent(Vine01_2->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Blob03Render = Vine01_2Blob03->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_2Blob03Render->GetTransform()->SetLocalPosition({ 1, 163, -5 });
+					Vine01_2Blob03Render->GetTransform()->SetLocalRotation({ 0, 0, -135 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_2Blob04 = Vine01_2->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_2Blob04->GetTransform()->SetParent(Vine01_2->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Blob04Render = Vine01_2Blob04->CreateBlobActor(OrangeBlobType::SmallBlob02);
+					Vine01_2Blob04Render->GetTransform()->SetLocalPosition({ -60, -60, 1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine01_2Blob05 = Vine01_2->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine01_2Blob05->GetTransform()->SetParent(Vine01_2->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine01_2Blob05Render = Vine01_2Blob05->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine01_2Blob05Render->GetTransform()->SetLocalPosition({ 63, -133, -1 });
+					Vine01_2Blob05Render->GetTransform()->SetLocalRotation({ 0, 0, -110 });
+				}
+
+				Vine01_2->GetTransform()->SetWorldPosition({ 2093,-498, 80 });
+				Vine01_2->GetTransform()->SetWorldRotation({ 0, 0, 130 });
+			}
+
+			{
+				std::shared_ptr<GameEngineActor> Vine02 = GetLevel()->CreateActor<GameEngineActor>();
+				std::shared_ptr<class GameEngineSpriteRenderer> Vine02Render = Vine02->CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+				Vine02Render->SetScaleToTexture("Vine02.png");
+
+				//Blob들
+				{
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine02Blob01 = Vine02->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine02Blob01->GetTransform()->SetParent(Vine02->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine02Blob01Render = Vine02Blob01->CreateBlobActor(OrangeBlobType::SmallBlob01);
+					Vine02Blob01Render->GetTransform()->SetLocalPosition({ -154, 36, 1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine02Blob02 = Vine02->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine02Blob02->GetTransform()->SetParent(Vine02->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine02Blob02Render = Vine02Blob02->CreateBlobActor(OrangeBlobType::SmallBlob01);
+					Vine02Blob02Render->GetTransform()->SetLocalPosition({ -100, 94, -1 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine02Blob03 = Vine02->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine02Blob03->GetTransform()->SetParent(Vine02->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine02Blob03Render = Vine02Blob03->CreateBlobActor(OrangeBlobType::SmallBlob01);
+					Vine02Blob03Render->GetTransform()->SetLocalPosition({ -70, 75, 1 });
+					Vine02Blob03Render->GetTransform()->SetLocalRotation({ 0, 0, 90 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine02Blob04 = Vine02->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine02Blob04->GetTransform()->SetParent(Vine02->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine02Blob04Render = Vine02Blob04->CreateBlobActor(OrangeBlobType::SmallBlob03);
+					Vine02Blob04Render->GetTransform()->SetLocalPosition({ -10, 65, -1 });
+					Vine02Blob04Render->GetTransform()->SetLocalRotation({ 0, 0, -80 });
+
+					std::shared_ptr<HollowKnightBossOrangeBlob> Vine02Blob05 = Vine02->GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+					Vine02Blob05->GetTransform()->SetParent(Vine02->GetTransform());
+					std::shared_ptr<class GameEngineSpriteRenderer> Vine02Blob05Render = Vine02Blob05->CreateBlobActor(OrangeBlobType::SmallBlob01);
+					Vine02Blob05Render->GetTransform()->SetLocalPosition({ 70, 35, -1 });
+				}
+
+				Vine02->GetTransform()->SetWorldPosition({ -250,-680, 200 });
+			}
+
+		}
+
 
 		//blur
 		std::shared_ptr<HollowKnightBossOrangeBlob> BlurBlob01 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
 		std::shared_ptr<class GameEngineSpriteRenderer> BlurBlob01Renderer = BlurBlob01->CreateBlobActor(OrangeBlobType::LargeBlob03);
+		BlurBlob01Renderer->SetFlipX();
 		BlurBlob01Renderer->SetScaleRatio(3.0f);
-		BlurBlob01->GetTransform()->SetWorldPosition({ -850, -700, 0 });
+		BlurBlob01->GetTransform()->SetWorldPosition({ -1150, -800, 299 });
 	}
 
 	MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);

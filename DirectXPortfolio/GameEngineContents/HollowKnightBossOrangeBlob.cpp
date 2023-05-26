@@ -60,7 +60,7 @@ std::shared_ptr<class GameEngineSpriteRenderer> HollowKnightBossOrangeBlob::Crea
 		break;
 	}
 
-	BlobRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = SpriteString, .ScaleToTexture = true});
+	BlobRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = SpriteString, .FrameInter = 0.08f, .ScaleToTexture = true});
 	BlobRenderer->ChangeAnimation("Idle");
 
 	return BlobRenderer;
