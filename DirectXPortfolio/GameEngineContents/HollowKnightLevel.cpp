@@ -4,6 +4,7 @@
 
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 
 #include "Player.h"
 #include "HollowKnightBossRoom.h"
@@ -49,5 +50,8 @@ void HollowKnightLevel::Start()
 
 void HollowKnightLevel::Update(float _DeltaTime)
 {
-
+	if (GameEngineInput::IsDown("ChangeNextLevel"))
+	{
+		GameEngineCore::ChangeLevel("MainMenuLevel");
+	}
 }
