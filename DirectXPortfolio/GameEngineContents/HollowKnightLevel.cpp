@@ -39,6 +39,7 @@ void HollowKnightLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
+	GetMainCamera()->SetSortType(PlayRenderOrder::UpperLayer, SortType::ZSort);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ -1540, -210, -1000.0f });
 
 	//오브젝트 생성

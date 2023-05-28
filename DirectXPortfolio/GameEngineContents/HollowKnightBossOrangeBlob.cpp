@@ -14,7 +14,7 @@ HollowKnightBossOrangeBlob::~HollowKnightBossOrangeBlob()
 {
 }
 
-std::shared_ptr<class GameEngineSpriteRenderer> HollowKnightBossOrangeBlob::CreateBlobActor(OrangeBlobType _Type)
+std::shared_ptr<class GameEngineSpriteRenderer> HollowKnightBossOrangeBlob::CreateBlobActor(OrangeBlobType _Type, PlayRenderOrder _RenderOrder)
 {
 	if (nullptr == GameEngineSprite::Find("LargeBlob01"))
 	{
@@ -33,7 +33,7 @@ std::shared_ptr<class GameEngineSpriteRenderer> HollowKnightBossOrangeBlob::Crea
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("SmallBlob03").GetFullPath());
 	}
 
-	BlobRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+	BlobRenderer = CreateComponent<GameEngineSpriteRenderer>(_RenderOrder);
 	std::string_view SpriteString;
 
 	switch (_Type)

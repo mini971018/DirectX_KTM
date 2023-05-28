@@ -15,7 +15,7 @@ public:
 	HollowKnightBossOrangeBlob& operator=(const HollowKnightBossOrangeBlob& _Other) = delete;
 	HollowKnightBossOrangeBlob& operator=(HollowKnightBossOrangeBlob&& _Other) noexcept = delete;
 
-	std::shared_ptr<class GameEngineSpriteRenderer> CreateBlobActor(OrangeBlobType _Type);
+	std::shared_ptr<class GameEngineSpriteRenderer> CreateBlobActor(OrangeBlobType _Type, PlayRenderOrder _RenderOrder = PlayRenderOrder::Background);
 
 protected:
 

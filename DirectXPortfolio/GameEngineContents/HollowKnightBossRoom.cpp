@@ -287,7 +287,7 @@ void HollowKnightBossRoom::CreateMap()
 		FloorEmblem->GetTransform()->SetWorldPosition({ 570, -670, -120 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Floor1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
-		Floor1->SetScaleToTexture("Floor.png");
+		Floor1->SetScaleToTexture("BlankFloor.png");
 		Floor1->GetTransform()->SetWorldPosition({ 167, -633, -80 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Floor2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
@@ -448,11 +448,280 @@ void HollowKnightBossRoom::CreateMap()
 		BlurBlob01->GetTransform()->SetWorldPosition({ -1050, -700, 89 });
 	}
 
-	MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
-	MainRoomImage->SetTexture("HollowKnightBossRoomMain.png");
 
-	MainRoomImage->GetTransform()->SetLocalScale({ 5000, 1500 });
-	MainRoomImage->GetTransform()->SetLocalPosition({ 0, 0, -70 }); //원본 크기 기준 z -> -70.0f
+	//UpperLayer 최상단 카메라 앞 레이어 (계단 기준 -120)
+	{
+		std::shared_ptr<class GameEngineSpriteRenderer> EnterUpperLayer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+		EnterUpperLayer->SetScaleToTexture("EnterUpperLayer.png");
+		EnterUpperLayer->GetTransform()->SetLocalScale({ 1384, 1480 });
+		EnterUpperLayer->GetTransform()->SetLocalPosition({ -1900, -326, -121 });
+
+
+		//Rag
+		{
+			//왼쪽 끝 부터
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag1->SetScaleToTexture("Rag.png");
+			Rag1->ColorOptionValue.MulColor = float4::Black;
+			Rag1->GetTransform()->SetWorldPosition({ -1822, -304, -190 });
+			Rag1->GetTransform()->AddLocalScale({ 0,150 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag2->SetScaleToTexture("Rag.png");
+			Rag2->ColorOptionValue.MulColor = float4::Black;
+			Rag2->GetTransform()->SetWorldPosition({ -1592, -305, -190 });
+			Rag2->GetTransform()->AddLocalScale({ 50,150 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag3 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag3->SetScaleToTexture("Rag.png");
+			Rag3->ColorOptionValue.MulColor = float4::Black;
+			Rag3->GetTransform()->SetWorldPosition({ -1178, -50, -400 });
+			Rag3->GetTransform()->AddLocalScale({ 50,350 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag4 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag4->SetScaleToTexture("Rag.png");
+			Rag4->ColorOptionValue.MulColor = float4::Black;
+			Rag4->GetTransform()->SetWorldPosition({ -928, 150, -300 });
+			Rag4->GetTransform()->AddLocalScale({ 50,150 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag5 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag5->SetScaleToTexture("Rag.png");
+			Rag5->ColorOptionValue.MulColor = float4::Black;
+			Rag5->GetTransform()->SetWorldPosition({ -808, 250, -300 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag6 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag6->SetScaleToTexture("Rag.png");
+			Rag6->ColorOptionValue.MulColor = float4::Black;
+			Rag6->GetTransform()->SetWorldPosition({ -578, 220, -400 });
+			Rag6->GetTransform()->AddLocalScale({ 50,450 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag7 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag7->SetScaleToTexture("Rag.png");
+			Rag7->ColorOptionValue.MulColor = float4::Black;
+			Rag7->GetTransform()->SetWorldPosition({ -578, 370, -400 });
+			Rag7->GetTransform()->AddLocalScale({ 50,450 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag8 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag8->SetScaleToTexture("Rag.png");
+			Rag8->ColorOptionValue.MulColor = float4::Black;
+			Rag8->GetTransform()->SetWorldPosition({ -150, 230, -400 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag9 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag9->SetScaleToTexture("Rag.png");
+			Rag9->ColorOptionValue.MulColor = float4::Black;
+			Rag9->GetTransform()->SetWorldPosition({ -250, 270, -300 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag10 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag9->SetScaleToTexture("Rag.png");
+			Rag9->ColorOptionValue.MulColor = float4::Black;
+			Rag9->GetTransform()->SetWorldPosition({ -450, 300, -250 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag11 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag11->SetScaleToTexture("Rag.png");
+			Rag11->ColorOptionValue.MulColor = float4::Black;
+			Rag11->GetTransform()->SetWorldPosition({ 100, 250, -400 });
+
+			//오른쪽 끝 부터
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag12 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag12->SetScaleToTexture("Rag.png");
+			Rag12->ColorOptionValue.MulColor = float4::Black;
+			Rag12->GetTransform()->SetWorldPosition({ 1900, 104, -400 });
+			Rag12->GetTransform()->AddLocalScale({ 50,450 });
+			Rag12->SetFlipX();
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag13 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag13->SetScaleToTexture("Rag.png");
+			Rag13->ColorOptionValue.MulColor = float4::Black;
+			Rag13->GetTransform()->SetWorldPosition({ 1700, 174, -400 });;
+			Rag13->GetTransform()->AddLocalScale({ 0,100 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag14 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag14->SetScaleToTexture("Rag.png");
+			Rag14->ColorOptionValue.MulColor = float4::Black;
+			Rag14->GetTransform()->SetWorldPosition({ 1550, 224, -400 });;
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag15 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag15->SetScaleToTexture("Rag.png");
+			Rag15->ColorOptionValue.MulColor = float4::Black;
+			Rag15->GetTransform()->SetWorldPosition({ 1350, 154, -400 });;
+			Rag15->GetTransform()->AddLocalScale({ 0,100 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag16 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag16->SetScaleToTexture("Rag.png");
+			Rag16->ColorOptionValue.MulColor = float4::Black;
+			Rag16->GetTransform()->SetWorldPosition({ 1000, 254, -400 });
+			Rag16->GetTransform()->AddLocalScale({ 50,350 });
+			Rag16->SetFlipX();
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag17 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag17->SetScaleToTexture("Rag.png");
+			Rag17->ColorOptionValue.MulColor = float4::Black;
+			Rag17->GetTransform()->SetWorldPosition({ 1650, 254, -300 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag18 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag18->SetScaleToTexture("Rag.png");
+			Rag18->ColorOptionValue.MulColor = float4::Black;
+			Rag18->GetTransform()->SetWorldPosition({ 1800, 254, -300 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rag19 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rag19->SetScaleToTexture("Rag.png");
+			Rag19->ColorOptionValue.MulColor = float4::Black;
+			Rag19->GetTransform()->SetWorldPosition({ 1100, 254, -300 });
+
+		}
+
+		//Vine
+		{
+			
+		}
+
+		//Blob
+		{
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob01 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob01Renderer = Blob01->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob01->GetTransform()->SetWorldPosition({ -1826, -610, -200 });
+			Blob01->GetTransform()->SetWorldRotation({ 0, 0, -30});
+			Blob01Renderer->ColorOptionValue.MulColor = float4::Black;
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob02 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob02Renderer = Blob02->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob02->GetTransform()->SetWorldPosition({ -1026, -630, -200 });
+			Blob02->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob02Renderer->ColorOptionValue.MulColor = float4::Black;
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob03 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob03Renderer = Blob03->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob03->GetTransform()->SetWorldPosition({ -400, -630, -200 });
+			Blob03->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob03Renderer->ColorOptionValue.MulColor = float4::Black;
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob04 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob04Renderer = Blob04->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob04->GetTransform()->SetWorldPosition({ 400, -610, -240 });
+			Blob04->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob04Renderer->ColorOptionValue.MulColor = float4::Black;
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob05 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob05Renderer = Blob05->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob05->GetTransform()->SetWorldPosition({ 1200, -610, -240 });
+			Blob05->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob05Renderer->ColorOptionValue.MulColor = float4::Black;
+
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob06 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob06Renderer = Blob06->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob06->GetTransform()->SetWorldPosition({ 1625, -630, -240 });
+			Blob06->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob06Renderer->ColorOptionValue.MulColor = float4::Black;
+			
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob07 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob07Renderer = Blob07->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob07->GetTransform()->SetWorldPosition({ 1800, -610, -200 });
+			Blob07->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+			Blob07Renderer->ColorOptionValue.MulColor = float4::Black;
+
+			std::shared_ptr<HollowKnightBossOrangeBlob> Blob08 = GetLevel()->CreateActor<HollowKnightBossOrangeBlob>();
+			std::shared_ptr<class GameEngineSpriteRenderer> Blob08Renderer = Blob08->CreateBlobActor(OrangeBlobType::LargeBlob03, PlayRenderOrder::UpperLayer);
+			Blob08->GetTransform()->SetWorldPosition({ -1320, -244, -200 });
+			Blob08->GetTransform()->SetWorldRotation({ 0, 0, 150 });
+			Blob08Renderer->ColorOptionValue.MulColor = float4::Black;
+		}
+
+		//Rock
+		{
+			float RockScaleRatio = 1.2f; // 곱해줄 RockScale비율
+			float4 RockScale = float4::Zero; //현재 RockScale 저장해두는 변수
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rock1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rock1->SetScaleToTexture("HollowKnightBossRoomRock.png");
+			RockScale = Rock1->GetTransform()->GetWorldScale();
+
+			Rock1->GetTransform()->SetWorldPosition({ -1416, -615, -170 });
+			Rock1->GetTransform()->SetWorldScale({ RockScale.x * RockScaleRatio, RockScale.y * RockScaleRatio, 1 });
+			Rock1->SetFlipX();
+
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rock2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rock2->SetScaleToTexture("HollowKnightBossRoomRock.png");
+			Rock2->GetTransform()->SetWorldPosition({ 65, -615, -170 });
+			Rock2->GetTransform()->SetWorldScale({RockScale.x * RockScaleRatio, RockScale.y * RockScaleRatio, 1});
+			Rock2->SetFlipX();
+
+			std::shared_ptr<class GameEngineSpriteRenderer> Rock3 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			Rock3->SetScaleToTexture("HollowKnightBossRoomRock.png");
+			Rock3->GetTransform()->SetWorldPosition({ 1065, -605, -170 });
+			Rock3->GetTransform()->SetWorldScale({ RockScale.x * RockScaleRatio, RockScale.y * RockScaleRatio, 1 });
+		}
+
+		//UpperLayerChain
+		{
+			std::shared_ptr<class GameEngineSpriteRenderer> UpperLayerChain1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			UpperLayerChain1->SetScaleToTexture("UpperLayerChain.png");
+			UpperLayerChain1->GetTransform()->SetWorldPosition({ -1150, -250, -250 });
+			UpperLayerChain1->GetTransform()->SetWorldRotation({ 0, 0, -15 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> UpperLayerChain2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			UpperLayerChain2->SetScaleToTexture("UpperLayerChain.png");
+			UpperLayerChain2->GetTransform()->SetWorldPosition({ -876, -275, -200 });
+			UpperLayerChain2->GetTransform()->SetWorldRotation({ 0, 0, 45 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> UpperLayerChain3 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			UpperLayerChain3->SetScaleToTexture("UpperLayerChain.png");
+			UpperLayerChain3->GetTransform()->SetWorldPosition({ -100, -250, -250 });
+			UpperLayerChain3->GetTransform()->SetWorldRotation({ 0, 0, -15 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> UpperLayerChain4 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			UpperLayerChain4->SetScaleToTexture("UpperLayerChain.png");
+			UpperLayerChain4->GetTransform()->SetWorldPosition({ 1354, -250, -250 });
+			UpperLayerChain4->GetTransform()->SetWorldRotation({ 0, 0, -15 });
+
+			std::shared_ptr<class GameEngineSpriteRenderer> UpperLayerChain5 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+
+			UpperLayerChain5->SetScaleToTexture("UpperLayerChain.png");
+			UpperLayerChain5->GetTransform()->SetWorldPosition({ 1930, -250, -200 });
+			UpperLayerChain5->GetTransform()->SetWorldRotation({ 0, 0, -30 });
+		}
+
+	}
+
+	//MainLayer (플레이어 이펙트 맵 등)
+	{
+		MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
+		MainRoomImage->SetTexture("HollowKnightBossRoomMain.png");
+
+		MainRoomImage->GetTransform()->SetLocalScale({ 5000, 1500 });
+		MainRoomImage->GetTransform()->SetLocalPosition({ 0, 0, -70 }); //원본 크기 기준 z -> -70.0f
+	}
+
 
 }
 
