@@ -4,6 +4,7 @@
 
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 
 #include "Player.h"
@@ -30,7 +31,7 @@ void HollowKnightLevel::Start()
 		NewDir.Move("HollowKnight");
 		NewDir.Move("BossRoom");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".bmp"});
 
 		for (size_t i = 0; i < File.size(); i++)
 		{
@@ -41,14 +42,18 @@ void HollowKnightLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
 	GetMainCamera()->SetSortType(PlayRenderOrder::UpperLayer, SortType::ZSort);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ -1540, -210, -1000.0f });
+	
+	float4 ScreenSize = GameEngineWindow::GetScreenSize();
+
+	GetMainCamera()->GetTransform()->SetLocalPosition({ (ScreenSize.x / 2),  -(ScreenSize.y / 2) - 420.0f, -1000.0f });
 
 	//오브젝트 생성
 	{
 		std::shared_ptr PlayerActor = CreateActor<Player>(PlayRenderOrder::Player);
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
+		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
 		std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
-		BossActor->GetTransform()->AddLocalPosition({ -500, 0, -70 });
+		BossActor->GetTransform()->SetWorldPosition({ 3080, -1150, 0 });
 	}
 }
 

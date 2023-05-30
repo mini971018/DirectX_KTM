@@ -14,7 +14,10 @@ void HollowKnightBoss::StateInit()
 			.Name = "ChainIdle",
 			.Start = [this]()
 		{
-			BossRender->ChangeAnimation("ChainIdle");
+			PivotPos = { 0 , 270 };
+			SetBossRendererPivot();
+
+			BossRenderer->ChangeAnimation("ChainIdle");
 
 			StateCalTime = 0.0f;
 
@@ -24,6 +27,36 @@ void HollowKnightBoss::StateInit()
 			StateCalTime += _DeltaTime;
 
 			if (GameEngineInput::IsUp("TestButton"))
+			{
+				FSM.ChangeState("ShakeChain");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ShakeChain",
+			.Start = [this]()
+		{
+			PivotPos = { 0 , 270, -70 };
+			SetBossRendererPivot();
+
+			BossRenderer->ChangeAnimation("ShakeChain");
+
+			StateCalTime = 0.0f;
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			StateCalTime += _DeltaTime;
+
+			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("BreakChain");
 			}
@@ -41,11 +74,11 @@ void HollowKnightBoss::StateInit()
 			.Name = "BreakChain",
 			.Start = [this]()
 		{
-			BossRender->ChangeAnimation("BreakChain");
+			BossRenderer->ChangeAnimation("BreakChain");
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRender->IsAnimationEnd())
+			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("BreakChainFall");
 			}
@@ -63,11 +96,11 @@ void HollowKnightBoss::StateInit()
 			.Name = "BreakChainFall",
 			.Start = [this]()
 		{
-			BossRender->ChangeAnimation("BreakChainFall");
+			BossRenderer->ChangeAnimation("BreakChainFall");
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRender->IsAnimationEnd())
+			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("BreakChainLand");
 			}
@@ -85,11 +118,11 @@ void HollowKnightBoss::StateInit()
 			.Name = "BreakChainLand",
 			.Start = [this]()
 		{
-			BossRender->ChangeAnimation("BreakChainLand");
+			BossRenderer->ChangeAnimation("BreakChainLand");
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRender->IsAnimationEnd())
+			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("ChainIdle");
 			}

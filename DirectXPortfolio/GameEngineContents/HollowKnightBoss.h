@@ -19,11 +19,17 @@ public:
 protected:
 	void Start();
 	void Update(float _Delta) override;
-	void Render(float _Delta) {}
+	void Render(float _Delta) override;
 	void LevelChangeStart() override;
 
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> BossRender;
+	std::shared_ptr<class GameEngineSpriteRenderer> BossRenderer;
+
+	float4 PivotPos = float4::Zero; //보스 렌더러의 애니메이션의 각 중심이 될 위치
+	void SetBossRendererPivot();
+	
+	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer;
+	std::shared_ptr<class GameEngineTexture> BossColmapTexture;
 
 	void SpriteInit();
 	void AnimationInit();
