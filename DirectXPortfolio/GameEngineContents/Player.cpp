@@ -41,7 +41,8 @@ void Player::CreateKey()
 {
 	if (false == GameEngineInput::IsKey("ChangeNextLevel"))
 	{
-		GameEngineInput::CreateKey("ChangeNextLevel", '1');
+		GameEngineInput::CreateKey("TestButton", '1');
+		GameEngineInput::CreateKey("ChangeNextLevel", '0');
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
 	}

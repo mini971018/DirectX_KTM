@@ -1,0 +1,14 @@
+version: 2
+type: animation
+name: Roar Antic
+consistent_sprite_size: true
+enable_borders: false
+use_sprite_name: false
+sprites: 7
+0	Roar Antic_000.png
+1	Roar Antic_001.png
+2	Roar Antic_002.png
+3	Roar Antic_003.png
+4	Roar Antic_004.png
+5	Roar Antic_005.png
+6	Roar Antic_006.png

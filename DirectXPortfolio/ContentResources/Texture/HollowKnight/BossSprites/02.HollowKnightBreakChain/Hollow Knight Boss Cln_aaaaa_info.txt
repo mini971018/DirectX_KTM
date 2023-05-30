@@ -1,0 +1,15 @@
+version: 2
+type: animation
+name: Rest Break
+consistent_sprite_size: true
+enable_borders: false
+use_sprite_name: true
+sprites: 8
+0	Rest Break_rest_break_free0004_000.png
+1	Rest Break_rest_break_free0005_001.png
+2	Rest Break_rest_break_free0006_002.png
+3	Rest Break_rest_break_free0007_003.png
+4	Rest Break_rest_break_free0008_004.png
+5	Rest Break_rest_break_free0009_005.png
+6	Rest Break_rest_break_free0010_006.png
+7	Rest Break_rest_break_free0011_007.png

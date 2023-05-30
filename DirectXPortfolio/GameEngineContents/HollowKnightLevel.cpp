@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "HollowKnightBossRoom.h"
+#include "HollowKnightBoss.h"
 #include "ContentsEnum.h"
 
 HollowKnightLevel::HollowKnightLevel() 
@@ -46,6 +47,8 @@ void HollowKnightLevel::Start()
 	{
 		std::shared_ptr PlayerActor = CreateActor<Player>(PlayRenderOrder::Player);
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
+		std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
+		BossActor->GetTransform()->AddLocalPosition({ -500, 0, -70 });
 	}
 }
 
