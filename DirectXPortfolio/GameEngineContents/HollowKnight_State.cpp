@@ -3,7 +3,9 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFSM.h>
+#include <GameEngineCore/GameEngineLevel.h>
 
+#include "RoarEffect.h"
 #include "HollowKnightBoss.h"
 
 
@@ -24,12 +26,55 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			StateCalTime += _DeltaTime;
-
 			if (GameEngineInput::IsUp("TestButton"))
 			{
-				FSM.ChangeState("ShakeChain");
+				FSM.ChangeState("ChainRoar");
 			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ChainRoar",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("ChainIdle");
+
+			float4 EffectPos = GetTransform()->GetWorldPosition();
+			EffectPos += {0, 300};
+
+		/*	CreateRoarEffect(RoarType::Black, EffectPos);
+			CreateRoarEffect(RoarType::White, EffectPos);*/
+
+			StateCalTime = 0.0f;
+			StateCalTime2 = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			StateCalTime  += _DeltaTime;
+			StateCalTime2 += _DeltaTime;
+
+			if (StateCalTime >= 0.5f)
+			{
+				float4 EffectPos = GetTransform()->GetWorldPosition();
+				EffectPos += {0, 300};
+
+			/*	CreateRoarEffect(RoarType::Black, EffectPos);*/
+
+				StateCalTime = 0.0f;
+			}
+
+			if (StateCalTime2 >= 5.0f)
+			{
+				FSM.ChangeState("BreakChain");
+			}
+
 		},
 			.End = [this]()
 		{
@@ -58,7 +103,7 @@ void HollowKnightBoss::StateInit()
 
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				FSM.ChangeState("BreakChain");
+
 			}
 		},
 			.End = [this]()

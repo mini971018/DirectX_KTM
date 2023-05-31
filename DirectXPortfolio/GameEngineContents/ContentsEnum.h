@@ -15,6 +15,7 @@ enum class PlayRenderOrder
 	Boss,
 	Player,
 	UpperLayer,
+	Effect,
 };
 
 enum class OrangeBlobType
@@ -25,4 +26,11 @@ enum class OrangeBlobType
 	SmallBlob01,
 	SmallBlob02,
 	SmallBlob03
+};
+
+
+enum class RoarType
+{
+	Black,
+	White
 };

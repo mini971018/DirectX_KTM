@@ -3,7 +3,9 @@
 #include <GameEngineCore/GameEngineSprite.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEngineCore/GameEngineLevel.h>
 
+#include "RoarEffect.h"
 #include "HollowKnightBoss.h"
 
 
@@ -114,4 +116,10 @@ void HollowKnightBoss::Render(float _Delta)
 void HollowKnightBoss::SetBossRendererPivot()
 {
 	BossRenderer->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
+}
+
+void HollowKnightBoss::CreateRoarEffect(RoarType _Type, float4 _Pos)
+{
+	std::shared_ptr BossRoarEffect = GetLevel()->CreateActor<RoarEffect>();
+	BossRoarEffect->SetRoarEffect(_Type, _Pos);
 }

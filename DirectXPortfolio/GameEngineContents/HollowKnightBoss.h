@@ -34,9 +34,13 @@ private:
 	void SpriteInit();
 	void AnimationInit();
 
+	void CreateRoarEffect(RoarType _Type, float4 _Pos);
+
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
 
-	float StateCalTime = 0.0f;
+	// 스테이트에서 사용되는 변수들
+	float StateCalTime  = 0.0f;
+	float StateCalTime2 = 0.0f;
 };
 

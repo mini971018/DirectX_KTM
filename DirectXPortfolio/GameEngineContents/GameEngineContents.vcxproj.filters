@@ -34,6 +34,9 @@
     <ClInclude Include="HollowKnightBoss.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
+    <ClInclude Include="RoarEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -69,6 +72,9 @@
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
     <ClCompile Include="HollowKnight_State.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="RoarEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
   </ItemGroup>
