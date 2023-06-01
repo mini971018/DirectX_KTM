@@ -395,7 +395,6 @@ GameEnginePixelColor GameEngineTexture::GetPixel(int _X, int _Y, GameEnginePixel
 	case DXGI_FORMAT_B5G5R5A1_UNORM:
 		break;
 	case DXGI_FORMAT_B8G8R8A8_UNORM:
-		break;
 	case DXGI_FORMAT_B8G8R8X8_UNORM:
 	{
 		// 컬러1개에 4바이트인 100 * 100

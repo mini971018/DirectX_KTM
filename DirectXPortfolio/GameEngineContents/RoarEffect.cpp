@@ -42,9 +42,13 @@ void RoarEffect::SetRoarEffect(RoarType _Type, float4 Pos)
 
 void RoarEffect::Update(float _Delta)
 {
-	float4 Value = float4(100, 100);
+	float4 CurrentScale = RoarEffectRenderer->GetTransform()->GetLocalScale();
+	float ScaleValue = 30.0f * _Delta;
 
-	RoarEffectRenderer->GetTransform()->AddLocalScale(Value);
+	CurrentScale.x += ScaleValue;
+	CurrentScale.y += ScaleValue;
+
+	RoarEffectRenderer->GetTransform()->SetLocalScale(CurrentScale);
 
 	if (GetLiveTime() >= 1.0f)
 	{

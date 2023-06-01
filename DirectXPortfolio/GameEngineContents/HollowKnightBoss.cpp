@@ -92,10 +92,9 @@ void HollowKnightBoss::Update(float _Delta)
 
 	if (nullptr != BossColmapTexture)
 	{
-		//float4 CheckPos = GetTransform()->GetWorldPosition();
-		float4 CheckPos = float4{ 2800, 1000 };
+		float4 CheckPos = GetTransform()->GetWorldPosition();
 
-		if (GameEnginePixelColor::Black == BossColmapTexture->GetPixel(CheckPos.x, CheckPos.y))
+		if (GameEnginePixelColor::Black == BossColmapTexture->GetPixel(CheckPos.x, - CheckPos.y))
 		{
 			int a = 0;
 		}

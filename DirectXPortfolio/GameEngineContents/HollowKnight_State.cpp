@@ -49,8 +49,8 @@ void HollowKnightBoss::StateInit()
 			float4 EffectPos = GetTransform()->GetWorldPosition();
 			EffectPos += {0, 300};
 
-		/*	CreateRoarEffect(RoarType::Black, EffectPos);
-			CreateRoarEffect(RoarType::White, EffectPos);*/
+			CreateRoarEffect(RoarType::Black, EffectPos);
+			CreateRoarEffect(RoarType::White, EffectPos);
 
 			StateCalTime = 0.0f;
 			StateCalTime2 = 0.0f;
@@ -65,7 +65,7 @@ void HollowKnightBoss::StateInit()
 				float4 EffectPos = GetTransform()->GetWorldPosition();
 				EffectPos += {0, 300};
 
-			/*	CreateRoarEffect(RoarType::Black, EffectPos);*/
+				CreateRoarEffect(RoarType::Black, EffectPos);
 
 				StateCalTime = 0.0f;
 			}
