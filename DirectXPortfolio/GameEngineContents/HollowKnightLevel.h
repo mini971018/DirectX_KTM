@@ -22,7 +22,6 @@ protected:
 	void LevelChangeStart() override {}
 	void LevelChangeEnd() override {}
 
-
 private:
 
 };

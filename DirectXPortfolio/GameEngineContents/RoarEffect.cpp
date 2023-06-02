@@ -38,12 +38,13 @@ void RoarEffect::SetRoarEffect(RoarType _Type, float4 Pos)
 
 	RoarEffectRenderer->SetScaleToTexture(RoarString);
 	RoarEffectRenderer->GetTransform()->SetLocalPosition({ Pos.x, Pos.y, -400});
+	RoarEffectRenderer->ColorOptionValue.MulColor.a = 0.8f;
 }
 
 void RoarEffect::Update(float _Delta)
 {
 	float4 CurrentScale = RoarEffectRenderer->GetTransform()->GetLocalScale();
-	float ScaleValue = 30.0f * _Delta;
+	float ScaleValue = 9000 * _Delta;
 
 	CurrentScale.x += ScaleValue;
 	CurrentScale.y += ScaleValue;
@@ -52,7 +53,11 @@ void RoarEffect::Update(float _Delta)
 
 	if (GetLiveTime() >= 1.0f)
 	{
-		RoarEffectRenderer->Death();
-		Death();
+		if (RoarEffectRenderer != nullptr)
+		{
+			RoarEffectRenderer->Death();
+			RoarEffectRenderer = nullptr;
+			Death();
+		}
 	}
 }

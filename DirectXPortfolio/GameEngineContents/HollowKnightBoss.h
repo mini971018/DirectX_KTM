@@ -36,6 +36,11 @@ private:
 
 	void CreateRoarEffect(RoarType _Type, float4 _Pos);
 
+	float4 MoveDir = float4::Zero; //이동 벡터
+	float Gravity = 1000.0f; //중력 크기
+    bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
+	void SetGravity(float _Delta); //중력 적용
+
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
 

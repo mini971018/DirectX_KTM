@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 
 #include "RoarEffect.h"
+#include "BindBreakEffect.h"
 #include "HollowKnightBoss.h"
 
 
@@ -44,6 +45,7 @@ void HollowKnightBoss::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("06.HollowKnightRoar").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("07.HollowKnightRoarToIdle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("08.HollowKnightIdle").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
 	}
 }
 
@@ -56,7 +58,13 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "ChainIdle", .SpriteName = "00.HollowKnightChainIdle", .Loop = false, .ScaleToTexture = true, });
 		BossRenderer->CreateAnimation({ .AnimationName = "ShakeChain", .SpriteName = "01.HollowKnightShakeChain", .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChain", .SpriteName = "02.HollowKnightBreakChain",  .Loop = false, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainFall", .SpriteName = "03.HollowKnightBreakChainFall", .ScaleToTexture = true });
+		BossRenderer->SetAnimationStartEvent("BreakChain", 4, [this]
+			{
+				std::shared_ptr BreakShieldEffect = GetLevel()->CreateActor<BindBreakEffect>();
+				BreakShieldEffect->SetBindBreakRenderer(GetTransform()->GetWorldPosition() + PivotPos);
+			});
+		
+		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainFall", .SpriteName = "03.HollowKnightBreakChainFall",.Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainLand", .SpriteName = "04.HollowKnightBreakChainLand", .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "RoarAntic", .SpriteName = "05.HollowKnightRoarAntic",  .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Roar", .SpriteName = "06.HollowKnightRoar", .ScaleToTexture = true });
@@ -72,13 +80,14 @@ void HollowKnightBoss::AnimationInit()
 	{
 		BossWeaponRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
+		BossWeaponRenderer->GetTransform()->SetParent(GetLevel()->GetTransform());
 		BossWeaponRenderer->SetScaleToTexture("HollowKnightNail.png");
-		BossWeaponRenderer->GetTransform()->SetWorldPosition({ -3190, -1200, -70 });
-		BossWeaponRenderer->GetTransform()->SetWorldRotation({ 0, 0, 10 });
+		BossWeaponRenderer->GetTransform()->SetWorldPosition({ 3190, -1200, -70 });
+		BossWeaponRenderer->GetTransform()->SetWorldRotation({ 0, 0, -10 });
 
 	}
 
-	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find("HollowKnightBossColmap.png");
+	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find("HollowKnightBossColmap.bmp");
 
 	if (nullptr != ColmapTexture)
 	{
@@ -90,15 +99,6 @@ void HollowKnightBoss::Update(float _Delta)
 {
 	FSM.Update(_Delta);
 
-	if (nullptr != BossColmapTexture)
-	{
-		float4 CheckPos = GetTransform()->GetWorldPosition();
-
-		if (GameEnginePixelColor::Black == BossColmapTexture->GetPixel(CheckPos.x, - CheckPos.y))
-		{
-			int a = 0;
-		}
-	}
 
 }
 
@@ -121,4 +121,32 @@ void HollowKnightBoss::CreateRoarEffect(RoarType _Type, float4 _Pos)
 {
 	std::shared_ptr BossRoarEffect = GetLevel()->CreateActor<RoarEffect>();
 	BossRoarEffect->SetRoarEffect(_Type, _Pos);
+}
+
+bool HollowKnightBoss::IsGround(float4 _Pos)
+{
+	if (nullptr != BossColmapTexture)
+	{
+		float4 CheckPos = GetTransform()->GetWorldPosition();
+
+		if (GameEnginePixelColor::Black == BossColmapTexture->GetPixel(_Pos.x,  -_Pos.y ))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	MsgAssert("보스의 콜리전 맵이 없습니다.");
+	return false;
+
+}
+
+void HollowKnightBoss::SetGravity(float _Delta)
+{
+	float4 NextPos = GetTransform()->GetWorldPosition() + float4{ 0, -Gravity * _Delta ,0 };
+
+	GetTransform()->SetWorldPosition(NextPos);
 }

@@ -16,9 +16,9 @@ void HollowKnightBoss::StateInit()
 			.Name = "ChainIdle",
 			.Start = [this]()
 		{
-			PivotPos = { 0 , 270 };
+			PivotPos = { -20 , 230 };
 			SetBossRendererPivot();
-
+			GetTransform()->SetWorldPosition({ 3080, -950, 0 });
 			BossRenderer->ChangeAnimation("ChainIdle");
 
 			StateCalTime = 0.0f;
@@ -47,9 +47,8 @@ void HollowKnightBoss::StateInit()
 			BossRenderer->ChangeAnimation("ChainIdle");
 
 			float4 EffectPos = GetTransform()->GetWorldPosition();
-			EffectPos += {0, 300};
+			EffectPos += {-10, 300};
 
-			CreateRoarEffect(RoarType::Black, EffectPos);
 			CreateRoarEffect(RoarType::White, EffectPos);
 
 			StateCalTime = 0.0f;
@@ -60,19 +59,20 @@ void HollowKnightBoss::StateInit()
 			StateCalTime  += _DeltaTime;
 			StateCalTime2 += _DeltaTime;
 
-			if (StateCalTime >= 0.5f)
+			if (StateCalTime >= 0.2f)
 			{
 				float4 EffectPos = GetTransform()->GetWorldPosition();
-				EffectPos += {0, 300};
+				EffectPos += {-10, 300};
 
 				CreateRoarEffect(RoarType::Black, EffectPos);
 
 				StateCalTime = 0.0f;
 			}
 
-			if (StateCalTime2 >= 5.0f)
+			if (StateCalTime2 >= 1.0f)
 			{
 				FSM.ChangeState("BreakChain");
+				return;
 			}
 
 		},
@@ -126,6 +126,7 @@ void HollowKnightBoss::StateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("BreakChainFall");
+				return;
 			}
 		},
 			.End = [this]()
@@ -145,9 +146,16 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRenderer->IsAnimationEnd())
+
+
+			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{
 				FSM.ChangeState("BreakChainLand");
+				return;
+			}
+			else
+			{
+				SetGravity(_DeltaTime);
 			}
 		},
 			.End = [this]()
