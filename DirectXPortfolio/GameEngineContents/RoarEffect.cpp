@@ -37,7 +37,7 @@ void RoarEffect::SetRoarEffect(RoarType _Type, float4 Pos)
 	}
 
 	RoarEffectRenderer->SetScaleToTexture(RoarString);
-	RoarEffectRenderer->GetTransform()->SetLocalPosition({ Pos.x, Pos.y, -400});
+	RoarEffectRenderer->GetTransform()->SetLocalPosition({ Pos.x, Pos.y, -70});
 	RoarEffectRenderer->ColorOptionValue.MulColor.a = 0.8f;
 }
 

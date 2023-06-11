@@ -69,6 +69,8 @@ public:
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
 
+	std::shared_ptr<class GameEngineCamera> CreateNewCamera(int _Order);
+
 	std::shared_ptr<class GameEngineCamera> GetMainCamera() 
 	{
 		return MainCamera;
@@ -85,8 +87,6 @@ public:
 	{
 		return LastTarget;
 	}
-
-	void CollisionDebugRender(GameEngineCamera* _Camera, float _Delta);
 
 protected:
 	// 레벨이 바뀌어서 시작할때

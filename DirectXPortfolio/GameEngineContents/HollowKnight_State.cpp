@@ -89,7 +89,7 @@ void HollowKnightBoss::StateInit()
 			.Name = "ShakeChain",
 			.Start = [this]()
 		{
-			PivotPos = { 0 , 270, -70 };
+			PivotPos = { 0 , 270 };
 			SetBossRendererPivot();
 
 			BossRenderer->ChangeAnimation("ShakeChain");
@@ -143,10 +143,13 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("BreakChainFall");
+			Gravity = 2000.0f;
+
+			PivotPos = { 0 , 290 };
+			SetBossRendererPivot();
 		},
 			.Update = [this](float _DeltaTime)
 		{
-
 
 			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{
@@ -177,7 +180,98 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				FSM.ChangeState("ChainIdle");
+				FSM.ChangeState("RoarAntic");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "RoarAntic",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("RoarAntic");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Roar");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Roar",
+			.Start = [this]()
+		{
+			StateCalTime = 0.0f;
+			BossRenderer->ChangeAnimation("Roar");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			StateCalTime += _DeltaTime;
+
+			if (StateCalTime >= 1.0f)
+			{
+				FSM.ChangeState("RoarToIdle");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "RoarToIdle",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("RoarToIdle");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Idle");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Idle",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Idle");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				//FSM.ChangeState("Idle");
 			}
 		},
 			.End = [this]()
