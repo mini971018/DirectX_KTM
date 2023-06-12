@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
@@ -63,12 +65,11 @@ void HollowKnightBoss::AnimationInit()
 				std::shared_ptr BreakShieldEffect = GetLevel()->CreateActor<BindBreakEffect>();
 				BreakShieldEffect->SetBindBreakRenderer(GetTransform()->GetWorldPosition() + PivotPos);
 			});
-		
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainFall", .SpriteName = "03.HollowKnightBreakChainFall",.Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainLand", .SpriteName = "04.HollowKnightBreakChainLand", .Loop = false, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "RoarAntic", .SpriteName = "05.HollowKnightRoarAntic",  .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "RoarAntic", .SpriteName = "05.HollowKnightRoarAntic", .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Roar", .SpriteName = "06.HollowKnightRoar", .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "08.HollowKnightIdle", .ScaleToTexture = true });
 
 		BossRenderer->ChangeAnimation("ChainIdle");
@@ -99,7 +100,10 @@ void HollowKnightBoss::Update(float _Delta)
 {
 	FSM.Update(_Delta);
 
-
+	if (GameEngineInput::IsUp("TestButton2"))
+	{
+		FSM.ChangeState("ChainIdle");
+	}
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -109,7 +113,15 @@ void HollowKnightBoss::LevelChangeStart()
 
 void HollowKnightBoss::Render(float _Delta)
 {
-
+	//HDC DoubleDC = GameEngineWindow::GetWindowBackBufferHdc();
+	//float4 PivotRenderPos = GetTransform()->GetWorldPosition();
+	//
+	//Rectangle(DoubleDC,
+	//	PivotRenderPos.ix() - 1000,
+	//	PivotRenderPos.iy() - 1000,
+	//	PivotRenderPos.ix() + 1000,
+	//	PivotRenderPos.iy() + 1000
+	//);
 }
 
 void HollowKnightBoss::SetBossRendererPivot()

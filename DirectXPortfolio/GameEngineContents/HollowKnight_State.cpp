@@ -20,7 +20,7 @@ void HollowKnightBoss::StateInit()
 			SetBossRendererPivot();
 			GetTransform()->SetWorldPosition({ 3080, -950, 0 });
 			BossRenderer->ChangeAnimation("ChainIdle");
-
+			BossWeaponRenderer->On();
 			StateCalTime = 0.0f;
 
 		},
@@ -48,11 +48,12 @@ void HollowKnightBoss::StateInit()
 
 			float4 EffectPos = GetTransform()->GetWorldPosition();
 			EffectPos += {-10, 300};
+			RoarEffectPos = EffectPos;
 
-			CreateRoarEffect(RoarType::White, EffectPos);
+			CreateRoarEffect(RoarType::White, RoarEffectPos);
 
-			StateCalTime = 0.0f;
-			StateCalTime2 = 0.0f;
+			StateCalTime = 0.0f; //Roar Effect 주기
+			StateCalTime2 = 0.0f;//다음 스테이트로 넘어가는 시간
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -61,10 +62,7 @@ void HollowKnightBoss::StateInit()
 
 			if (StateCalTime >= 0.2f)
 			{
-				float4 EffectPos = GetTransform()->GetWorldPosition();
-				EffectPos += {-10, 300};
-
-				CreateRoarEffect(RoarType::Black, EffectPos);
+				CreateRoarEffect(RoarType::Black, RoarEffectPos);
 
 				StateCalTime = 0.0f;
 			}
@@ -75,36 +73,6 @@ void HollowKnightBoss::StateInit()
 				return;
 			}
 
-		},
-			.End = [this]()
-		{
-
-		},
-
-		}
-	);
-
-	FSM.CreateState(
-		{
-			.Name = "ShakeChain",
-			.Start = [this]()
-		{
-			PivotPos = { 0 , 270 };
-			SetBossRendererPivot();
-
-			BossRenderer->ChangeAnimation("ShakeChain");
-
-			StateCalTime = 0.0f;
-
-		},
-			.Update = [this](float _DeltaTime)
-		{
-			StateCalTime += _DeltaTime;
-
-			if (true == BossRenderer->IsAnimationEnd())
-			{
-
-			}
 		},
 			.End = [this]()
 		{
@@ -153,6 +121,8 @@ void HollowKnightBoss::StateInit()
 
 			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{
+				//이후 먼지구름 이펙트 및 시간 이후 스테이트 변경되게끔 변경
+
 				FSM.ChangeState("BreakChainLand");
 				return;
 			}
@@ -175,6 +145,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("BreakChainLand");
+			BossWeaponRenderer->Off();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -218,14 +189,30 @@ void HollowKnightBoss::StateInit()
 			.Name = "Roar",
 			.Start = [this]()
 		{
-			StateCalTime = 0.0f;
+			StateCalTime = 0.0f; //로어이펙트 주기
+			StateCalTime2 = 0.0f;  //다음 스테이트로 넘어가는 시간
+			
+			float4 EffectPos = GetTransform()->GetWorldPosition();
+			EffectPos += { 125, 365 };
+			RoarEffectPos = EffectPos;
+
+			CreateRoarEffect(RoarType::White, RoarEffectPos);
+
 			BossRenderer->ChangeAnimation("Roar");
 		},
 			.Update = [this](float _DeltaTime)
 		{
 			StateCalTime += _DeltaTime;
+			StateCalTime2 += _DeltaTime;
 
-			if (StateCalTime >= 1.0f)
+			if (StateCalTime >= 0.2f)
+			{
+				CreateRoarEffect(RoarType::Black, RoarEffectPos);
+
+				StateCalTime = 0.0f;
+			}
+
+			if (StateCalTime2 >= 2.0f)
 			{
 				FSM.ChangeState("RoarToIdle");
 			}

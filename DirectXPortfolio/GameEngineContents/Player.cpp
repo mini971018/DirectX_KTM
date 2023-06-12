@@ -23,12 +23,12 @@ void Player::Update(float _Delta)
 {
 	if (GameEngineInput::IsPress("MoveRight"))
 	{
-		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Right * 500.0f * _Delta);
+		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Right * 1500.0f * _Delta);
 	}
 
 	if (GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Left * 500.0f * _Delta);
+		GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Left * 1500.0f * _Delta);
 	}
 }
 
@@ -42,6 +42,7 @@ void Player::CreateKey()
 	if (false == GameEngineInput::IsKey("ChangeNextLevel"))
 	{
 		GameEngineInput::CreateKey("TestButton", '1');
+		GameEngineInput::CreateKey("TestButton2", '2');
 		GameEngineInput::CreateKey("ChangeNextLevel", '0');
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
