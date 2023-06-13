@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineFSM.h>
 
-// 설명 :
+// 설명 : 공허의 기사 보스 스크립트
 class HollowKnightBoss : public GameEngineActor
 {
 public:
@@ -15,6 +15,8 @@ public:
 	HollowKnightBoss(HollowKnightBoss&& _Other) noexcept = delete;
 	HollowKnightBoss& operator=(const HollowKnightBoss& _Other) = delete;
 	HollowKnightBoss& operator=(HollowKnightBoss&& _Other) noexcept = delete;
+
+
 
 protected:
 	void Start();

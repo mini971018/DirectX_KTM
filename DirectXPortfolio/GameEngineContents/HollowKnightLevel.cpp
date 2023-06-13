@@ -50,11 +50,10 @@ void HollowKnightLevel::Start()
 
 	//오브젝트 생성
 	{
-		std::shared_ptr PlayerActor = CreateActor<Player>();
+		HollowKnightLevelPlayer = CreateActor<Player>();
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
 		std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
-
 	}
 }
 
@@ -64,4 +63,9 @@ void HollowKnightLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel("MainMenuLevel");
 	}
+}
+
+void HollowKnightLevel::LevelChangeStart()
+{
+	Player::SetCurrentLevelPlayer(HollowKnightLevelPlayer);
 }

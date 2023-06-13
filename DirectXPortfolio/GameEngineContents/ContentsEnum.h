@@ -34,3 +34,39 @@ enum class RoarType
 	Black,
 	White
 };
+
+enum class HollowKnightStateMachineEnum
+{
+	Phase1,
+	Phase2,
+	Phase3,
+	Phase4,
+	BeforeAttack,
+	Phase4BeforeAttack
+};
+
+enum class HollowKnightNoneAttackState
+{
+	Teleport,
+	BackJump,
+	Jump,
+	Evade,
+	AttackReady,
+};
+
+enum class HollowKnightAttackState
+{
+	DashAttack,
+	Slash,
+	Counter,
+	SmallShot,
+	Blasts,
+	Suicide,
+	PuppetSlam,
+	ChestShot,
+
+	//후반 약화된 패턴
+	Phase4Slash,
+	Phase4PuppetSlam,
+	Phase4Suicide,
+};

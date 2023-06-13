@@ -6,6 +6,13 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
+std::shared_ptr<Player> Player::CurrentLevelPlayer = nullptr;
+// 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
+void Player::SetCurrentLevelPlayer(std::shared_ptr<Player> _Player)
+{
+	CurrentLevelPlayer = _Player;
+}
+
 Player::Player() 
 {
 }
