@@ -88,6 +88,19 @@ public:
 		return LastTarget;
 	}
 
+	// 일부러 무겁게 만든 함수.
+	template<typename EnumType>
+	std::list<std::shared_ptr<GameEngineActor>> GetActorGroup(EnumType _Index)
+	{
+		return GetActorGroup(static_cast<int>(_Index));
+	}
+
+	std::list<std::shared_ptr<GameEngineActor>> GetActorGroup(int _Index) 
+	{
+		return Actors[_Index];
+	}
+
+
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -102,7 +115,6 @@ private:
 
 	// 모든 카메라의 내용이 다 종합된.
 	std::shared_ptr<GameEngineRenderTarget> LastTarget;
-
 
 	//      이름           경로
 	std::map<std::string, std::string> TexturePath;
@@ -129,6 +141,10 @@ private:
 	void ActorRelease();
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();
+
+	void LevelCameraInit();
+
+	void AllActorDestroy();
 
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
 

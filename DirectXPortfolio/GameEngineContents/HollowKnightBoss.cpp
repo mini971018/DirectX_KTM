@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <map>
 
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
@@ -25,6 +26,7 @@ void HollowKnightBoss::Start()
 	SpriteInit();
 	AnimationInit();
 	StateInit();
+	BossPatternInit();
 }
 
 void HollowKnightBoss::SpriteInit()
@@ -75,7 +77,6 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->ChangeAnimation("ChainIdle");
 		GetTransform()->SetLocalNegativeScaleX();
 	}
-
 
 	if (nullptr == BossWeaponRenderer)
 	{
@@ -161,4 +162,38 @@ void HollowKnightBoss::SetGravity(float _Delta)
 	float4 NextPos = GetTransform()->GetWorldPosition() + float4{ 0, -Gravity * _Delta ,0 };
 
 	GetTransform()->SetWorldPosition(NextPos);
+}
+
+void HollowKnightBoss::BossPatternInit()
+{
+	//Phase 1
+	{
+		std::vector<int> Phase1Patterns = std::vector<int>{0, 1, 2};
+
+		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase1), Phase1Patterns));
+	}
+	//Phase 2
+	{
+		std::vector<int> Phase2Patterns = std::vector<int>{0, 1, 2, 3, 4};
+
+		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase2), Phase2Patterns));
+	}
+	//Phase 3
+	{
+		std::vector<int> Phase3Patterns = std::vector<int>{2, 3, 4, 5, 6, 7 };
+
+		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase3), Phase3Patterns));
+	}
+	//Phase 4
+	{
+		std::vector<int> Phase4Patterns = std::vector<int>{8, 9, 10};
+
+		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase3), Phase4Patterns));
+	}
+	//BeforeAttack
+	{
+		std::vector<int> BeforeAttackPatterns = std::vector<int>{ 0, 1, 2, 3, 4 };
+
+		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::BeforeAttack), BeforeAttackPatterns));
+	}
 }

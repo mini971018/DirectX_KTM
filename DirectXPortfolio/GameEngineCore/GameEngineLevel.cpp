@@ -7,9 +7,14 @@
 #include "GameEngineDebug3D.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 
-bool GameEngineLevel::IsDebugRender = true;
+bool GameEngineLevel::IsDebugRender = false;
 
 GameEngineLevel::GameEngineLevel() 
+{
+	LevelCameraInit();
+}
+
+void GameEngineLevel::LevelCameraInit()
 {
 	MainCamera = CreateNewCamera(0);
 
@@ -156,6 +161,37 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	// GetMainCamera()->CameraTransformUpdate();
 	// GetMainCamera()->Render(_DeltaTime);
 
+	if (true == IsDebugRender)
+	{
+			std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+			std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+			for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+			{
+				std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+				std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+				std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+				for (; ObjectStart != ObjectEnd; ++ObjectStart)
+				{
+					std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+
+					if (nullptr == CollisionObject)
+					{
+						continue;
+					}
+
+					if (false == CollisionObject->IsUpdate())
+					{
+						continue;
+					}
+
+					CollisionObject->DebugRender(_DeltaTime);
+				}
+			}
+	}
+
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
 		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
@@ -292,6 +328,8 @@ void GameEngineLevel::ActorRelease()
 			{
 				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
 
+				RelaseActor->AllDestroy();
+
 				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
 				{
 					RelaseActor->AllRelease();
@@ -399,7 +437,6 @@ void GameEngineLevel::TextureUnLoad(GameEngineLevel* _NextLevel)
 
 void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 {
-
 	for (const std::pair<std::string, std::string>& Pair : TexturePath)
 	{
 		if (nullptr != _PrevLevel && true == _PrevLevel->TexturePath.contains(Pair.first))
@@ -412,4 +449,31 @@ void GameEngineLevel::TextureReLoad(GameEngineLevel* _PrevLevel)
 	}
 
 	TexturePath.clear();
+}
+
+void GameEngineLevel::AllActorDestroy()
+{
+	{
+		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; ++ActorStart)
+			{
+				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
+				Actor->Death();
+			}
+		}
+
+		ActorRelease();
+	}
+
+	LevelCameraInit();
 }

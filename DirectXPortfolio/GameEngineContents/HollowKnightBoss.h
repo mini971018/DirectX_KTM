@@ -54,5 +54,9 @@ private:
 	// 스테이트에서 사용되는 변수들
 	float StateCalTime  = 0.0f;
 	float StateCalTime2 = 0.0f;
+
+	//랜덤한 패턴이 나오게끔 구현하기 위한 변수들
+	std::map<int, std::vector<int>> BossPatterns;
+	void BossPatternInit();
 };
 
