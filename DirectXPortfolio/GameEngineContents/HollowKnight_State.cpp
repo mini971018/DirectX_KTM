@@ -46,9 +46,11 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("ChainIdle");
 
-			float4 EffectPos = GetTransform()->GetWorldPosition();
-			EffectPos += {-10, 300};
-			RoarEffectPos = EffectPos;
+			//float4 EffectPos = GetTransform()->GetWorldPosition();
+			//EffectPos += {-10, 300};
+			//RoarEffectPos = EffectPos;
+
+			RoarEffectPos = Pivot->GetTransform()->GetWorldPosition();
 
 			CreateRoarEffect(RoarType::White, RoarEffectPos);
 
@@ -192,9 +194,10 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f; //로어이펙트 주기
 			StateCalTime2 = 0.0f;  //다음 스테이트로 넘어가는 시간
 			
-			float4 EffectPos = GetTransform()->GetWorldPosition();
-			EffectPos += { 125, 365 };
-			RoarEffectPos = EffectPos;
+			//float4 EffectPos = GetTransform()->GetWorldPosition();
+			//EffectPos += { 125, 365 };
+			//RoarEffectPos = EffectPos;
+			RoarEffectPos = Pivot->GetTransform()->GetWorldPosition();
 
 			CreateRoarEffect(RoarType::White, RoarEffectPos);
 

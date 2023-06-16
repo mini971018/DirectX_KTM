@@ -26,6 +26,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BossRenderer;
+	std::shared_ptr<class GameEngineComponent> Pivot; //보스 렌더러의 피봇
 
 	void ResetBoss(); //보스를 리셋시킴
 
@@ -56,7 +57,7 @@ private:
 	float StateCalTime2 = 0.0f;
 
 	//랜덤한 패턴이 나오게끔 구현하기 위한 변수들
-	std::map<int, std::vector<int>> BossPatterns;
+	std::map<short, std::vector<short>> BossPatterns;
 	void BossPatternInit();
 };
 

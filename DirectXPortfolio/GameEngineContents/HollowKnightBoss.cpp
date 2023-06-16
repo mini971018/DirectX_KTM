@@ -76,7 +76,15 @@ void HollowKnightBoss::AnimationInit()
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 		GetTransform()->SetLocalNegativeScaleX();
+
+		if (nullptr == Pivot)
+		{
+			Pivot = CreateComponent<GameEngineComponent>();
+			BossRenderer->GetTransform()->SetParent(Pivot->GetTransform());
+		}
+
 	}
+
 
 	if (nullptr == BossWeaponRenderer)
 	{
@@ -127,7 +135,7 @@ void HollowKnightBoss::Render(float _Delta)
 
 void HollowKnightBoss::SetBossRendererPivot()
 {
-	BossRenderer->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
+	Pivot->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
 }
 
 void HollowKnightBoss::CreateRoarEffect(RoarType _Type, float4 _Pos)
@@ -168,32 +176,32 @@ void HollowKnightBoss::BossPatternInit()
 {
 	//Phase 1
 	{
-		std::vector<int> Phase1Patterns = std::vector<int>{0, 1, 2};
+		std::vector<short> Phase1Patterns = std::vector<short>{0, 1, 2};
 
-		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase1), Phase1Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase1), Phase1Patterns));
 	}
 	//Phase 2
 	{
-		std::vector<int> Phase2Patterns = std::vector<int>{0, 1, 2, 3, 4};
+		std::vector<short> Phase2Patterns = std::vector<short>{0, 1, 2, 3, 4};
 
-		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase2), Phase2Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase2), Phase2Patterns));
 	}
 	//Phase 3
 	{
-		std::vector<int> Phase3Patterns = std::vector<int>{2, 3, 4, 5, 6, 7 };
+		std::vector<short> Phase3Patterns = std::vector<short>{2, 3, 4, 5, 6, 7 };
 
-		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase3), Phase3Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase3), Phase3Patterns));
 	}
 	//Phase 4
 	{
-		std::vector<int> Phase4Patterns = std::vector<int>{8, 9, 10};
+		std::vector<short> Phase4Patterns = std::vector<short>{8, 9, 10};
 
-		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::Phase3), Phase4Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase3), Phase4Patterns));
 	}
 	//BeforeAttack
 	{
-		std::vector<int> BeforeAttackPatterns = std::vector<int>{ 0, 1, 2, 3, 4 };
+		std::vector<short> BeforeAttackPatterns = std::vector<short>{ 0, 1, 2, 3, 4 };
 
-		BossPatterns.insert(std::pair(static_cast<int>(HollowKnightStateMachineEnum::BeforeAttack), BeforeAttackPatterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::BeforeAttack), BeforeAttackPatterns));
 	}
 }

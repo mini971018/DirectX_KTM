@@ -39,6 +39,7 @@ void HollowKnightLevel::Start()
 		}
 	}
 
+	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
 	GetMainCamera()->SetSortType(PlayRenderOrder::UpperLayer, SortType::ZSort);
