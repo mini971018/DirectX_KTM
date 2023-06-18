@@ -7,6 +7,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <map>
+#include <GameEngineBase/GameEngineRandom.h>
 
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
@@ -27,6 +28,9 @@ void HollowKnightBoss::Start()
 	AnimationInit();
 	StateInit();
 	BossPatternInit();
+
+	//To do : 이후 레벨 들어올 때 
+	ResetBoss();
 }
 
 void HollowKnightBoss::SpriteInit()
@@ -49,7 +53,71 @@ void HollowKnightBoss::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("06.HollowKnightRoar").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("07.HollowKnightRoarToIdle").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("08.HollowKnightIdle").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("09.AnticDashAttack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("10.DashAttack").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("11.EndDashAttack").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("12.AnticSlash1").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("13.Slash1").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("14.EndSlash1").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("15.Slash2").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("16.EndSlash2").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("17.Slash3").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("18.EndSlash3").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("19.AnticCounter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("20.ReadyCounter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("21.NoneBlockCounter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("22.BlockCounter").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("23.FlashEffectCounter").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("24.AnticSmallShot").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("25.SmallShot").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("26.EndSmallShot").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("27.EffectSmallShot").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("28.AnticBlasts").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("29.SmashBlasts").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("30.LandBlasts").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("31.AnticEffectBlasts").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.EffectBlasts").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("33.AnticSelfStab").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("34.AnticLoopSelfStab").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("35.SelfStab").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("36.LoopSelfStab").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("37.ReAnticSelfStab").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("38.ReSelfStab").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("39.StunLand").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("40.StunToIdle").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("41.AnticPuppet").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("42.UpPuppet").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("43.DownPuppet").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("44.SlamPuppet").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("45.EndPuppet").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("46.AnticChestShot").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("47.ShotChest").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("48.EffectChestShot").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("49.AnticDeath").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("50.LoopDeath").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("51.EndDeath").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("52.Evade").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("53.Antic").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("54.Recover").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("55.Jump").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
+
+		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("").GetFullPath());
+
 	}
 }
 
@@ -74,8 +142,11 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "08.HollowKnightIdle", .ScaleToTexture = true });
 
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticDashAttack", .SpriteName = "09.AnticDashAttack", .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "DashAttack", .SpriteName = "10.DashAttack", .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndDashAttack", .SpriteName = "11.EndDashAttack", .Loop = false, .ScaleToTexture = true });
+
 		BossRenderer->ChangeAnimation("ChainIdle");
-		GetTransform()->SetLocalNegativeScaleX();
 
 		if (nullptr == Pivot)
 		{
@@ -111,7 +182,7 @@ void HollowKnightBoss::Update(float _Delta)
 
 	if (GameEngineInput::IsUp("TestButton2"))
 	{
-		FSM.ChangeState("ChainIdle");
+		ResetBoss();
 	}
 }
 
@@ -178,30 +249,126 @@ void HollowKnightBoss::BossPatternInit()
 	{
 		std::vector<short> Phase1Patterns = std::vector<short>{0, 1, 2};
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase1), Phase1Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase1), Phase1Patterns));
 	}
 	//Phase 2
 	{
 		std::vector<short> Phase2Patterns = std::vector<short>{0, 1, 2, 3, 4};
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase2), Phase2Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase2), Phase2Patterns));
 	}
 	//Phase 3
 	{
 		std::vector<short> Phase3Patterns = std::vector<short>{2, 3, 4, 5, 6, 7 };
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase3), Phase3Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase3), Phase3Patterns));
 	}
 	//Phase 4
 	{
 		std::vector<short> Phase4Patterns = std::vector<short>{8, 9, 10};
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::Phase3), Phase4Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase3), Phase4Patterns));
 	}
 	//BeforeAttack
 	{
 		std::vector<short> BeforeAttackPatterns = std::vector<short>{ 0, 1, 2, 3, 4 };
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightStateMachineEnum::BeforeAttack), BeforeAttackPatterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::BeforeAttack), BeforeAttackPatterns));
+	}
+	//Phase4BeforeAttack
+	{
+		std::vector<short> Phase4BeforeAttackPatterns = std::vector<short>{ 4 };
+
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase4BeforeAttack), Phase4BeforeAttackPatterns));
+	}
+}
+
+void HollowKnightBoss::ResetBoss()
+{
+	FSM.ChangeState("ChainIdle");
+
+	PivotPos = { -20 , 230 };
+	SetBossRendererPivot();
+	GetTransform()->SetWorldPosition({ 3080, -950, 0 });
+	Pivot->GetTransform()->SetLocalNegativeScaleX();
+	
+	BossRenderer->ChangeAnimation("ChainIdle");
+	BossWeaponRenderer->On();
+
+	CurrentPhase = HollowKnightPatternEnum::Phase1;
+}
+
+void HollowKnightBoss::SetRandomPattern()
+{
+	// 페이즈 4에서는 공격 전조 패턴 없이 즉시 공격 패턴 사용
+	if (CurrentPhase == HollowKnightPatternEnum::Phase4)
+	{
+		SetRandomAttackPattern();
+		return; 
+	}
+
+	int min = 0;
+	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
+
+	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
+
+	switch (PatternNum)
+	{
+	case HollowKnightNoneAttackState::Teleport:
+		//To do : 텔레포트 스테이트로 변경
+		break;
+	case HollowKnightNoneAttackState::BackJump:
+		//To do : 백점프 스테이트로 변경
+		break;
+	case HollowKnightNoneAttackState::Jump:
+		//To do : 점프 스테이트로 변경
+		break;
+	case HollowKnightNoneAttackState::Evade:
+		//To do : 회피 스테이트로 변경
+		break;
+	case HollowKnightNoneAttackState::AttackReady:
+		SetRandomAttackPattern();
+		break;
+	default:
+		MsgAssert("존재할 수 없는 공허의 기사 전조 패턴입니다.");
+		break;
+	}
+
+}
+
+void HollowKnightBoss::SetRandomAttackPattern()
+{
+	int min = 0;
+	int max = BossPatterns[static_cast<short>(CurrentPhase)].size() - 1;
+
+	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
+
+	switch (PatternNum)
+	{
+	case HollowKnightAttackState::DashAttack:
+		break;
+	case HollowKnightAttackState::Slash:
+		break;
+	case HollowKnightAttackState::Counter:
+		break;
+	case HollowKnightAttackState::SmallShot:
+		break;
+	case HollowKnightAttackState::Blasts:
+		break;
+	case HollowKnightAttackState::Suicide:
+		break;
+	case HollowKnightAttackState::PuppetSlam:
+		break;
+	case HollowKnightAttackState::ChestShot:
+		break;
+	case HollowKnightAttackState::Phase4Slash:
+		break;
+	case HollowKnightAttackState::Phase4PuppetSlam:
+		break;
+	case HollowKnightAttackState::Phase4Suicide:
+		break;
+	default:
+		MsgAssert("존재할 수 없는 공허의 기사 공격 패턴입니다.");
+		break;
 	}
 }

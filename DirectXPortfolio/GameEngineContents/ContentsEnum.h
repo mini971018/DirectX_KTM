@@ -35,7 +35,7 @@ enum class RoarType
 	White
 };
 
-enum class HollowKnightStateMachineEnum
+enum class HollowKnightPatternEnum 
 {
 	Phase1,
 	Phase2,

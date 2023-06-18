@@ -16,11 +16,6 @@ void HollowKnightBoss::StateInit()
 			.Name = "ChainIdle",
 			.Start = [this]()
 		{
-			PivotPos = { -20 , 230 };
-			SetBossRendererPivot();
-			GetTransform()->SetWorldPosition({ 3080, -950, 0 });
-			BossRenderer->ChangeAnimation("ChainIdle");
-			BossWeaponRenderer->On();
 			StateCalTime = 0.0f;
 
 		},
@@ -261,7 +256,7 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				//FSM.ChangeState("Idle");
+				SetRandomPattern();
 			}
 		},
 			.End = [this]()

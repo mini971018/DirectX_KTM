@@ -59,5 +59,10 @@ private:
 	//랜덤한 패턴이 나오게끔 구현하기 위한 변수들
 	std::map<short, std::vector<short>> BossPatterns;
 	void BossPatternInit();
+
+	void SetRandomPattern();
+	void SetRandomAttackPattern();
+
+	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
 };
 
