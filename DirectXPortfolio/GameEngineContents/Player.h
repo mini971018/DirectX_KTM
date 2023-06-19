@@ -25,6 +25,6 @@ protected:
 
 private:
 	void CreateKey();
-
+	void Test();
 };
 

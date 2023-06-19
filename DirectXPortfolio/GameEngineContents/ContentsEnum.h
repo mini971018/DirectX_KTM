@@ -28,7 +28,6 @@ enum class OrangeBlobType
 	SmallBlob03
 };
 
-
 enum class RoarType
 {
 	Black,

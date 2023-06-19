@@ -143,11 +143,11 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "Roar", .SpriteName = "06.HollowKnightRoar", .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "08.HollowKnightIdle", .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "56.Turn", .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "56.Turn", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 
-		BossRenderer->CreateAnimation({ .AnimationName = "AnticDashAttack", .SpriteName = "09.AnticDashAttack", .Loop = false, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "DashAttack", .SpriteName = "10.DashAttack", .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "EndDashAttack", .SpriteName = "11.EndDashAttack", .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticDashAttack", .SpriteName = "09.AnticDashAttack", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "DashAttack", .SpriteName = "10.DashAttack", .FrameInter = 0.07f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndDashAttack", .SpriteName = "11.EndDashAttack", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 
@@ -186,6 +186,11 @@ void HollowKnightBoss::Update(float _Delta)
 	if (GameEngineInput::IsUp("TestButton2"))
 	{
 		ResetBoss();
+	}
+
+	if (GameEngineInput::IsUp("TestButton3"))
+	{
+		FSM.ChangeState("Idle");
 	}
 }
 
@@ -346,6 +351,8 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
 
+	PatternNum = HollowKnightAttackState::DashAttack;
+
 	switch (PatternNum)
 	{
 	case HollowKnightAttackState::DashAttack:
@@ -379,11 +386,15 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	//FSM.ChangeState("Idle");
 }
 
-bool HollowKnightBoss::NeedTurn()
+bool HollowKnightBoss::TurnCheck()
 {
-	if (GetTransform() - Player::CurrentLevelPlayer->GetTransform() >= 0)
+	float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+	float PivotScaleX = Pivot->GetTransform()->GetLocalScale().x;
+
+	//보스와 플레이어의 위치와 현재 방향에 따라 회전할지 하지 않을지를 return 함
+	if (BossToPlayerDir.x >= 0)
 	{
-		if (Pivot->GetTransform()->GetLocalScale().x >= 0)
+		if (PivotScaleX >= 0) 
 		{
 			return false;
 		}
@@ -394,7 +405,7 @@ bool HollowKnightBoss::NeedTurn()
 	}
 	else
 	{
-		if (Pivot->GetTransform()->GetLocalScale().x >= 0)
+		if (PivotScaleX >= 0)
 		{
 			return true;
 		}
@@ -402,5 +413,17 @@ bool HollowKnightBoss::NeedTurn()
 		{
 			return false;
 		}
+	}
+}
+
+float4 HollowKnightBoss::ReturnPatternDir()
+{
+	if (Pivot->GetTransform()->GetLocalScale().x >= 0)
+	{
+		return float4::Right;
+	}
+	else
+	{
+		return float4::Left;
 	}
 }

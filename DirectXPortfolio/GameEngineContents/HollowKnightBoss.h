@@ -43,7 +43,7 @@ private:
 	float4 RoarEffectPos = float4::Zero;
 	void CreateRoarEffect(RoarType _Type, float4 _Pos);
 
-	//이동 관련
+	//기본 이동 관련
 	float4 MoveDir = float4::Zero; //이동 벡터
 	float Gravity = 1000.0f; //중력 크기
     bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
@@ -56,15 +56,20 @@ private:
 	float StateCalTime  = 0.0f;
 	float StateCalTime2 = 0.0f;
 
-	//랜덤한 패턴이 나오게끔 구현하기 위한 변수들
+	// 랜덤한 패턴이 나오게끔 구현하기 위한 변수들
 	std::map<short, std::vector<short>> BossPatterns;
 	void BossPatternInit();
 
 	void SetRandomPattern();
 	void SetRandomAttackPattern();
+	
+	// 대쉬 어택 관련
+	const float DashSpeed = 2500.0f;
+	float CurrentDashSpeed = DashSpeed;
 
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
-	bool NeedTurn();
+	bool TurnCheck();
+	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
 

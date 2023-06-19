@@ -312,14 +312,18 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticDashAttack");
+
+			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRenderer->IsAnimationEnd())
+			if (StateCalTime >= 0.5f)
 			{
 				FSM.ChangeState("DashAttack");
 				return;
 			}
+
+			StateCalTime += _DeltaTime;
 		},
 			.End = [this]()
 		{
@@ -335,14 +339,27 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("DashAttack");
+
+			StateCalTime = 0.0f;
+			CurrentDashSpeed = DashSpeed;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRenderer->IsAnimationEnd())
+			//if (true == BossRenderer->IsAnimationEnd())
+			//{
+			//	FSM.ChangeState("EndDashAttack");
+			//	return;
+			//}
+
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* CurrentDashSpeed* _DeltaTime);
+
+			if (StateCalTime >= 0.4f)
 			{
 				FSM.ChangeState("EndDashAttack");
 				return;
 			}
+
+			StateCalTime += _DeltaTime;
 		},
 			.End = [this]()
 		{
@@ -362,9 +379,12 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == BossRenderer->IsAnimationEnd())
+			CurrentDashSpeed = CurrentDashSpeed * 0.9f;
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* CurrentDashSpeed* _DeltaTime);
+
+			if (CurrentDashSpeed <= 300.0f)
 			{
-				if (NeedTurn())
+				if (TurnCheck())
 				{
 					FSM.ChangeState("Turn");
 				}
