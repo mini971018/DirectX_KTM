@@ -9,6 +9,7 @@
 #include <map>
 #include <GameEngineBase/GameEngineRandom.h>
 
+#include "Player.h"
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
 #include "HollowKnightBoss.h"
@@ -113,6 +114,7 @@ void HollowKnightBoss::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("54.Recover").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("55.Jump").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("56.Turn").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
 
@@ -141,6 +143,7 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "Roar", .SpriteName = "06.HollowKnightRoar", .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "08.HollowKnightIdle", .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "56.Turn", .Loop = false, .ScaleToTexture = true });
 
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticDashAttack", .SpriteName = "09.AnticDashAttack", .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "DashAttack", .SpriteName = "10.DashAttack", .ScaleToTexture = true });
@@ -316,16 +319,16 @@ void HollowKnightBoss::SetRandomPattern()
 	{
 	case HollowKnightNoneAttackState::Teleport:
 		//To do : 텔레포트 스테이트로 변경
-		break;
+		//break;
 	case HollowKnightNoneAttackState::BackJump:
 		//To do : 백점프 스테이트로 변경
-		break;
+		//break;
 	case HollowKnightNoneAttackState::Jump:
 		//To do : 점프 스테이트로 변경
-		break;
+		//break;
 	case HollowKnightNoneAttackState::Evade:
 		//To do : 회피 스테이트로 변경
-		break;
+		//break;
 	case HollowKnightNoneAttackState::AttackReady:
 		SetRandomAttackPattern();
 		break;
@@ -346,6 +349,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	switch (PatternNum)
 	{
 	case HollowKnightAttackState::DashAttack:
+		FSM.ChangeState("AnticDashAttack");
 		break;
 	case HollowKnightAttackState::Slash:
 		break;
@@ -370,5 +374,33 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	default:
 		MsgAssert("존재할 수 없는 공허의 기사 공격 패턴입니다.");
 		break;
+	}
+
+	//FSM.ChangeState("Idle");
+}
+
+bool HollowKnightBoss::NeedTurn()
+{
+	if (GetTransform() - Player::CurrentLevelPlayer->GetTransform() >= 0)
+	{
+		if (Pivot->GetTransform()->GetLocalScale().x >= 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (Pivot->GetTransform()->GetLocalScale().x >= 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

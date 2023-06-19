@@ -64,5 +64,9 @@ private:
 	void SetRandomAttackPattern();
 
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
+	bool NeedTurn();
+
+	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
+
 };
 

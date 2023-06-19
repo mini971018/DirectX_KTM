@@ -24,6 +24,7 @@ void HollowKnightBoss::StateInit()
 			if (GameEngineInput::IsUp("TestButton"))
 			{
 				FSM.ChangeState("ChainRoar");
+				return;
 			}
 		},
 			.End = [this]()
@@ -149,6 +150,7 @@ void HollowKnightBoss::StateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("RoarAntic");
+				return;
 			}
 		},
 			.End = [this]()
@@ -171,6 +173,7 @@ void HollowKnightBoss::StateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("Roar");
+				return;
 			}
 		},
 			.End = [this]()
@@ -213,6 +216,7 @@ void HollowKnightBoss::StateInit()
 			if (StateCalTime2 >= 2.0f)
 			{
 				FSM.ChangeState("RoarToIdle");
+				return;
 			}
 		},
 			.End = [this]()
@@ -235,6 +239,7 @@ void HollowKnightBoss::StateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("Idle");
+				return;
 			}
 		},
 			.End = [this]()
@@ -257,6 +262,7 @@ void HollowKnightBoss::StateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				SetRandomPattern();
+				return;
 			}
 		},
 			.End = [this]()
@@ -267,6 +273,116 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Turn
+	FSM.CreateState(
+		{
+			.Name = "Turn",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Turn");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+			if (Pivot->GetTransform()->GetLocalScale().x > 0.0f)
+			{
+				Pivot->GetTransform()->SetLocalNegativeScaleX();
+			}
+			else
+			{
+				Pivot->GetTransform()->SetLocalPositiveScaleX();
+			}
+		},
+
+		}
+	);
+
+
+	//DashAttack
+	FSM.CreateState(
+		{
+			.Name = "AnticDashAttack",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticDashAttack");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("DashAttack");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "DashAttack",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("DashAttack");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("EndDashAttack");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+
+	FSM.CreateState(
+		{
+			.Name = "EndDashAttack",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndDashAttack");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				if (NeedTurn())
+				{
+					FSM.ChangeState("Turn");
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+				}
+				return;
+
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 
 	FSM.ChangeState("ChainIdle");
 }
