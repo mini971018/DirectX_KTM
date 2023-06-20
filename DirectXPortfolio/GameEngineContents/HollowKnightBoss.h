@@ -63,9 +63,14 @@ private:
 	void SetRandomPattern();
 	void SetRandomAttackPattern();
 	
-	// 대쉬 어택 관련
+	// Dash Attack 
 	const float DashSpeed = 2500.0f;
 	float CurrentDashSpeed = DashSpeed;
+
+	// Slash Attack
+	const float Slash1Speed = 2500.0f;
+	const float Slash2Speed = 1100.0f;
+	const float Slash3Speed = 900.0f;
 
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
 	bool TurnCheck();

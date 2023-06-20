@@ -304,6 +304,36 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Recover
+	FSM.CreateState(
+		{
+			.Name = "Recover",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Recover");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				if (TurnCheck())
+				{
+					FSM.ChangeState("Turn");
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+				}
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 
 	//DashAttack
 	FSM.CreateState(
@@ -394,6 +424,152 @@ void HollowKnightBoss::StateInit()
 				}
 				return;
 
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+
+	//Slash(Normal)
+	FSM.CreateState(
+		{
+			.Name = "AnticSlash1",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticSlash1");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Slash1");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Slash1",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Slash1");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed * _DeltaTime);
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("EndSlash1");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndSlash1",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndSlash1");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Slash2");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Slash2",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Slash2");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash2Speed* _DeltaTime);
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("EndSlash2");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndSlash2",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndSlash2");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Slash3");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Slash3",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Slash3");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash3Speed* _DeltaTime);
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Recover");
+				return;
 			}
 		},
 			.End = [this]()

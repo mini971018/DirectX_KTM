@@ -144,10 +144,21 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "RoarToIdle", .SpriteName = "07.HollowKnightRoarToIdle", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "08.HollowKnightIdle", .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "56.Turn", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Recover", .SpriteName = "54.Recover", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
+		//DashAttack
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticDashAttack", .SpriteName = "09.AnticDashAttack", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "DashAttack", .SpriteName = "10.DashAttack", .FrameInter = 0.07f, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndDashAttack", .SpriteName = "11.EndDashAttack", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
+		//Slash1
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticSlash1", .SpriteName = "12.AnticSlash1", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Slash1", .SpriteName = "13.Slash1", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndSlash1", .SpriteName = "14.EndSlash1", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Slash2", .SpriteName = "15.Slash2", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndSlash2", .SpriteName = "16.EndSlash2", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "Slash3", .SpriteName = "17.Slash3", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndSlash3", .SpriteName = "18.EndSlash3", .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true });
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 
@@ -351,7 +362,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
 
-	PatternNum = HollowKnightAttackState::DashAttack;
+	PatternNum = HollowKnightAttackState::Slash;
 
 	switch (PatternNum)
 	{
@@ -359,6 +370,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 		FSM.ChangeState("AnticDashAttack");
 		break;
 	case HollowKnightAttackState::Slash:
+		FSM.ChangeState("AnticSlash1");
 		break;
 	case HollowKnightAttackState::Counter:
 		break;
