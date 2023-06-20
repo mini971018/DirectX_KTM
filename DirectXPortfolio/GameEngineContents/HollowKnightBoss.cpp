@@ -160,6 +160,13 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "Slash3", .SpriteName = "17.Slash3", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndSlash3", .SpriteName = "18.EndSlash3", .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true });
 
+		//Counter
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticCounter", .SpriteName = "19.AnticCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "ReadyCounter", .SpriteName = "20.ReadyCounter", .FrameInter = 0.09f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "NoneBlockCounter", .SpriteName = "21.NoneBlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "BlockCounter", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "CounterSlash2", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
 		BossRenderer->ChangeAnimation("ChainIdle");
 
 		if (nullptr == Pivot)
@@ -362,7 +369,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
 
-	PatternNum = HollowKnightAttackState::Slash;
+	PatternNum = HollowKnightAttackState::Counter;
 
 	switch (PatternNum)
 	{
@@ -373,6 +380,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 		FSM.ChangeState("AnticSlash1");
 		break;
 	case HollowKnightAttackState::Counter:
+		FSM.ChangeState("AnticCounter");
 		break;
 	case HollowKnightAttackState::SmallShot:
 		break;
@@ -438,4 +446,10 @@ float4 HollowKnightBoss::ReturnPatternDir()
 	{
 		return float4::Left;
 	}
+}
+
+bool HollowKnightBoss::CounterAvailability()
+{
+	//To do : Collision 추가 후 로직 구현 (플레이어가 콜리전과 맞닿아 있고, 방향이 서로 다름)
+	return true;
 }

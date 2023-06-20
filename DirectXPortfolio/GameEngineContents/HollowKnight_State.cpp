@@ -580,5 +580,177 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Counter
+
+	FSM.CreateState(
+		{
+			.Name = "AnticCounter",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticCounter");
+		},
+			.Update = [this](float _DeltaTime)
+		{
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("ReadyCounter");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ReadyCounter",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("ReadyCounter");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			//To do : collision 추가 후, 로직 구현
+
+			if (true == CounterAvailability())
+			{
+				FSM.ChangeState("BlockCounter");
+			}
+
+			if (0.7f <= StateCalTime)
+			{
+				FSM.ChangeState("NoneBlockCounter");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "NoneBlockCounter",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("NoneBlockCounter");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			//To do : collision 추가 후, 카운터 가능 여부 로직 구현
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "BlockCounter",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("BlockCounter");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("CounterSlash2");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "CounterSlash2",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Slash2");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddWorldPosition(ReturnPatternDir()* CounterSlash2Speed * _DeltaTime);
+
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("EndCounterSlash2");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndCounterSlash2",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndSlash2");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Recover");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 	FSM.ChangeState("ChainIdle");
 }

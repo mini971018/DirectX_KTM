@@ -72,6 +72,10 @@ private:
 	const float Slash2Speed = 1100.0f;
 	const float Slash3Speed = 900.0f;
 
+	//Counter
+	bool CounterAvailability();
+	const float CounterSlash2Speed = 4000.0f;
+
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
 	bool TurnCheck();
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
