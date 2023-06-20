@@ -739,7 +739,7 @@ void HollowKnightBossRoom::CreateMap()
 
 	//MainLayer (플레이어 이펙트 맵 등)
 	{
-		MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+		MainRoomImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
 		MainRoomImage->SetScaleToTexture("HollowKnightBossRoomMain.png");
 
 		MainRoomImage->GetTransform()->SetLocalPosition({ 0, 0, -70 }); //원본 크기 기준 z -> -70.0f

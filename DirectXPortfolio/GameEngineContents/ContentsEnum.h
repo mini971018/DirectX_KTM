@@ -47,7 +47,6 @@ enum class HollowKnightPatternEnum
 enum class HollowKnightNoneAttackState
 {
 	Teleport,
-	BackJump,
 	Jump,
 	Evade,
 	AttackReady,
@@ -68,4 +67,6 @@ enum class HollowKnightAttackState
 	Phase4Slash,
 	Phase4PuppetSlam,
 	Phase4Suicide,
+
+	None,
 };

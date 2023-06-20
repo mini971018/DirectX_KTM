@@ -176,6 +176,15 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticTeleport", .SpriteName = "58.AnticTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndTeleport", .SpriteName = "59.EndTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
+		//Jump
+		BossRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "55.Jump", .FrameInter = 0.07f, .ScaleToTexture = true });
+
+		//Evade
+		BossRenderer->CreateAnimation({ .AnimationName = "Evade", .SpriteName = "52.Evade", .FrameInter = 0.07f, .ScaleToTexture = true });
+
+		//Antic
+		BossRenderer->CreateAnimation({ .AnimationName = "Antic", .SpriteName = "53.Antic", .FrameInter = 0.07f, .ScaleToTexture = true });
+
 		BossRenderer->ChangeAnimation("ChainIdle");
 
 		if (nullptr == Pivot)
@@ -344,25 +353,25 @@ void HollowKnightBoss::SetRandomPattern()
 	}
 
 	int min = 0;
-	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
+	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 2;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::Teleport;
+	//PatternNum = HollowKnightNoneAttackState::Evade;
 
 	switch (PatternNum)
 	{
 	case HollowKnightNoneAttackState::Teleport:
-		FSM.ChangeState("AnticTeleport");
+		CurrentState = "AnticTeleport";
+		FSM.ChangeState(CurrentState);
 		break;
-	case HollowKnightNoneAttackState::BackJump:
-		//To do : 백점프 스테이트로 변경
-		//break;
 	case HollowKnightNoneAttackState::Jump:
-		//To do : 점프 스테이트로 변경
+		//To do : 콜리전 추가 후 변경
+		//FSM.ChangeState("Jump");
 		//break;
 	case HollowKnightNoneAttackState::Evade:
-		//To do : 회피 스테이트로 변경
-		//break;
+		CurrentState = "Evade";
+		FSM.ChangeState("Antic");
+		break;
 	case HollowKnightNoneAttackState::AttackReady:
 		SetRandomAttackPattern();
 		break;
@@ -385,13 +394,16 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	switch (PatternNum)
 	{
 	case HollowKnightAttackState::DashAttack:
-		FSM.ChangeState("AnticDashAttack");
+		CurrentState = "AnticDashAttack";
+		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::Slash:
-		FSM.ChangeState("AnticSlash1");
+		CurrentState = "AnticSlash1";
+		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::Counter:
-		FSM.ChangeState("AnticCounter");
+		CurrentState = "AnticCounter";
+		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::SmallShot:
 		break;
@@ -429,13 +441,13 @@ void HollowKnightBoss::SetRandomTeleportPos()
 
 	GetTransform()->AddWorldPosition({ RandomPositionValue, 0.0f });
 
-	if (true == TurnCheck())
+	if (true == CheckRenderRotationValue())
 	{
-		TurnRenderPivot();
+		RotationRenderPivotY();
 	}
 }
 
-bool HollowKnightBoss::TurnCheck()
+bool HollowKnightBoss::CheckRenderRotationValue()
 {
 	float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
 	float PivotScaleX = Pivot->GetTransform()->GetLocalScale().x;
@@ -465,7 +477,7 @@ bool HollowKnightBoss::TurnCheck()
 	}
 }
 
-void HollowKnightBoss::TurnRenderPivot()
+void HollowKnightBoss::RotationRenderPivotY()
 {
 	if (Pivot->GetTransform()->GetLocalScale().x > 0.0f)
 	{
@@ -476,6 +488,7 @@ void HollowKnightBoss::TurnRenderPivot()
 		Pivot->GetTransform()->SetLocalPositiveScaleX();
 	}
 }
+
 
 float4 HollowKnightBoss::ReturnPatternDir()
 {

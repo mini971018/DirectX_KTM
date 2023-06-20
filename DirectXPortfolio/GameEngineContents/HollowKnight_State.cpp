@@ -250,6 +250,7 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Idle
 	FSM.CreateState(
 		{
 			.Name = "Idle",
@@ -259,6 +260,11 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if ("Evade" == CurrentState)
+			{
+				SetRandomAttackPattern();
+			}
+
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				SetRandomPattern();
@@ -291,7 +297,7 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
-			TurnRenderPivot();
+			RotationRenderPivotY();
 		},
 
 		}
@@ -309,7 +315,7 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				if (TurnCheck())
+				if (CheckRenderRotationValue())
 				{
 					FSM.ChangeState("Turn");
 				}
@@ -407,7 +413,7 @@ void HollowKnightBoss::StateInit()
 
 			if (CurrentDashSpeed <= 300.0f)
 			{
-				if (TurnCheck())
+				if (CheckRenderRotationValue())
 				{
 					FSM.ChangeState("Turn");
 				}
@@ -802,5 +808,117 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Jump
+	FSM.CreateState(
+		{
+			.Name = "Jump",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Jump");
+			MoveDir = float4::Zero;
+			MoveDir += float4::Up.NormalizeReturn() * JumpForce;
+			MoveDir += float4::Left.NormalizeReturn() * MinJumpForceX;
+
+			Gravity = 14000.0f;
+			StateCalBool = false;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == IsGround(GetTransform()->GetWorldPosition()) && true == StateCalBool)
+			{
+				FSM.ChangeState("Recover");
+				return;
+			}
+
+			if (false == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				MoveDir += float4::Down.NormalizeReturn() * Gravity * _DeltaTime;
+				StateCalBool = true;
+			}
+
+			GetTransform()->AddWorldPosition(MoveDir * _DeltaTime);
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	//Evade
+	FSM.CreateState(
+		{
+			.Name = "Evade",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Evade");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (0.15f <= StateCalTime)
+			{
+				FSM.ChangeState("Recover");
+			}
+			
+			GetTransform()->AddWorldPosition( -ReturnPatternDir()* EvadeSpeed* _DeltaTime);
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+	{
+		.Name = "Antic",
+		.Start = [this]()
+	{
+		BossRenderer->ChangeAnimation("Antic");
+
+	},
+		.Update = [this](float _DeltaTime)
+	{
+		if (true == BossRenderer->IsAnimationEnd())
+		{
+			FSM.ChangeState(CurrentState);
+			return;
+		}
+
+	},
+		.End = [this]()
+	{
+
+	},
+
+	}
+);
+
 	FSM.ChangeState("ChainIdle");
 }
+
+//FSM.CreateState(
+//	{
+//		.Name = "Evade",
+//		.Start = [this]()
+//	{
+//		BossRenderer->ChangeAnimation("Evade");
+//
+//	},
+//		.Update = [this](float _DeltaTime)
+//	{
+//
+//	},
+//		.End = [this]()
+//	{
+//
+//	},
+//
+//	}
+//);
