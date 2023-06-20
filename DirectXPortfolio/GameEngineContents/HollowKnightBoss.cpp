@@ -116,6 +116,11 @@ void HollowKnightBoss::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("55.Jump").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("56.Turn").GetFullPath());
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("57.DashEffect").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("58.AnticTeleport").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("59.EndTeleport").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
 
 		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("").GetFullPath());
@@ -166,6 +171,10 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "NoneBlockCounter", .SpriteName = "21.NoneBlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BlockCounter", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "CounterSlash2", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
+		//Teleport
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticTeleport", .SpriteName = "58.AnticTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndTeleport", .SpriteName = "59.EndTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 
@@ -338,12 +347,13 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
+	PatternNum = HollowKnightNoneAttackState::Teleport;
 
 	switch (PatternNum)
 	{
 	case HollowKnightNoneAttackState::Teleport:
-		//To do : 텔레포트 스테이트로 변경
-		//break;
+		FSM.ChangeState("AnticTeleport");
+		break;
 	case HollowKnightNoneAttackState::BackJump:
 		//To do : 백점프 스테이트로 변경
 		//break;
@@ -407,6 +417,24 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	//FSM.ChangeState("Idle");
 }
 
+void HollowKnightBoss::SetRandomTeleportPos()
+{
+	int Value = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	float RandomPositionValue = GameEngineRandom::MainRandom.RandomFloat(MinTeleportDistance, MaxTeleportDistance);
+
+	if (0 == Value % 2)
+	{
+		RandomPositionValue *= -1.0f;
+	}
+
+	GetTransform()->AddWorldPosition({ RandomPositionValue, 0.0f });
+
+	if (true == TurnCheck())
+	{
+		TurnRenderPivot();
+	}
+}
+
 bool HollowKnightBoss::TurnCheck()
 {
 	float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
@@ -434,6 +462,18 @@ bool HollowKnightBoss::TurnCheck()
 		{
 			return false;
 		}
+	}
+}
+
+void HollowKnightBoss::TurnRenderPivot()
+{
+	if (Pivot->GetTransform()->GetLocalScale().x > 0.0f)
+	{
+		Pivot->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else
+	{
+		Pivot->GetTransform()->SetLocalPositiveScaleX();
 	}
 }
 

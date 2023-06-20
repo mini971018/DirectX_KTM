@@ -291,14 +291,7 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
-			if (Pivot->GetTransform()->GetLocalScale().x > 0.0f)
-			{
-				Pivot->GetTransform()->SetLocalNegativeScaleX();
-			}
-			else
-			{
-				Pivot->GetTransform()->SetLocalPositiveScaleX();
-			}
+			TurnRenderPivot();
 		},
 
 		}
@@ -743,6 +736,63 @@ void HollowKnightBoss::StateInit()
 			}
 
 			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	//Teleport
+	FSM.CreateState(
+		{
+			.Name = "AnticTeleport",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticTeleport");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("EndTeleport");
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+			BossRenderer->Off();
+			SetRandomTeleportPos();
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndTeleport",
+			.Start = [this]()
+		{
+			BossRenderer->On();
+			BossRenderer->ChangeAnimation("EndTeleport");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				SetRandomAttackPattern();
+				return;
+
+				//FSM.ChangeState("Idle");
+				//return;
+			}
+
 		},
 			.End = [this]()
 		{

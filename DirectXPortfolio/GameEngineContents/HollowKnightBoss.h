@@ -80,11 +80,20 @@ private:
 	bool CounterAvailability();
 	const float CounterSlash2Speed = 4000.0f;
 
+	//Teleport
+	const float MinTeleportDistance = 150.0f;
+	const float MaxTeleportDistance = 500.0f;
+	void SetRandomTeleportPos();
+
+	//Turn
+	bool TurnCheck();
+	void TurnRenderPivot();
+
 	//SwapPhase
 
 
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
-	bool TurnCheck();
+
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
