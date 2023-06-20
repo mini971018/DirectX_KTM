@@ -383,7 +383,7 @@ void HollowKnightBoss::StateInit()
 
 			GetTransform()->AddWorldPosition(ReturnPatternDir()* CurrentDashSpeed* _DeltaTime);
 
-			if (StateCalTime >= 0.4f)
+			if (StateCalTime >= 0.3f)
 			{
 				FSM.ChangeState("EndDashAttack");
 				return;

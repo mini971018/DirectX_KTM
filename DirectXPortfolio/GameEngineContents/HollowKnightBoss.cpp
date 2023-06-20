@@ -322,6 +322,7 @@ void HollowKnightBoss::ResetBoss()
 	BossWeaponRenderer->On();
 
 	CurrentPhase = HollowKnightPatternEnum::Phase1;
+	CurrentHp = BossHP;
 }
 
 void HollowKnightBoss::SetRandomPattern()
@@ -369,7 +370,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
 
-	PatternNum = HollowKnightAttackState::Counter;
+	//PatternNum = HollowKnightAttackState::Counter;
 
 	switch (PatternNum)
 	{

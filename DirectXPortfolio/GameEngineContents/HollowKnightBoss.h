@@ -49,6 +49,10 @@ private:
     bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
 
+	//
+	const float BossHP = 1250.0f;
+	float CurrentHp = BossHP;
+
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
 
@@ -75,6 +79,9 @@ private:
 	//Counter
 	bool CounterAvailability();
 	const float CounterSlash2Speed = 4000.0f;
+
+	//SwapPhase
+
 
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
 	bool TurnCheck();
