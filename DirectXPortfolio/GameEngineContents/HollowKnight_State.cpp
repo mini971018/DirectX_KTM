@@ -6,8 +6,8 @@
 #include <GameEngineCore/GameEngineLevel.h>
 
 #include "RoarEffect.h"
+#include "Player.h"
 #include "HollowKnightBoss.h"
-
 
 void HollowKnightBoss::StateInit()
 {
@@ -842,6 +842,85 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	FSM.CreateState(
+		{
+			.Name = "AnticBlasts",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticBlasts");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("SmashBlasts");
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "SmashBlasts",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("SmashBlasts");
+			Gravity = 3500.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("LandBlasts");
+			}
+			else
+			{
+				SetGravity(_DeltaTime);
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+
+
+	FSM.CreateState(
+		{
+			.Name = "LandBlasts",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("LandBlasts");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (1.0f <= StateCalTime)
+			{
+				FSM.ChangeState("Recover");
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 	//Teleport
 	FSM.CreateState(
 		{
@@ -863,8 +942,18 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
+			if (CurrentState == "AnticBlasts")
+			{
+				float4 PlayerPos = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
+
+				GetTransform()->SetWorldPosition({ PlayerPos.x, -1000.0f}); 
+			}
+			else
+			{
+				SetRandomTeleportPos();
+			}
+
 			BossRenderer->Off();
-			SetRandomTeleportPos();
 		},
 
 		}
@@ -883,8 +972,16 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				SetRandomAttackPattern();
-				return;
+				if (CurrentState == "AnticBlasts")
+				{
+					FSM.ChangeState(CurrentState);
+					return;
+				}
+				else
+				{
+					SetRandomAttackPattern();
+					return;
+				}
 
 				//FSM.ChangeState("Idle");
 				//return;

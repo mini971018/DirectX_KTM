@@ -177,6 +177,11 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "SmallShot", .SpriteName = "25.SmallShot", .FrameInter = 0.09f, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndSmallShot", .SpriteName = "26.EndSmallShot", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
 
+		//Blasts
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticBlasts", .SpriteName = "28.AnticBlasts", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "SmashBlasts", .SpriteName = "29.SmashBlasts", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "LandBlasts", .SpriteName = "30.LandBlasts", .FrameInter = 0.07f, .ScaleToTexture = true });
+
 		//Teleport
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticTeleport", .SpriteName = "58.AnticTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndTeleport", .SpriteName = "59.EndTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
@@ -368,7 +373,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 2;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::AttackReady;
+	//PatternNum = HollowKnightNoneAttackState::AttackReady;
 
 	switch (PatternNum)
 	{
@@ -404,7 +409,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::SmallShot;
+	//PatternNum = HollowKnightAttackState::Blasts;
 
 	switch (PatternNum)
 	{
@@ -425,6 +430,8 @@ void HollowKnightBoss::SetRandomAttackPattern()
 		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::Blasts:
+		CurrentState = "AnticBlasts";
+		FSM.ChangeState("AnticTeleport");
 		break;
 	case HollowKnightAttackState::Suicide:
 		break;
