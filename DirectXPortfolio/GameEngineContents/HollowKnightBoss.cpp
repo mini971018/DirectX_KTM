@@ -172,6 +172,11 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "BlockCounter", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "CounterSlash2", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
+		//SmallShot
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticSmallShot", .SpriteName = "24.AnticSmallShot", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "SmallShot", .SpriteName = "25.SmallShot", .FrameInter = 0.09f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndSmallShot", .SpriteName = "26.EndSmallShot", .FrameInter = 0.09f, .Loop = false, .ScaleToTexture = true });
+
 		//Teleport
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticTeleport", .SpriteName = "58.AnticTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndTeleport", .SpriteName = "59.EndTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
@@ -184,6 +189,7 @@ void HollowKnightBoss::AnimationInit()
 
 		//Antic
 		BossRenderer->CreateAnimation({ .AnimationName = "Antic", .SpriteName = "53.Antic", .FrameInter = 0.07f, .ScaleToTexture = true });
+
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 
@@ -362,7 +368,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 2;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::Evade;
+	PatternNum = HollowKnightNoneAttackState::AttackReady;
 
 	switch (PatternNum)
 	{
@@ -398,7 +404,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::Counter;
+	PatternNum = HollowKnightAttackState::SmallShot;
 
 	switch (PatternNum)
 	{
@@ -409,12 +415,14 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	case HollowKnightAttackState::Slash:
 		CurrentState = "AnticSlash1";
 		FSM.ChangeState(CurrentState);
-		break;
+		break; 
 	case HollowKnightAttackState::Counter:
 		CurrentState = "AnticCounter";
 		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::SmallShot:
+		CurrentState = "AnticSmallShot";
+		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::Blasts:
 		break;

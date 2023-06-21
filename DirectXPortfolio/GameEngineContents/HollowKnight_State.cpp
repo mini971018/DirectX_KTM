@@ -757,6 +757,91 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//SmallShot
+	FSM.CreateState(
+		{
+			.Name = "AnticSmallShot",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticSmallShot");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("SmallShot");
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "SmallShot",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("SmallShot");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (2.0f <= StateCalTime)
+			{
+				FSM.ChangeState("EndSmallShot");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndSmallShot",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndSmallShot");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				if (CheckRenderRotationValue())
+				{
+					FSM.ChangeState("Turn");
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+				}
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 	//Teleport
 	FSM.CreateState(
 		{
