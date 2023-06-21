@@ -54,6 +54,7 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("TestButton", '1');
 		GameEngineInput::CreateKey("TestButton2", '2');
 		GameEngineInput::CreateKey("TestButton3", '3');
+		GameEngineInput::CreateKey("TestButton4", '4');
 		GameEngineInput::CreateKey("ChangeNextLevel", '0');
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);

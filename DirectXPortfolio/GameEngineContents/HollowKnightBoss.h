@@ -99,9 +99,9 @@ private:
 	void RotationRenderPivotY();	   //보스렌더러 피봇을 Y를 기준으로 회전시킴
 
 	//SwapPhase
-
-
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
+	bool IsNextPhase();
+
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
 	std::string_view CurrentState = "";

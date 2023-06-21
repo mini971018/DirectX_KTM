@@ -149,7 +149,7 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				FSM.ChangeState("RoarAntic");
+				FSM.ChangeState("AnticRoar");
 				return;
 			}
 		},
@@ -163,7 +163,7 @@ void HollowKnightBoss::StateInit()
 
 	FSM.CreateState(
 		{
-			.Name = "RoarAntic",
+			.Name = "AnticRoar",
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("RoarAntic");
@@ -260,6 +260,12 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (true == IsNextPhase())
+			{
+				FSM.ChangeState("AnticRoar");
+				return;
+			}
+
 			if ("Evade" == CurrentState)
 			{
 				SetRandomAttackPattern();

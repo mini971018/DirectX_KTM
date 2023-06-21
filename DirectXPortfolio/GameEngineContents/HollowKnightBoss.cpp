@@ -228,6 +228,12 @@ void HollowKnightBoss::Update(float _Delta)
 	{
 		FSM.ChangeState("Idle");
 	}
+
+
+	if (GameEngineInput::IsUp("TestButton4"))
+	{
+		CurrentHp -= 400.0f;
+	}
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -311,7 +317,7 @@ void HollowKnightBoss::BossPatternInit()
 	{
 		std::vector<short> Phase4Patterns = std::vector<short>{8, 9, 10};
 
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase3), Phase4Patterns));
+		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase4), Phase4Patterns));
 	}
 	//BeforeAttack
 	{
@@ -384,10 +390,13 @@ void HollowKnightBoss::SetRandomPattern()
 
 void HollowKnightBoss::SetRandomAttackPattern()
 {
-	int min = 0;
-	int max = BossPatterns[static_cast<short>(CurrentPhase)].size() - 1;
+	std::vector<short> CurrentPhaseVector = BossPatterns[static_cast<short>(CurrentPhase)];
 
-	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
+	int Min = 0;
+	int Max = BossPatterns[static_cast<short>(CurrentPhase)].size() - 1;
+	short RandomValue = static_cast<short>(GameEngineRandom::MainRandom.RandomInt(Min, Max));
+
+	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
 	//PatternNum = HollowKnightAttackState::Counter;
 
@@ -490,6 +499,7 @@ void HollowKnightBoss::RotationRenderPivotY()
 }
 
 
+
 float4 HollowKnightBoss::ReturnPatternDir()
 {
 	if (Pivot->GetTransform()->GetLocalScale().x >= 0)
@@ -499,6 +509,48 @@ float4 HollowKnightBoss::ReturnPatternDir()
 	else
 	{
 		return float4::Left;
+	}
+}
+
+bool HollowKnightBoss::IsNextPhase()
+{
+	switch (CurrentPhase)
+	{
+	case HollowKnightPatternEnum::Phase1:
+		if (CurrentHp <= 950)
+		{
+			CurrentPhase = HollowKnightPatternEnum::Phase2;
+			return true;
+		}
+
+		return false;
+
+		break;
+	case HollowKnightPatternEnum::Phase2:
+		if (CurrentHp <= 650)
+		{
+			CurrentPhase = HollowKnightPatternEnum::Phase3;
+			return true;
+		}
+		
+		return false;
+
+		break;
+	case HollowKnightPatternEnum::Phase3:
+		if (CurrentHp <= 250)
+		{
+			CurrentPhase = HollowKnightPatternEnum::Phase4;
+			return true;
+		}
+
+		return false;
+
+		break;
+	default:
+
+		return false;
+		//MsgAssert("지정되지 않은 보스 페이즈 입니다.")
+		break;
 	}
 }
 
