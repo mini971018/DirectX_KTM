@@ -55,11 +55,13 @@ private:
 
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
+	void AttackStateInit();
 
 	// 스테이트에서 사용되는 변수들
 	float StateCalTime  = 0.0f;
 	float StateCalTime2 = 0.0f;
 	bool StateCalBool = false;
+	int StateCalInt = 0;
 
 	// 랜덤한 패턴이 나오게끔 구현하기 위한 변수들
 	std::map<short, std::vector<short>> BossPatterns;
@@ -97,6 +99,9 @@ private:
 	//Turn
 	bool CheckRenderRotationValue();   //플레이어와 보스의 위치에 따라 회전이 필요한지 여부 반환
 	void RotationRenderPivotY();	   //보스렌더러 피봇을 Y를 기준으로 회전시킴
+
+	//SelfStab
+	const int Phase3StabCount = 3;
 
 	//SwapPhase
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호

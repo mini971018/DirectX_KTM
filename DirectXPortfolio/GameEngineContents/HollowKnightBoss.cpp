@@ -28,6 +28,7 @@ void HollowKnightBoss::Start()
 	SpriteInit();
 	AnimationInit();
 	StateInit();
+	AttackStateInit();
 	BossPatternInit();
 
 	//To do : 이후 레벨 들어올 때 
@@ -186,6 +187,18 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticTeleport", .SpriteName = "58.AnticTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "EndTeleport", .SpriteName = "59.EndTeleport", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
+		//SelfStab
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticSelfStab", .SpriteName = "33.AnticSelfStab", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticLoopSelfStab", .SpriteName = "34.AnticLoopSelfStab", .FrameInter = 0.1f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "SelfStab", .SpriteName = "35.SelfStab", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "LoopSelfStab", .SpriteName = "36.LoopSelfStab", .FrameInter = 0.07f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "ReAnticSelfStab", .SpriteName = "37.ReAnticSelfStab", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "ReSelfStab", .SpriteName = "38.ReSelfStab", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
+		//StunLand
+		BossRenderer->CreateAnimation({ .AnimationName = "StunLand", .SpriteName = "39.StunLand", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "StunToIdle", .SpriteName = "40.StunToIdle", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+
 		//Jump
 		BossRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "55.Jump", .FrameInter = 0.07f, .ScaleToTexture = true });
 
@@ -320,13 +333,13 @@ void HollowKnightBoss::BossPatternInit()
 	}
 	//Phase 3
 	{
-		std::vector<short> Phase3Patterns = std::vector<short>{2, 3, 4, 5, 6, 7 };
+		std::vector<short> Phase3Patterns = std::vector<short>{2, 3, 4, 5, 6};
 
 		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase3), Phase3Patterns));
 	}
 	//Phase 4
 	{
-		std::vector<short> Phase4Patterns = std::vector<short>{8, 9, 10};
+		std::vector<short> Phase4Patterns = std::vector<short>{7, 8, 9};
 
 		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase4), Phase4Patterns));
 	}
@@ -335,12 +348,6 @@ void HollowKnightBoss::BossPatternInit()
 		std::vector<short> BeforeAttackPatterns = std::vector<short>{ 0, 1, 2, 3, 4 };
 
 		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::BeforeAttack), BeforeAttackPatterns));
-	}
-	//Phase4BeforeAttack
-	{
-		std::vector<short> Phase4BeforeAttackPatterns = std::vector<short>{ 4 };
-
-		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase4BeforeAttack), Phase4BeforeAttackPatterns));
 	}
 }
 
@@ -370,7 +377,7 @@ void HollowKnightBoss::SetRandomPattern()
 	}
 
 	int min = 0;
-	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 2;
+	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
 	//PatternNum = HollowKnightNoneAttackState::AttackReady;
@@ -391,6 +398,16 @@ void HollowKnightBoss::SetRandomPattern()
 		break;
 	case HollowKnightNoneAttackState::AttackReady:
 		SetRandomAttackPattern();
+		break;
+	case HollowKnightNoneAttackState::SelfStab:
+		//3페이즈부터 SelfStab
+		if (static_cast<short>(CurrentPhase) <= 1)
+		{
+			SetRandomPattern();
+			break;
+		}
+		CurrentState = "AnticSelfStab";
+		FSM.ChangeState(CurrentState);
 		break;
 	default:
 		MsgAssert("존재할 수 없는 공허의 기사 전조 패턴입니다.");
@@ -432,8 +449,6 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	case HollowKnightAttackState::Blasts:
 		CurrentState = "AnticBlasts";
 		FSM.ChangeState("AnticTeleport");
-		break;
-	case HollowKnightAttackState::Suicide:
 		break;
 	case HollowKnightAttackState::PuppetSlam:
 		break;
@@ -535,6 +550,7 @@ bool HollowKnightBoss::IsNextPhase()
 		if (CurrentHp <= 950)
 		{
 			CurrentPhase = HollowKnightPatternEnum::Phase2;
+			FSM.ChangeState("AnticRoar");
 			return true;
 		}
 
@@ -545,6 +561,8 @@ bool HollowKnightBoss::IsNextPhase()
 		if (CurrentHp <= 650)
 		{
 			CurrentPhase = HollowKnightPatternEnum::Phase3;
+			CurrentState = "AnticSelfStab";
+			FSM.ChangeState("AnticRoar");
 			return true;
 		}
 		
@@ -555,6 +573,9 @@ bool HollowKnightBoss::IsNextPhase()
 		if (CurrentHp <= 250)
 		{
 			CurrentPhase = HollowKnightPatternEnum::Phase4;
+			CurrentState = "StunLand";
+			FSM.ChangeState("AnticRoar");
+
 			return true;
 		}
 

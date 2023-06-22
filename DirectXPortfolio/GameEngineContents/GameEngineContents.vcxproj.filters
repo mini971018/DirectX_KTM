@@ -83,6 +83,9 @@
     <ClCompile Include="BindBreakEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
+    <ClCompile Include="HollowKnight_AttackState.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">

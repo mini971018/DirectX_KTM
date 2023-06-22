@@ -41,7 +41,6 @@ enum class HollowKnightPatternEnum
 	Phase3,
 	Phase4,
 	BeforeAttack,
-	Phase4BeforeAttack
 };
 
 enum class HollowKnightNoneAttackState
@@ -50,6 +49,7 @@ enum class HollowKnightNoneAttackState
 	Jump,
 	Evade,
 	AttackReady,
+	SelfStab,
 };
 
 enum class HollowKnightAttackState
@@ -59,7 +59,6 @@ enum class HollowKnightAttackState
 	Counter,
 	SmallShot,
 	Blasts,
-	Suicide,
 	PuppetSlam,
 	ChestShot,
 

@@ -248,6 +248,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="HollowKnight_AttackState.cpp" />
     <ClCompile Include="HollowKnight_State.cpp" />
     <ClCompile Include="MainMenuLevel.cpp">
       <SubType>
