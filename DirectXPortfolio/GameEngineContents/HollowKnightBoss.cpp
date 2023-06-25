@@ -192,8 +192,8 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticLoopSelfStab", .SpriteName = "34.AnticLoopSelfStab", .FrameInter = 0.1f, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "SelfStab", .SpriteName = "35.SelfStab", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "LoopSelfStab", .SpriteName = "36.LoopSelfStab", .FrameInter = 0.07f, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "ReAnticSelfStab", .SpriteName = "37.ReAnticSelfStab", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "ReSelfStab", .SpriteName = "38.ReSelfStab", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "ReAnticSelfStab", .SpriteName = "37.ReAnticSelfStab", .FrameInter = 0.085f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "ReSelfStab", .SpriteName = "38.ReSelfStab", .FrameInter = 0.08f, .Loop = false, .ScaleToTexture = true });
 
 		//StunLand
 		BossRenderer->CreateAnimation({ .AnimationName = "StunLand", .SpriteName = "39.StunLand", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
@@ -380,7 +380,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::AttackReady;
+	PatternNum = HollowKnightNoneAttackState::SelfStab;
 
 	switch (PatternNum)
 	{

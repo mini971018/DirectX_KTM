@@ -568,7 +568,7 @@ void HollowKnightBoss::StateInit()
 				BossRenderer->ChangeAnimation("LoopSelfStab");
 			}
 
-			if (1.5f <= StateCalTime)
+			if (1.3f <= StateCalTime)
 			{
 				FSM.ChangeState("ReAnticSelfStab");
 			}
@@ -620,9 +620,9 @@ void HollowKnightBoss::StateInit()
 			{
 				++StateCalInt;
 
-				if (Phase3StabCount <= StateCalInt)
+				if (Phase3StabCount == StateCalInt)
 				{
-					FSM.ChangeState("StunLand");
+					FSM.ChangeState("ReSelfStabLoop");
 					return;
 				}
 				else
@@ -631,6 +631,34 @@ void HollowKnightBoss::StateInit()
 					return;
 				}
 			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ReSelfStabLoop",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("LoopSelfStab");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (0.75f <= StateCalTime)
+			{
+				FSM.ChangeState("StunLand");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
 
 		},
 			.End = [this]()

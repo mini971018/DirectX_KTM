@@ -592,4 +592,31 @@ void HollowKnightBoss::AttackStateInit()
 
 		}
 	);
+
+	//PuppetSlam
+	FSM.CreateState(
+		{
+			.Name = "LandBlasts",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("LandBlasts");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (1.0f <= StateCalTime)
+			{
+				FSM.ChangeState("Recover");
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 }
