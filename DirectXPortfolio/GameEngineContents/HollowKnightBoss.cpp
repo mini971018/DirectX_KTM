@@ -199,6 +199,13 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "StunLand", .SpriteName = "39.StunLand", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "StunToIdle", .SpriteName = "40.StunToIdle", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
 
+		//PuppetSlam
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticPuppet", .SpriteName = "41.AnticPuppet", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "UpPuppet", .SpriteName = "42.UpPuppet", .FrameInter = 0.1f,  .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "DownPuppet", .SpriteName = "43.DownPuppet", .FrameInter = 0.07f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "SlamPuppet", .SpriteName = "44.SlamPuppet", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "EndPuppet", .SpriteName = "45.EndPuppet", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+
 		//Jump
 		BossRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "55.Jump", .FrameInter = 0.07f, .ScaleToTexture = true });
 
@@ -380,7 +387,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::SelfStab;
+	PatternNum = HollowKnightNoneAttackState::AttackReady;
 
 	switch (PatternNum)
 	{
@@ -426,7 +433,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::Blasts;
+	PatternNum = HollowKnightAttackState::PuppetSlam;
 
 	switch (PatternNum)
 	{
@@ -451,6 +458,8 @@ void HollowKnightBoss::SetRandomAttackPattern()
 		FSM.ChangeState("AnticTeleport");
 		break;
 	case HollowKnightAttackState::PuppetSlam:
+		CurrentState = "AnticPuppet";
+		FSM.ChangeState(CurrentState);
 		break;
 	case HollowKnightAttackState::ChestShot:
 		break;

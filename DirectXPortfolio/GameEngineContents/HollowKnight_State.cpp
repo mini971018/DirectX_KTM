@@ -256,6 +256,9 @@ void HollowKnightBoss::StateInit()
 			.Name = "Idle",
 			.Start = [this]()
 		{
+			PivotPos = { 0 , 268 };
+			SetBossRendererPivot();
+
 			BossRenderer->ChangeAnimation("Idle");
 		},
 			.Update = [this](float _DeltaTime)

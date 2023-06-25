@@ -596,18 +596,121 @@ void HollowKnightBoss::AttackStateInit()
 	//PuppetSlam
 	FSM.CreateState(
 		{
-			.Name = "LandBlasts",
+			.Name = "AnticPuppet",
 			.Start = [this]()
 		{
-			BossRenderer->ChangeAnimation("LandBlasts");
+			BossRenderer->ChangeAnimation("AnticPuppet");
+
+			StateCalTime = 0.0f;
+			StateCalInt = 0;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("UpPuppet");
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "UpPuppet",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("UpPuppet");
+
+			PivotPos = { 0 , 268 };
+			SetBossRendererPivot();
 
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (1.0f <= StateCalTime)
+			if (GetTransform()->GetWorldPosition().y <= -800.0f)
 			{
-				FSM.ChangeState("Recover");
+				GetTransform()->AddWorldPosition({ 0.0f, 1000.0f * _DeltaTime });
+			}
+			else
+			{
+				FSM.ChangeState("DownPuppet");
+			}
+
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "DownPuppet",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("DownPuppet");
+			Gravity = 2000.0f;
+
+			PivotPos = { 0 , 103 };
+			SetBossRendererPivot();
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("SlamPuppet");
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Down * Gravity * _DeltaTime);
+			}
+
+
+		},
+			.End = [this]()
+		{
+			++StateCalInt;
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "SlamPuppet",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("SlamPuppet");
+
+			PivotPos = { 0 , 150 };
+			SetBossRendererPivot();
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (StateCalTime >= 0.1f)
+			{
+				if (StateCalInt <= 3)
+				{
+					FSM.ChangeState("UpPuppet");
+				}
+				else
+				{
+					FSM.ChangeState("EndPuppet");
+				}
 			}
 
 			StateCalTime += _DeltaTime;
@@ -619,4 +722,32 @@ void HollowKnightBoss::AttackStateInit()
 
 		}
 	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndPuppet",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("EndPuppet");
+
+			PivotPos = { 0 , 268 };
+			SetBossRendererPivot();
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("StunLand");
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 }

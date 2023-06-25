@@ -62,6 +62,7 @@ private:
 	float StateCalTime2 = 0.0f;
 	bool StateCalBool = false;
 	int StateCalInt = 0;
+	float4 StateCalPos = float4::Zero;
 
 	// 랜덤한 패턴이 나오게끔 구현하기 위한 변수들
 	std::map<short, std::vector<short>> BossPatterns;
