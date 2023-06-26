@@ -496,10 +496,13 @@ void HollowKnightBoss::AttackStateInit()
 				if (CheckRenderRotationValue())
 				{
 					FSM.ChangeState("Turn");
+					return;
 				}
 				else
 				{
 					FSM.ChangeState("Idle");
+					return;
+
 				}
 				return;
 			}
@@ -526,6 +529,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("SmashBlasts");
+				return;
 			}
 
 		},
@@ -550,6 +554,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{
 				FSM.ChangeState("LandBlasts");
+				return;
 			}
 			else
 			{
@@ -581,6 +586,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (1.0f <= StateCalTime)
 			{
 				FSM.ChangeState("Recover");
+				return;
 			}
 
 			StateCalTime += _DeltaTime;
@@ -609,6 +615,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("UpPuppet");
+				return;
 			}
 
 		},
@@ -641,6 +648,7 @@ void HollowKnightBoss::AttackStateInit()
 			else
 			{
 				FSM.ChangeState("DownPuppet");
+				return;
 			}
 
 
@@ -671,6 +679,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{
 				FSM.ChangeState("SlamPuppet");
+				return;
 			}
 			else
 			{
@@ -706,10 +715,12 @@ void HollowKnightBoss::AttackStateInit()
 				if (StateCalInt <= 3)
 				{
 					FSM.ChangeState("UpPuppet");
+					return;
 				}
 				else
 				{
 					FSM.ChangeState("EndPuppet");
+					return;
 				}
 			}
 
@@ -740,6 +751,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == BossRenderer->IsAnimationEnd())
 			{
 				FSM.ChangeState("StunLand");
+				return;
 			}
 		},
 			.End = [this]()
@@ -750,4 +762,86 @@ void HollowKnightBoss::AttackStateInit()
 		}
 	);
 
+	//ChestShot
+	FSM.CreateState(
+		{
+			.Name = "AnticChestShot",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticChestShot");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == BossRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("ShotChest");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ShotChest",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("ShotChest");
+
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (StateCalTime <= 0.1f)
+			{
+				GetTransform()->AddWorldPosition(float4::Up * 2500.0f * _DeltaTime);
+			}
+
+			if (StateCalTime >= 8.0f)
+			{
+				FSM.ChangeState("ChestShotLand");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ChestShotLand",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("Jump");
+			Gravity = 2000.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			GetTransform()->AddWorldPosition(float4::Down * Gravity* _DeltaTime);
+
+			if (true == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("StunLand");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 }
