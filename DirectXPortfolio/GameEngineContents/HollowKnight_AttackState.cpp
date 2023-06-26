@@ -144,10 +144,18 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * Slash1Speed * _DeltaTime);
+			if (CurrentPhase == HollowKnightPatternEnum::Phase1)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed* _DeltaTime);
+			}
 
 			if (true == BossRenderer->IsAnimationEnd())
 			{
+				if (CurrentPhase == HollowKnightPatternEnum::Phase4)
+				{
+					FSM.ChangeState("StunLand");
+					return;
+				}
 				FSM.ChangeState("EndSlash1");
 				return;
 			}
@@ -741,11 +749,11 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("EndPuppet");
 
-			PivotPos = { 0 , 268 };
+			PivotPos = { 0 , 290 };
 			SetBossRendererPivot();
 
 			StateCalTime = 0.0f;
-		},
+		},	
 			.Update = [this](float _DeltaTime)
 		{
 			if (true == BossRenderer->IsAnimationEnd())
@@ -844,4 +852,6 @@ void HollowKnightBoss::AttackStateInit()
 
 		}
 	);
+
+
 }

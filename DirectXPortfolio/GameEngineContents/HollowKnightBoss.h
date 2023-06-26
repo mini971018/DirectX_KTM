@@ -102,10 +102,10 @@ private:
 	void RotationRenderPivotY();	   //보스렌더러 피봇을 Y를 기준으로 회전시킴
 
 	//SelfStab
-	const int Phase3StabCount = 3;
+	int StabCount = 3;
 
 	//SwapPhase
-	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
+	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase4; //현재 패턴의 번호
 	bool IsNextPhase();
 
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
