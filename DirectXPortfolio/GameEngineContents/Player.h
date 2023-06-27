@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineFSM.h>
 
 class Player : public GameEngineActor
 {
@@ -26,5 +27,14 @@ protected:
 private:
 	void CreateKey();
 	void Test();
+
+	std::shared_ptr<class GameEngineSpriteRenderer> PlayerRenderer;
+	std::shared_ptr<class GameEngineComponent> Pivot; //ÇÃ·¹ÀÌ¾î ·»´õ·¯ÀÇ ÇÇº¿
+
+	void SpriteInit();
+	void AnimationInit();
+
+	GameEngineFSM FSM;
+	void StateInit();
 };
 

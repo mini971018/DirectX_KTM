@@ -266,6 +266,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Player_State.cpp" />
     <ClCompile Include="PrecompileHeader.cpp">
       <SubType>
       </SubType>

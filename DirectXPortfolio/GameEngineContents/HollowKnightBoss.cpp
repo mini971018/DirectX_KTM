@@ -37,7 +37,7 @@ void HollowKnightBoss::Start()
 
 void HollowKnightBoss::SpriteInit()
 {
-	if (nullptr == GameEngineSprite::Find("HollowKnightShakeChain"))
+	if (nullptr == GameEngineSprite::Find("00.HollowKnightChainIdle"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -218,7 +218,6 @@ void HollowKnightBoss::AnimationInit()
 
 		//Antic
 		BossRenderer->CreateAnimation({ .AnimationName = "Antic", .SpriteName = "53.Antic", .FrameInter = 0.07f, .ScaleToTexture = true });
-
 
 		BossRenderer->ChangeAnimation("ChainIdle");
 
