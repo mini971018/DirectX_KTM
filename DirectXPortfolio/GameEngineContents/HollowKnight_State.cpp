@@ -256,7 +256,7 @@ void HollowKnightBoss::StateInit()
 			.Name = "Idle",
 			.Start = [this]()
 		{
-			PivotPos = { 0 , 268 };
+			PivotPos = { 0 , 290 };
 			SetBossRendererPivot();
 
 			BossRenderer->ChangeAnimation("Idle");
@@ -319,7 +319,7 @@ void HollowKnightBoss::StateInit()
 		{
 			RotationRenderPivotY();
 		},
-
+			
 		}
 	);
 
@@ -623,7 +623,7 @@ void HollowKnightBoss::StateInit()
 			{
 				++StateCalInt;
 
-				if (Phase3StabCount == StateCalInt)
+				if (StabCount <= StateCalInt)
 				{
 					FSM.ChangeState("ReSelfStabLoop");
 					return;

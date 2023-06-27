@@ -16,6 +16,7 @@ enum class PlayRenderOrder
 	Player,
 	UpperLayer,
 	Effect,
+	Test,
 };
 
 enum class OrangeBlobType
@@ -62,9 +63,6 @@ enum class HollowKnightAttackState
 	PuppetSlam,
 	ChestShot,
 
-	//후반 약화된 패턴
-	Phase4Slash,
-	Phase4PuppetSlam,
 	Phase4Suicide,
 
 	None,

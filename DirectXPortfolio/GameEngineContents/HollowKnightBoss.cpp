@@ -228,6 +228,8 @@ void HollowKnightBoss::AnimationInit()
 			BossRenderer->GetTransform()->SetParent(Pivot->GetTransform());
 		}
 
+		std::shared_ptr<class GameEngineSpriteRenderer> BossPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
+		BossPosRender->GetTransform()->SetLocalScale({ 10, 10, 10, 0 });
 	}
 
 
@@ -350,7 +352,7 @@ void HollowKnightBoss::BossPatternInit()
 	}
 	//Phase 4
 	{
-		std::vector<short> Phase4Patterns = std::vector<short>{7, 8, 9};
+		std::vector<short> Phase4Patterns = std::vector<short>{1, 5};
 
 		BossPatterns.insert(std::pair(static_cast<short>(HollowKnightPatternEnum::Phase4), Phase4Patterns));
 	}
@@ -383,7 +385,27 @@ void HollowKnightBoss::SetRandomPattern()
 	// 페이즈 4에서는 공격 전조 패턴 없이 즉시 공격 패턴 사용
 	if (CurrentPhase == HollowKnightPatternEnum::Phase4)
 	{
-		SetRandomAttackPattern();
+		int min = 0;
+		int max = 1;
+
+		int PatternNum = GameEngineRandom::MainRandom.RandomInt(min, max);
+
+		switch (PatternNum)
+		{
+		case 0:
+			StateCalInt = 0;
+			CurrentState = "ReAnticSelfStab";
+			FSM.ChangeState(CurrentState);
+			break;
+			break;
+		case 1:
+			SetRandomAttackPattern();
+			break;
+		default:
+			MsgAssert("존재할 수 없는 공허의 기사 Phase4 패턴입니다.");
+			break;
+		}
+
 		return; 
 	}
 
@@ -391,7 +413,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::AttackReady;
+	//PatternNum = HollowKnightNoneAttackState::AttackReady;
 
 	switch (PatternNum)
 	{
@@ -417,7 +439,8 @@ void HollowKnightBoss::SetRandomPattern()
 			SetRandomPattern();
 			break;
 		}
-		CurrentState = "AnticSelfStab";
+		StateCalInt = 0;
+		CurrentState = "ReAnticSelfStab";
 		FSM.ChangeState(CurrentState);
 		break;
 	default:
@@ -437,7 +460,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::ChestShot;
+	//PatternNum = HollowKnightAttackState::ChestShot;
 
 	switch (PatternNum)
 	{
@@ -468,12 +491,6 @@ void HollowKnightBoss::SetRandomAttackPattern()
 	case HollowKnightAttackState::ChestShot:
 		CurrentState = "AnticChestShot";
 		FSM.ChangeState(CurrentState);
-		break;
-	case HollowKnightAttackState::Phase4Slash:
-		break;
-	case HollowKnightAttackState::Phase4PuppetSlam:
-		break;
-	case HollowKnightAttackState::Phase4Suicide:
 		break;
 	default:
 		MsgAssert("존재할 수 없는 공허의 기사 공격 패턴입니다.");
