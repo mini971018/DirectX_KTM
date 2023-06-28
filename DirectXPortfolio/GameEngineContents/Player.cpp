@@ -46,7 +46,7 @@ void Player::Update(float _Delta)
 	}
 
 
-	CamDeltaTime += _Delta;
+	CamDeltaTime += _Delta * 10.0f;
 	if (CamDeltaTime >= 1.0f)
 	{
 		CamDeltaTime = 1.0f;
@@ -174,18 +174,19 @@ void Player::CameraMoveLerp()
 	float4 CamTargetPos = GetTransform()->GetWorldPosition();
 
 	CamTargetPos.z = -1000.0f;
-	CamTargetPos.y += 420.0f;
+	CamTargetPos.y += 380.0f;
 
 	//float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	//CamTargetPos += { -(ScreenSize.x / 2), (ScreenSize.y / 2) - 420.0f };
 
 	float value = CameraPos.XYDistance(CamTargetPos);
 
-	if (value >= 10.0f)
+	GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(float4::Lerp(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition(), CamTargetPos, CamDeltaTime));
+
+	if (value >= 0.5f)
 	{
 		CamDeltaTime = 0.0f;
 	}
 	
-	GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(float4::Lerp(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition(), CamTargetPos, CamDeltaTime));
 
 }

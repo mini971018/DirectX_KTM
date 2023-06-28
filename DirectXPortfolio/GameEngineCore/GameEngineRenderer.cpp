@@ -223,7 +223,7 @@ void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
 	case CameraType::Perspective:
 	{
 		float4 View = GetTransform()->GetWorldPosition() * _Camera->View;
-		CalZ = View.Size();
+		CalZ = View.z;
 		break;
 	}
 	default:
