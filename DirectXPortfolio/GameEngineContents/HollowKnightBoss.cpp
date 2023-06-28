@@ -228,7 +228,8 @@ void HollowKnightBoss::AnimationInit()
 		}
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BossPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
-		BossPosRender->GetTransform()->SetLocalScale({ 10, 10, 10, 0 });
+		BossPosRender->GetTransform()->SetLocalScale({ 10, 10, 1 });
+		BossPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });
 	}
 
 

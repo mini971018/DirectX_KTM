@@ -30,9 +30,16 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> PlayerRenderer;
 	std::shared_ptr<class GameEngineComponent> Pivot; //플레이어 렌더러의 피봇
+	float4 PivotPos = float4::Zero;
+	void SetPlayerRendererPivot();
 
 	void SpriteInit();
 	void AnimationInit();
+
+	//카메라 이동
+	float CamDeltaTime = 0.0f;
+	void CameraMoveLerp();
+	void CameraDeltaClamp();
 
 	GameEngineFSM FSM;
 	void StateInit();
