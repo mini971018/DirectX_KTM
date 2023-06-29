@@ -31,6 +31,11 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> PlayerRenderer;
 	std::shared_ptr<class GameEngineComponent> Pivot; //ÇÃ·¹ÀÌ¾î ·»´õ·¯ÀÇ ÇÇº¿
 	float4 PivotPos = float4::Zero;
+	float4 PlayerDir = float4::Right;
+
+	//
+	float MoveSpeed = 400.0f;
+
 	void SetPlayerRendererPivot();
 
 	void SpriteInit();

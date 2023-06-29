@@ -338,10 +338,12 @@ void HollowKnightBoss::StateInit()
 				if (CheckRenderRotationValue())
 				{
 					FSM.ChangeState("Turn");
+					return;
 				}
 				else
 				{
 					FSM.ChangeState("Idle");
+					return;
 				}
 				return;
 			}

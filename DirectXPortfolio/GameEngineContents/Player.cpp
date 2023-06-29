@@ -33,18 +33,7 @@ void Player::Start()
 
 void Player::Update(float _Delta)
 {
-	if (GameEngineInput::IsPress("MoveRight"))
-	{
-		//GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Right * 1500.0f * _Delta);
-		GetTransform()->AddWorldPosition(float4::Right * 500.0f * _Delta);
-	}
-
-	if (GameEngineInput::IsPress("MoveLeft"))
-	{
-		//GetLevel()->GetMainCamera()->GetTransform()->AddWorldPosition(float4::Left * 1500.0f * _Delta);
-		GetTransform()->AddWorldPosition(float4::Left * 500.0f * _Delta);
-	}
-
+	FSM.Update(_Delta);
 
 	CamDeltaTime += _Delta * 10.0f;
 	if (CamDeltaTime >= 1.0f)
@@ -107,6 +96,8 @@ void Player::SpriteInit()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("06.AnticSprint").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("07.Sprint").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("24.SprintToIdle").GetFullPath());
+		
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("08.Stun").GetFullPath());
 
@@ -155,12 +146,23 @@ void Player::AnimationInit()
 	}
 
 	//플레이어 애니메이션 추가
+
+	//Idle
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Idle", .SpriteName = "00.Idle", .ScaleToTexture = true, });
+
+	//Sprint
+	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticSprint", .SpriteName = "06.AnticSprint", .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Sprint", .SpriteName = "07.Sprint", .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "SprintToIdle", .SpriteName = "24.SprintToIdle",  .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true, });
+
+	//Turn
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "01.Turn",  .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true, });
 
 	if (nullptr == Pivot)
 	{
 		Pivot = CreateComponent<GameEngineComponent>();
 		PlayerRenderer->GetTransform()->SetParent(Pivot->GetTransform());
+		Pivot->GetTransform()->SetLocalNegativeScaleX();
 	}
 
 	std::shared_ptr<class GameEngineSpriteRenderer> PlayerPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
@@ -174,7 +176,7 @@ void Player::CameraMoveLerp()
 	float4 CamTargetPos = GetTransform()->GetWorldPosition();
 
 	CamTargetPos.z = -1000.0f;
-	CamTargetPos.y += 380.0f;
+	CamTargetPos.y += 400.0f;
 
 	//float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	//CamTargetPos += { -(ScreenSize.x / 2), (ScreenSize.y / 2) - 420.0f };
