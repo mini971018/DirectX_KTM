@@ -52,6 +52,8 @@ void HollowKnightLevel::Start()
 	//오브젝트 생성
 	{
 		HollowKnightLevelPlayer = CreateActor<Player>();
+		HollowKnightLevelPlayer->InitPlayer("HollowKnightBossColmap.bmp");
+
 		HollowKnightLevelPlayer->GetTransform()->SetWorldPosition({ 694 , -1348, 0 });
 
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();

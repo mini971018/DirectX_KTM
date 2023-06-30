@@ -57,9 +57,13 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("TestButton2", '2');
 		GameEngineInput::CreateKey("TestButton3", '3');
 		GameEngineInput::CreateKey("TestButton4", '4');
+		
 		GameEngineInput::CreateKey("ChangeNextLevel", '0');
+
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
+
+		GameEngineInput::CreateKey("Jump", 'Z');
 	}
 }
 
@@ -68,9 +72,49 @@ void Player::Test()
 	GetTransform()->AddWorldPosition({ 960.0f, 0.0f });
 }
 
+bool Player::IsGround(float4 _Pos)
+{
+	if (nullptr != PlayerColmapTexture)
+	{
+		float4 CheckPos = GetTransform()->GetWorldPosition();
+
+		if (GameEnginePixelColor::Black == PlayerColmapTexture->GetPixel(static_cast<int>(_Pos.x), static_cast<int>(-_Pos.y)))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	MsgAssert("플레이어의 콜리전 맵이 없습니다.");
+	return false;
+
+}
+
+void Player::SetGravity(float _Delta)
+{
+	float4 NextPos = GetTransform()->GetWorldPosition() + float4{ 0, -Gravity * _Delta ,0 };
+
+	GetTransform()->SetWorldPosition(NextPos);
+}
+
+
+
 void Player::SetPlayerRendererPivot()
 {
 	Pivot->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
+}
+
+void Player::InitPlayer(std::string_view ColMap)
+{
+	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find(ColMap);
+
+	if (nullptr != ColmapTexture)
+	{
+		PlayerColmapTexture = ColmapTexture;
+	}
 }
 
 void Player::SpriteInit()
@@ -89,7 +133,6 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("01.Turn").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("02.Jump").GetFullPath());
-
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("03.Fall").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("04.FallLoop").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("05.Land").GetFullPath());
@@ -158,6 +201,12 @@ void Player::AnimationInit()
 	//Turn
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Turn", .SpriteName = "01.Turn",  .FrameInter = 0.03f, .Loop = false, .ScaleToTexture = true, });
 
+	//Jump
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "02.Jump",  .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Fall", .SpriteName = "03.Fall",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "FallLoop", .SpriteName = "04.FallLoop",  .FrameInter = 0.07f, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Land", .SpriteName = "05.Land",  .FrameInter = 0.070f, .Loop = false, .ScaleToTexture = true, });
+
 	if (nullptr == Pivot)
 	{
 		Pivot = CreateComponent<GameEngineComponent>();
@@ -176,7 +225,9 @@ void Player::CameraMoveLerp()
 	float4 CamTargetPos = GetTransform()->GetWorldPosition();
 
 	CamTargetPos.z = -1000.0f;
-	CamTargetPos.y += 400.0f;
+	CamTargetPos.y = CameraPos.y;
+
+	//CamTargetPos.y += 400.0f;
 
 	//float4 ScreenSize = GameEngineWindow::GetScreenSize();
 	//CamTargetPos += { -(ScreenSize.x / 2), (ScreenSize.y / 2) - 420.0f };

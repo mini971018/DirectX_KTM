@@ -38,6 +38,11 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == GameEngineInput::IsDown("Jump"))
+			{
+				FSM.ChangeState("Jump");
+				return;
+			}
 		},
 			.End = [this]()
 		{
@@ -67,6 +72,12 @@ void Player::StateInit()
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				PlayerRenderer->ChangeAnimation("Sprint");
+			}
+
+			if (true == GameEngineInput::IsDown("Jump"))
+			{
+				FSM.ChangeState("Jump");
+				return;
 			}
 
 			if (false == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
@@ -177,6 +188,156 @@ void Player::StateInit()
 			}
 
 			int a = 0;
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Jump",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("Jump");
+
+			Gravity = 250.0f;
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+
+			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+			else if (StateCalTime >= 0.4f)
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+			else if (StateCalTime >= 0.3f)
+			{
+				GetTransform()->AddWorldPosition(float4::Up * (JumpForce * 0.75f) * _DeltaTime);
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Up* JumpForce * _DeltaTime);
+			}
+
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Right == PlayerDir)
+				{
+					PlayerDir = float4::Left;
+					Pivot->GetTransform()->SetLocalPositiveScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
+			}
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Left == PlayerDir)
+				{
+					PlayerDir = float4::Right;
+					Pivot->GetTransform()->SetLocalNegativeScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+			}
+
+			SetGravity(_DeltaTime);
+			StateCalTime += _DeltaTime;
+
+			
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Fall",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("Fall");
+			Gravity = 750.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				PlayerRenderer->ChangeAnimation("FallLoop");
+			}
+
+			if (true == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("Land");
+				return;
+			}
+
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Right == PlayerDir)
+				{
+					PlayerDir = float4::Left;
+					Pivot->GetTransform()->SetLocalPositiveScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
+			}
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Left == PlayerDir)
+				{
+					PlayerDir = float4::Right;
+					Pivot->GetTransform()->SetLocalNegativeScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+			}
+
+			SetGravity(_DeltaTime);
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Land",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("Land");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Jump"))
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+
 		},
 
 		}
