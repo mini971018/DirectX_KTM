@@ -39,14 +39,16 @@ private:
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;
-	const float JumpForce = 1200.0f;
-	float Gravity = 750.0f; //중력 크기
+	const float JumpForce = 950.0f;
+	float Gravity = 450.0f; //중력 크기
 	bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
 
 	void SetPlayerRendererPivot();
 	
 	void SpriteInit();
+	void StateInit();
+	void AttackStateInit();
 	void AnimationInit();
 
 	//카메라 이동
@@ -55,10 +57,14 @@ private:
 	void CameraDeltaClamp();
 
 	GameEngineFSM FSM;
-	void StateInit();
 
 	//스테이트 에서 사용하는 변수
 	float StateCalTime = 0.0f;
 	float StateCalFloat = 0.0f;
+
+	//공격 애니메이션 처리
+	PlayerSlashAnimation CalAttackAnimation();
+	PlayerSlashAnimation CurrentSlash = PlayerSlashAnimation::Slash1;
+	float SlashCalTime = 1.0f;
 };
 

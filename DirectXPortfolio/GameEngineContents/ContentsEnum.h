@@ -67,3 +67,9 @@ enum class HollowKnightAttackState
 
 	None,
 };
+
+enum class PlayerSlashAnimation
+{
+	Slash1,
+	Slash2,
+};

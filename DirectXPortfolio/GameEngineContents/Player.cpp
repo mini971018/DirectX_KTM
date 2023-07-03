@@ -27,6 +27,7 @@ void Player::Start()
 {
 	CreateKey();
 	SpriteInit();
+	AttackStateInit();
 	AnimationInit();
 	StateInit();
 }
@@ -35,13 +36,15 @@ void Player::Update(float _Delta)
 {
 	FSM.Update(_Delta);
 
+	//카메라 관련
 	CamDeltaTime += _Delta * 10.0f;
 	if (CamDeltaTime >= 1.0f)
 	{
 		CamDeltaTime = 1.0f;
 	}
-
 	CameraMoveLerp();
+
+	SlashCalTime += _Delta;
 }
 
 void Player::Render(float _Delta)
@@ -63,6 +66,7 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
 
+		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'Z');
 	}
 }
@@ -205,7 +209,13 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "02.Jump",  .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Fall", .SpriteName = "03.Fall",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FallLoop", .SpriteName = "04.FallLoop",  .FrameInter = 0.07f, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "Land", .SpriteName = "05.Land",  .FrameInter = 0.070f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Land", .SpriteName = "05.Land",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+
+	//Slash
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Slash1", .SpriteName = "09.Slash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Slash2", .SpriteName = "10.Slash2",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "UpSlash", .SpriteName = "11.UpSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DownSlash", .SpriteName = "12.DownSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
 	if (nullptr == Pivot)
 	{
@@ -242,4 +252,29 @@ void Player::CameraMoveLerp()
 	}
 	
 
+}
+
+PlayerSlashAnimation Player::CalAttackAnimation()
+{
+	if (SlashCalTime <= 1.0f)
+	{
+		if (PlayerSlashAnimation::Slash1 == CurrentSlash)
+		{
+			CurrentSlash = PlayerSlashAnimation::Slash2;
+
+			return PlayerSlashAnimation::Slash2;
+		}
+		else
+		{
+			CurrentSlash = PlayerSlashAnimation::Slash1;
+
+			return PlayerSlashAnimation::Slash1;
+		}
+	}
+	else
+	{
+		CurrentSlash = PlayerSlashAnimation::Slash2;
+
+		return PlayerSlashAnimation::Slash2;
+	}
 }
