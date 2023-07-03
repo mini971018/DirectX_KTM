@@ -38,8 +38,8 @@ private:
 	float4 PlayerDir = float4::Right;
 
 	//이동 관련
-	float MoveSpeed = 400.0f;
-	float JumpForce = 1200.0f;
+	const float MoveSpeed = 400.0f;
+	const float JumpForce = 1200.0f;
 	float Gravity = 750.0f; //중력 크기
 	bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
@@ -59,5 +59,6 @@ private:
 
 	//스테이트 에서 사용하는 변수
 	float StateCalTime = 0.0f;
+	float StateCalFloat = 0.0f;
 };
 

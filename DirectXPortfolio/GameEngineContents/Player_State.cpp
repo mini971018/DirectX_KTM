@@ -202,6 +202,7 @@ void Player::StateInit()
 
 			Gravity = 250.0f;
 			StateCalTime = 0.0f;
+			StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -211,18 +212,26 @@ void Player::StateInit()
 				FSM.ChangeState("Fall");
 				return;
 			}
-			else if (StateCalTime >= 0.4f)
+			else if (StateCalTime >= 0.5f)
 			{
 				FSM.ChangeState("Fall");
 				return;
 			}
 			else if (StateCalTime >= 0.3f)
 			{
-				GetTransform()->AddWorldPosition(float4::Up * (JumpForce * 0.75f) * _DeltaTime);
+				StateCalFloat *= 0.99f;
+
+				if (StateCalFloat <= Gravity)
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
+
+				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
 			}
 			else
 			{
-				GetTransform()->AddWorldPosition(float4::Up* JumpForce * _DeltaTime);
+				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
 			}
 
 			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
@@ -265,10 +274,11 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("Fall");
-			Gravity = 750.0f;
+			Gravity = 400.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			Gravity *= 1.005f;
 
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
@@ -328,7 +338,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Jump"))
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsDown("Jump"))
 			{
 				FSM.ChangeState("Idle");
 				return;
