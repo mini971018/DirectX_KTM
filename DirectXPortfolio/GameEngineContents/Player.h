@@ -57,6 +57,7 @@ private:
 	void CameraDeltaClamp();
 
 	GameEngineFSM FSM;
+	PlayerState CurrentState = PlayerState::Idle;
 
 	//스테이트 에서 사용하는 변수
 	float StateCalTime = 0.0f;

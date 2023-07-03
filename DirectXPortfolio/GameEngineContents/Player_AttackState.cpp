@@ -14,22 +14,22 @@ void Player::AttackStateInit()
 			.Name = "Slash",
 			.Start = [this]()
 		{
-			if (PlayerSlashAnimation::Slash1 == CalAttackAnimation())
+			if (GameEngineInput::IsDown("Attack"))
 			{
-				PlayerRenderer->ChangeAnimation("Slash1");
+				if (PlayerSlashAnimation::Slash1 == CalAttackAnimation())
+				{
+					PlayerRenderer->ChangeAnimation("Slash1");
+				}
+				else
+				{
+					PlayerRenderer->ChangeAnimation("Slash2");
+				}
 			}
-			else
-			{
-				PlayerRenderer->ChangeAnimation("Slash2");
-			}
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (true == PlayerRenderer->IsAnimationEnd())
-			{
-				FSM.ChangeState("Idle");
-				return;
-			}
+
 
 			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
 			{
@@ -52,10 +52,29 @@ void Player::AttackStateInit()
 				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
 			}
 
+			if (PlayerState::Jump == CurrentState)
+			{
+
+			}
+			else if (PlayerState::Fall == CurrentState)
+			{
+
+			}
+			else
+			{
+				if (true == PlayerRenderer->IsAnimationEnd())
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
+			}
+
 		},
 			.End = [this]()
 		{
 			SlashCalTime = 0.0f;
+
+			CurrentState = PlayerState::Slash;
 		},
 
 		}

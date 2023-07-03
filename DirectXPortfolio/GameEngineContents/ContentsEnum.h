@@ -68,6 +68,15 @@ enum class HollowKnightAttackState
 	None,
 };
 
+enum class PlayerState
+{
+	Idle,
+	Sprint,
+	Jump,
+	Fall,
+	Slash,
+};
+
 enum class PlayerSlashAnimation
 {
 	Slash1,

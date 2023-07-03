@@ -60,6 +60,8 @@ void Player::StateInit()
 			{
 				Pivot->GetTransform()->SetLocalPositiveScaleX();
 			}
+
+			CurrentState = PlayerState::Idle;
 		},
 
 		}
@@ -138,7 +140,7 @@ void Player::StateInit()
 		},
 			.End = [this]()
 		{
-			int a = 0;
+			CurrentState = PlayerState::Sprint;
 		},
 
 		}
@@ -164,6 +166,8 @@ void Player::StateInit()
 				FSM.ChangeState("Idle");
 				return;
 			}
+
+			CurrentState = PlayerState::Sprint;
 		},
 			.End = [this]()
 		{
@@ -199,7 +203,7 @@ void Player::StateInit()
 				Pivot->GetTransform()->SetLocalPositiveScaleX();
 			}
 
-			int a = 0;
+			CurrentState = PlayerState::Idle;
 		},
 
 		}
@@ -212,9 +216,12 @@ void Player::StateInit()
 		{
 			PlayerRenderer->ChangeAnimation("Jump");
 
-			StateCalTime = 0.0f;
-			Gravity = 100.0f;
-			StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+			if (CurrentState != PlayerState::Slash)
+			{
+				StateCalTime = 0.0f;
+				Gravity = 100.0f;
+				StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+			}
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -270,11 +277,10 @@ void Player::StateInit()
 			//SetGravity(_DeltaTime);
 			StateCalTime += _DeltaTime;
 
-			
 		},
 			.End = [this]()
 		{
-
+			CurrentState = PlayerState::Jump;
 		},
 
 		}
@@ -332,6 +338,7 @@ void Player::StateInit()
 		},
 			.End = [this]()
 		{
+			CurrentState = PlayerState::Fall;
 
 		},
 
@@ -363,13 +370,12 @@ void Player::StateInit()
 		},
 			.End = [this]()
 		{
+			CurrentState = PlayerState::Idle;
 
 		},
 
 		}
 	);
-
-
 
 	FSM.ChangeState("Idle");
 }
