@@ -226,11 +226,19 @@ void Player::StateInit()
 			.Update = [this](float _DeltaTime)
 		{
 
+
 			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
 			{
 				FSM.ChangeState("Fall");
 				return;
 			}
+
+			if (true == GameEngineInput::IsPress("Attack"))
+			{
+				FSM.ChangeState("Slash");
+				return;
+			}
+
 			//else if (StateCalTime >= 0.5f)
 			//{
 			//	FSM.ChangeState("Fall");
@@ -313,6 +321,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == GameEngineInput::IsPress("Attack"))
+			{
+				FSM.ChangeState("Slash");
+				return;
+			}
+
 			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
 			{
 				if (float4::Right == PlayerDir)
@@ -364,6 +378,13 @@ void Player::StateInit()
 			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsDown("Jump"))
 			{
 				FSM.ChangeState("Idle");
+				return;
+			}
+
+
+			if (true == GameEngineInput::IsDown("Jump"))
+			{
+				FSM.ChangeState("Jump");
 				return;
 			}
 
