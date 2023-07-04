@@ -14,18 +14,14 @@ void Player::AttackStateInit()
 			.Name = "Slash",
 			.Start = [this]()
 		{
-			if (GameEngineInput::IsDown("Attack"))
+			if (PlayerSlashAnimation::Slash1 == CalAttackAnimation())
 			{
-				if (PlayerSlashAnimation::Slash1 == CalAttackAnimation())
-				{
-					PlayerRenderer->ChangeAnimation("Slash1");
-				}
-				else
-				{
-					PlayerRenderer->ChangeAnimation("Slash2");
-				}
+				PlayerRenderer->ChangeAnimation("Slash1");
 			}
-
+			else
+			{
+				PlayerRenderer->ChangeAnimation("Slash2");
+			}
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -50,7 +46,14 @@ void Player::AttackStateInit()
 				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
 			}
 
-			if (PlayerState::Jump == CurrentState)
+			if (true == GameEngineInput::IsDown("Jump") && (PlayerState::Idle == CurrentState || PlayerState::Sprint == CurrentState))
+			{
+				StateCalTime = 0.0f;
+				Gravity = 100.0f;
+				StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+				CurrentState = PlayerState::Jump;
+			}
+			else if (PlayerState::Jump == CurrentState)
 			{
 				if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
 				{

@@ -38,7 +38,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("Attack"))
+			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
 				return;
@@ -88,7 +88,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("Attack"))
+			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
 				return;
@@ -321,7 +321,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("Attack"))
+			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
 				return;
@@ -375,12 +375,17 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsDown("Jump"))
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
 			{
 				FSM.ChangeState("Idle");
 				return;
 			}
 
+			if (true == GameEngineInput::IsDown("Attack"))
+			{
+				FSM.ChangeState("Attack");
+				return;
+			}
 
 			if (true == GameEngineInput::IsDown("Jump"))
 			{
