@@ -232,6 +232,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="HollowKnightBoss.cpp">
       <SubType>
       </SubType>
