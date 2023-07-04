@@ -89,23 +89,23 @@ OutPut Texture_VS(Input _Value)
     //
     //
     // 0,1    1,1
-
+    
     float4 VtxUV = _Value.UV;
-
+    
     // -1 0
     if (Flip.x != 0)
     {
         VtxUV.x = 1.0f - VtxUV.x;
     }
-
+    
     if (Flip.y != 0)
     {
         VtxUV.y = 1.0f - VtxUV.y;
     }
-
+    
     OutPutValue.UV.x = (VtxUV.x * FrameScale.x) + FramePos.x;
     OutPutValue.UV.y = (VtxUV.y * FrameScale.y) + FramePos.y;
-
+    
     OutPutValue.ClipUV = _Value.UV;
 
     return OutPutValue;
@@ -131,7 +131,7 @@ struct OutColor
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(SAMPLER, _Value.UV.xy);
-
+    
     if (Clip.z == 0)
     {
         if (_Value.ClipUV.x > Clip.x)
@@ -163,7 +163,7 @@ float4 Texture_PS(OutPut _Value) : SV_Target0
             clip(-1);
         }
     }
-
+    
     Color *= MulColor;
     Color += PlusColor;
 
