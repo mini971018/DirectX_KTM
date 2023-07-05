@@ -43,7 +43,7 @@ void HollowKnightLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
 	GetMainCamera()->SetSortType(PlayRenderOrder::UpperLayer, SortType::ZSort);
-	GetMainCamera()->SetSortType(PlayRenderOrder::Effect, SortType::ZSort);
+	GetMainCamera()->SetSortType(PlayRenderOrder::UpperEffect, SortType::ZSort);
 
 	float4 ScreenSize = GameEngineWindow::GetScreenSize();
 

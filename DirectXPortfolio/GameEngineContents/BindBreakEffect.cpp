@@ -15,7 +15,7 @@ BindBreakEffect::~BindBreakEffect()
 
 void BindBreakEffect::Start()
 {
-	BindBreakRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Effect);
+	BindBreakRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperEffect);
 	BindBreakRenderer->CreateAnimation({ .AnimationName = "ShieldBreak", .SpriteName = "99.ShieldBreakEffect", .FrameInter = 0.02f, .Loop = false, .ScaleToTexture = true });
 	BindBreakRenderer->Off();
 }

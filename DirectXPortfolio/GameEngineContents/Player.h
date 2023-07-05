@@ -39,10 +39,27 @@ private:
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;
-	const float JumpForce = 950.0f;
+	const float DashSpeed = 1100.0f;
+	const float JumpForce = 850.0f;
+	
 	float Gravity = 450.0f; //중력 크기
 	bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
+	
+	//대쉬 관련
+	bool Dashable = true; //대쉬가 가능한지
+	bool ShadowDashable = true;;
+	const float ShadowDashCooltime = 1.5f;
+	float ShadowDashCalTime = ShadowDashCooltime;
+	void SetStateAbleValue();
+	void SetDashState();
+	void ResetShadowDashValue();
+	bool ShadowDashEffectIsOn = false;
+
+	//점프 관련
+	bool DoubleJumpable = true;
+
+	void ResetFallValue();
 
 	void SetPlayerRendererPivot();
 	
@@ -50,6 +67,7 @@ private:
 	void StateInit();
 	void AttackStateInit();
 	void AnimationInit();
+	void EffectInit();
 
 	//카메라 이동
 	float CamDeltaTime = 0.0f;
@@ -67,5 +85,8 @@ private:
 	PlayerSlashAnimation CalAttackAnimation();
 	PlayerSlashAnimation CurrentSlash = PlayerSlashAnimation::Slash1;
 	float SlashCalTime = 1.0f;
+
+	//이펙트 관련
+	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
 };
 

@@ -40,6 +40,9 @@
     <ClInclude Include="RoarEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowDashRechargedEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -93,6 +96,9 @@
       <Filter>Levels\PlayLevel\Player</Filter>
     </ClCompile>
     <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="ShadowDashRechargedEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -124,6 +130,9 @@
     </Filter>
     <Filter Include="Levels\PlayLevel\Player">
       <UniqueIdentifier>{a4c2b976-7376-444f-a3eb-d1268d0fc38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\Player\Effect">
+      <UniqueIdentifier>{57e85f66-e9b0-4f82-acd9-3ef9f8ab6d4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

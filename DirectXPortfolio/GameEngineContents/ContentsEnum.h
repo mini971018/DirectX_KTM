@@ -15,7 +15,7 @@ enum class PlayRenderOrder
 	Boss,
 	Player,
 	UpperLayer,
-	Effect,
+	UpperEffect,
 	Test,
 };
 
@@ -75,6 +75,7 @@ enum class PlayerState
 	Jump,
 	Fall,
 	Slash,
+	Dash,
 };
 
 enum class PlayerSlashAnimation

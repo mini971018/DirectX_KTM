@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 
 #include "Player.h"
+#include "ShadowDashRechargedEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -30,6 +31,7 @@ void Player::Start()
 	AttackStateInit();
 	AnimationInit();
 	StateInit();
+	EffectInit();
 }
 
 void Player::Update(float _Delta)
@@ -44,7 +46,16 @@ void Player::Update(float _Delta)
 	}
 	CameraMoveLerp();
 
-	SlashCalTime += _Delta;
+	SlashCalTime += _Delta; // 일반공격 애니메이션을 확인하기 위한 변수
+	ShadowDashCalTime += _Delta; // ShadowDash 쿨타임 계산을 위한 변수
+
+	if (ShadowDashCalTime >= (ShadowDashCooltime - 0.68) && ShadowDashEffectIsOn == false)
+	{
+		ShadowDashRechargedEffectActor->OnRechargedEffect();
+		ShadowDashEffectIsOn = true;
+	}
+
+	SetStateAbleValue();
 }
 
 void Player::Render(float _Delta)
@@ -68,6 +79,8 @@ void Player::CreateKey()
 
 		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'Z');
+		GameEngineInput::CreateKey("Dash", 'C');
+		GameEngineInput::CreateKey("Skill", 'A');
 	}
 }
 
@@ -104,7 +117,39 @@ void Player::SetGravity(float _Delta)
 	GetTransform()->SetWorldPosition(NextPos);
 }
 
+void Player::SetStateAbleValue()
+{
+	if (true == IsGround(GetTransform()->GetWorldPosition()))
+	{
+		Dashable = true;
+		DoubleJumpable = true;
+	}
+}
 
+void Player::SetDashState()
+{
+	if (ShadowDashCalTime >= ShadowDashCooltime)
+	{
+		FSM.ChangeState("ShadowDash");
+	}
+	else
+	{
+		FSM.ChangeState("Dash");
+	}
+}
+
+void Player::ResetShadowDashValue()
+{
+	ShadowDashCalTime = 0.0f;
+	ShadowDashEffectIsOn = false;
+}
+
+void Player::ResetFallValue()
+{
+	StateCalTime = 0.0f;
+	Gravity = 100.0f;
+	StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+}
 
 void Player::SetPlayerRendererPivot()
 {
@@ -211,22 +256,48 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FallLoop", .SpriteName = "04.FallLoop",  .FrameInter = 0.07f, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Land", .SpriteName = "05.Land",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
 
+	//DoubleJump
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DoubleJump", .SpriteName = "13.DoubleJump",  .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true, });
+	
 	//Slash
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Slash1", .SpriteName = "09.Slash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Slash2", .SpriteName = "10.Slash2",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "UpSlash", .SpriteName = "11.UpSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DownSlash", .SpriteName = "12.DownSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
+	//Dash
+	PlayerRenderer->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "14.Dash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DashToIdle", .SpriteName = "15.DashToIdle",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DashDown", .SpriteName = "16.DashDown",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DashDownLand", .SpriteName = "17.DashDownLand",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDash", .SpriteName = "18.ShadowDash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DownShadowDash", .SpriteName = "19.DownShadowDash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "DashEffect", .SpriteName = "103.DashEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashEffect", .SpriteName = "104.ShadowDashEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashRechargedEffect", .SpriteName = "105.ShadowDashRechargedEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+
 	if (nullptr == Pivot)
 	{
 		Pivot = CreateComponent<GameEngineComponent>();
-		PlayerRenderer->GetTransform()->SetParent(Pivot->GetTransform());
-		Pivot->GetTransform()->SetLocalNegativeScaleX();
 	}
+	PlayerRenderer->GetTransform()->SetParent(Pivot->GetTransform());
+	Pivot->GetTransform()->SetLocalNegativeScaleX();
 
 	std::shared_ptr<class GameEngineSpriteRenderer> PlayerPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
 	PlayerPosRender->GetTransform()->SetLocalScale({ 10, 10, 1 });
 	PlayerPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });
+}
+
+void Player::EffectInit()
+{
+	if (nullptr == Pivot)
+	{
+		Pivot = CreateComponent<GameEngineComponent>();
+	}
+
+	//ShadowDashRecharged
+	ShadowDashRechargedEffectActor = GetLevel()->CreateActor<ShadowDashRechargedEffect>();
+	ShadowDashRechargedEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 }
 
 void Player::CameraMoveLerp()

@@ -15,7 +15,7 @@ RoarEffect::~RoarEffect()
 
 void RoarEffect::Start()
 {
-	RoarEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Effect);
+	RoarEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperEffect);
 
 	ResetLiveTime();
 }

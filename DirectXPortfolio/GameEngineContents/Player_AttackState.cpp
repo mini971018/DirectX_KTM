@@ -48,9 +48,7 @@ void Player::AttackStateInit()
 
 			if (true == GameEngineInput::IsDown("Jump") && (PlayerState::Idle == CurrentState || PlayerState::Sprint == CurrentState))
 			{
-				StateCalTime = 0.0f;
-				Gravity = 100.0f;
-				StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+				ResetFallValue();
 				CurrentState = PlayerState::Jump;
 			}
 			else if (PlayerState::Jump == CurrentState)
@@ -96,7 +94,7 @@ void Player::AttackStateInit()
 				
 				if (true == IsGround(GetTransform()->GetWorldPosition()))
 				{
-					PlayerState::Idle == CurrentState;
+					CurrentState = PlayerState::Idle;
 				}
 				else
 				{

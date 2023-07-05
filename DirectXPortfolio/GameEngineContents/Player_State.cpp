@@ -38,6 +38,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
+
 			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
@@ -80,6 +86,12 @@ void Player::StateInit()
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				PlayerRenderer->ChangeAnimation("Sprint");
+			}
+
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
 			}
 
 			if (true == GameEngineInput::IsDown("Jump"))
@@ -218,14 +230,11 @@ void Player::StateInit()
 
 			if (CurrentState != PlayerState::Slash)
 			{
-				StateCalTime = 0.0f;
-				Gravity = 100.0f;
-				StateCalFloat = JumpForce; //점프 내에서 최대 점프 거리까지 가면 올라가는 속도를 줄여주기 위한 변수
+				ResetFallValue();
 			}
 		},
 			.Update = [this](float _DeltaTime)
 		{
-
 
 			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
 			{
@@ -239,11 +248,11 @@ void Player::StateInit()
 				return;
 			}
 
-			//else if (StateCalTime >= 0.5f)
-			//{
-			//	FSM.ChangeState("Fall");
-			//	return;
-			//}
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
 			else if (StateCalTime >= 0.35f)
 			{
 				StateCalFloat *= 0.95f;
@@ -296,6 +305,89 @@ void Player::StateInit()
 
 	FSM.CreateState(
 		{
+			.Name = "DoubleJump",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("DoubleJump");
+
+			if (CurrentState != PlayerState::Slash)
+			{
+				ResetFallValue();
+			}
+		},
+			.Update = [this](float _DeltaTime)
+		{
+
+			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+
+			if (true == GameEngineInput::IsPress("Attack"))
+			{
+				FSM.ChangeState("Slash");
+				return;
+			}
+
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
+			else if (StateCalTime >= 0.35f)
+			{
+				StateCalFloat *= 0.95f;
+
+				if (StateCalFloat <= 100.0f)
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
+
+				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+			}
+
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Right == PlayerDir)
+				{
+					PlayerDir = float4::Left;
+					Pivot->GetTransform()->SetLocalPositiveScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
+			}
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			{
+				if (float4::Left == PlayerDir)
+				{
+					PlayerDir = float4::Right;
+					Pivot->GetTransform()->SetLocalNegativeScaleX();
+				}
+
+				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+			}
+
+			//SetGravity(_DeltaTime);
+			StateCalTime += _DeltaTime;
+
+		},
+			.End = [this]()
+		{
+			CurrentState = PlayerState::Jump;
+		},
+
+		}
+	);
+
+
+	FSM.CreateState(
+		{
 			.Name = "Fall",
 			.Start = [this]()
 		{
@@ -321,9 +413,22 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
+
 			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
+				return;
+			}
+
+			if (true == DoubleJumpable && true == GameEngineInput::IsDown("Jump"))
+			{
+				FSM.ChangeState("DoubleJump");
+				DoubleJumpable = false;
 				return;
 			}
 
@@ -393,11 +498,158 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
+
 		},
 			.End = [this]()
 		{
 			CurrentState = PlayerState::Idle;
 
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Dash",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("Dash");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("DashToIdle");
+					return;
+				}
+				else
+				{
+					ResetFallValue();
+
+					FSM.ChangeState("Fall");
+					return;
+				}
+			}
+
+			if (float4::Left == PlayerDir)
+			{
+				GetTransform()->AddWorldPosition(float4::Left* DashSpeed * _DeltaTime);
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Right* DashSpeed* _DeltaTime);
+			}
+
+		},
+			.End = [this]()
+		{
+			CurrentState = PlayerState::Dash;
+			Dashable = false;
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "ShadowDash",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("ShadowDash");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("DashToIdle");
+					return;
+				}
+				else
+				{
+					ResetFallValue();
+
+					FSM.ChangeState("Fall");
+					return;
+				}
+			}
+
+			if (float4::Left == PlayerDir)
+			{
+				GetTransform()->AddWorldPosition(float4::Left * DashSpeed * _DeltaTime);
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Right * DashSpeed * _DeltaTime);
+			}
+
+		},
+			.End = [this]()
+		{
+			CurrentState = PlayerState::Dash;
+			ResetShadowDashValue();
+			Dashable = false;
+		},
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "DashToIdle",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("DashToIdle");
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
+			}
+
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
+			if (true == GameEngineInput::IsDown("Attack"))
+			{
+				FSM.ChangeState("Slash");
+				return;
+			}
+
+			if (true == GameEngineInput::IsDown("Jump"))
+			{
+				FSM.ChangeState("Jump");
+				return;
+			}
+
+			if (true == GameEngineInput::IsDown("Dash"))
+			{
+				FSM.ChangeState("Dash");
+				return;
+			}
+		},
+			.End = [this]()
+		{
+			CurrentState = PlayerState::Idle;
 		},
 
 		}
