@@ -14,13 +14,27 @@ void Player::AttackStateInit()
 			.Name = "Slash",
 			.Start = [this]()
 		{
-			if (PlayerSlashAnimation::Slash1 == CalAttackAnimation())
+			CalSlashAnimation();
+
+			//TO DO : DownSlash 타격 후 플레이어 위로 뜨는거 추가 (콜리전 추가 이후)
+
+			switch (CurrentSlash)
 			{
+			case PlayerSlashAnimation::Slash1:
 				PlayerRenderer->ChangeAnimation("Slash1");
-			}
-			else
-			{
+				break;
+			case PlayerSlashAnimation::Slash2:
 				PlayerRenderer->ChangeAnimation("Slash2");
+				break;
+			case PlayerSlashAnimation::UpperSlash:
+				PlayerRenderer->ChangeAnimation("UpSlash");
+				break;
+			case PlayerSlashAnimation::DownSlash:
+				PlayerRenderer->ChangeAnimation("DownSlash");
+				break;
+			default:
+				MsgAssert("잘못된 플레이어 Slash 애니메이션을 호출했습니다.");
+				break;
 			}
 		},
 			.Update = [this](float _DeltaTime)
@@ -135,4 +149,70 @@ void Player::AttackStateInit()
 
 		}
 	);
+
+	FSM.CreateState(
+		{
+			.Name = "Healing",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("AnticFocus");
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			StateCalTime += _DeltaTime;
+
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				PlayerRenderer->ChangeAnimation("LoopFocus");
+			}
+
+			if (StateCalTime >= 1.0f)
+			{
+				//체력회복
+				PlayerRenderer->ChangeAnimation("GetOnFocus");
+				StateCalTime = 0.0f;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("HealingEnd");
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	//ToIdleState
+	FSM.CreateState(
+		{
+			.Name = "HealingEnd",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("EndFocus");
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 }

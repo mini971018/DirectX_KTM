@@ -17,10 +17,32 @@ void Player::StateInit()
 			PlayerRenderer->ChangeAnimation("Idle");
 
 			PivotPos = { 0, 90.0f };
+			SkillCalTime = 0.0f;
 			SetPlayerRendererPivot();
 		},
 			.Update = [this](float _DeltaTime)
 		{
+
+			if (true == GameEngineInput::IsPress("Skill"))
+			{
+				SkillCalTime += _DeltaTime;
+			}
+			else
+			{
+				SkillCalTime = 0.0f;
+			}
+
+			if (SkillCalTime >= 0.3f)
+			{
+				FSM.ChangeState("Healing");
+				return;
+			}
+
+			if (false == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
 
 			if (true == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
 			{
@@ -86,6 +108,12 @@ void Player::StateInit()
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				PlayerRenderer->ChangeAnimation("Sprint");
+			}
+
+			if (false == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				FSM.ChangeState("Fall");
+				return;
 			}
 
 			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
@@ -464,6 +492,7 @@ void Player::StateInit()
 		}
 	);
 
+	//ToIdleState
 	FSM.CreateState(
 		{
 			.Name = "Land",
@@ -480,7 +509,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Skill"))
 			{
 				FSM.ChangeState("Idle");
 				return;
@@ -488,7 +517,7 @@ void Player::StateInit()
 
 			if (true == GameEngineInput::IsDown("Attack"))
 			{
-				FSM.ChangeState("Attack");
+				FSM.ChangeState("Slash");
 				return;
 			}
 
@@ -604,6 +633,7 @@ void Player::StateInit()
 		}
 	);
 
+	//ToIdleState
 	FSM.CreateState(
 		{
 			.Name = "DashToIdle",

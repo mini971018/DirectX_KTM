@@ -56,6 +56,9 @@ private:
 	void ResetShadowDashValue();
 	bool ShadowDashEffectIsOn = false;
 
+	//Skill 관련
+	float SkillCalTime = 0.0f;
+
 	//점프 관련
 	bool DoubleJumpable = true;
 
@@ -82,6 +85,7 @@ private:
 	float StateCalFloat = 0.0f;
 
 	//공격 애니메이션 처리
+	void CalSlashAnimation();
 	PlayerSlashAnimation CalAttackAnimation();
 	PlayerSlashAnimation CurrentSlash = PlayerSlashAnimation::Slash1;
 	float SlashCalTime = 1.0f;

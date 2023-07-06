@@ -82,4 +82,6 @@ enum class PlayerSlashAnimation
 {
 	Slash1,
 	Slash2,
+	UpperSlash,
+	DownSlash,
 };

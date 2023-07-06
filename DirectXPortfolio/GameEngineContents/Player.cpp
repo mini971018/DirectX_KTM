@@ -74,6 +74,8 @@ void Player::CreateKey()
 		
 		GameEngineInput::CreateKey("ChangeNextLevel", '0');
 
+		GameEngineInput::CreateKey("MoveUp", VK_UP);
+		GameEngineInput::CreateKey("MoveDown", VK_DOWN);
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
 
@@ -190,7 +192,6 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("07.Sprint").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("24.SprintToIdle").GetFullPath());
 		
-
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("08.Stun").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("09.Slash").GetFullPath());
@@ -212,6 +213,17 @@ void Player::SpriteInit()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("22.Death").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("23.DeathLoop").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("25.AnticFocus").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("26.LoopFocus").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("27.EndFocus").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("28.GetOnFocus").GetFullPath());
+		
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("94.FocusEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("95.LoopFocusEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("96.EndFocusEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("97.HealingEffect").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("98.SlashEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.Slash2Effect").GetFullPath());
@@ -276,6 +288,16 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashEffect", .SpriteName = "104.ShadowDashEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashRechargedEffect", .SpriteName = "105.ShadowDashRechargedEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
+	//Healing
+	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticFocus", .SpriteName = "25.AnticFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopFocus", .SpriteName = "26.LoopFocus",  .FrameInter = 0.055f, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "EndFocus", .SpriteName = "27.EndFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "GetOnFocus", .SpriteName = "28.GetOnFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "FocusEffect", .SpriteName = "94.FocusEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopFocusEffect", .SpriteName = "95.LoopFocusEffect",  .FrameInter = 0.055f, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "EndFocusEffect", .SpriteName = "96.EndFocusEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "HealingEffect", .SpriteName = "97.HealingEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+
 	if (nullptr == Pivot)
 	{
 		Pivot = CreateComponent<GameEngineComponent>();
@@ -325,11 +347,34 @@ void Player::CameraMoveLerp()
 
 }
 
+void Player::CalSlashAnimation()
+{
+	if (GameEngineInput::IsPress("MoveUp"))
+	{
+		CurrentSlash = PlayerSlashAnimation::UpperSlash;
+	}
+	else if (GameEngineInput::IsPress("MoveDown"))
+	{
+		if (true == IsGround(GetTransform()->GetWorldPosition()))
+		{
+			CurrentSlash = CalAttackAnimation();
+		}
+		else
+		{
+			CurrentSlash = PlayerSlashAnimation::DownSlash;
+		}
+	}
+	else
+	{
+		CurrentSlash = CalAttackAnimation();
+	}
+}
+
 PlayerSlashAnimation Player::CalAttackAnimation()
 {
 	if (SlashCalTime <= 1.0f)
 	{
-		if (PlayerSlashAnimation::Slash1 == CurrentSlash)
+		if (PlayerSlashAnimation::Slash2 != CurrentSlash)
 		{
 			CurrentSlash = PlayerSlashAnimation::Slash2;
 
