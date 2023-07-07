@@ -32,7 +32,12 @@ void Player::StateInit()
 				SkillCalTime = 0.0f;
 			}
 
-			
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			{
+				FSM.ChangeState("Scream");
+				return;
+			}
+		
 
 			if (SkillCalTime >= 0.3f)
 			{
@@ -115,6 +120,12 @@ void Player::StateInit()
 			if (false == IsGround(GetTransform()->GetWorldPosition()))
 			{
 				FSM.ChangeState("Fall");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			{
+				FSM.ChangeState("Scream");
 				return;
 			}
 
@@ -278,6 +289,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			{
+				FSM.ChangeState("Scream");
+				return;
+			}
+
 			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
 			{
 				SetDashState();
@@ -354,9 +371,16 @@ void Player::StateInit()
 				return;
 			}
 
+
 			if (true == GameEngineInput::IsPress("Attack"))
 			{
 				FSM.ChangeState("Slash");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			{
+				FSM.ChangeState("Scream");
 				return;
 			}
 
@@ -427,9 +451,9 @@ void Player::StateInit()
 		{
 			Gravity *= 1.05f;
 
-			if (Gravity >= 750.0f)
+			if (Gravity >= 950.0f)
 			{
-				Gravity = JumpForce;
+				Gravity = 950.0f;
 			}
 
 			if (true == PlayerRenderer->IsAnimationEnd())
@@ -452,6 +476,12 @@ void Player::StateInit()
 			if (true == GameEngineInput::IsDown("Attack"))
 			{
 				FSM.ChangeState("Slash");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			{
+				FSM.ChangeState("Scream");
 				return;
 			}
 

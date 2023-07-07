@@ -12,6 +12,7 @@ enum class PlayRenderOrder
 	None,
 	Background,
 	Map,
+	SkillEffect,
 	Boss,
 	Player,
 	UpperLayer,

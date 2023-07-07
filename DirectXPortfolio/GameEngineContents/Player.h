@@ -59,6 +59,7 @@ private:
 	//Skill 관련
 	float SkillCalTime = 0.0f;
 
+
 	//점프 관련
 	bool DoubleJumpable = true;
 
@@ -83,6 +84,7 @@ private:
 	//스테이트 에서 사용하는 변수
 	float StateCalTime = 0.0f;
 	float StateCalFloat = 0.0f;
+	int StateCalCount = 0;
 
 	//공격 애니메이션 처리
 	void CalSlashAnimation();
@@ -92,5 +94,8 @@ private:
 
 	//이펙트 관련
 	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
+
+	void SetScreamSkillEffect();
+
 };
 

@@ -43,6 +43,9 @@
     <ClInclude Include="ShadowDashRechargedEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="ScreamEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="ShadowDashRechargedEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreamEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>

@@ -189,7 +189,6 @@ void Player::AttackStateInit()
 		}
 	);
 
-	//ToIdleState
 	FSM.CreateState(
 		{
 			.Name = "HealingEnd",
@@ -215,4 +214,69 @@ void Player::AttackStateInit()
 		}
 	);
 
+	FSM.CreateState(
+		{
+			.Name = "Scream",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("AnticScream");
+			SetScreamSkillEffect();
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			StateCalTime += _DeltaTime;
+
+			if (StateCalTime >= 0.4f)
+			{
+				FSM.ChangeState("EndScream");
+				return;
+			}
+
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				PlayerRenderer->ChangeAnimation("LoopScream");
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndScream",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("EndScream");
+			StateCalCount = 0;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (false == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
+			}
+
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 }

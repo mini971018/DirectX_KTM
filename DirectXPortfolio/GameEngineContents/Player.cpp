@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "ShadowDashRechargedEffect.h"
+#include "ScreamEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -146,6 +147,8 @@ void Player::ResetShadowDashValue()
 	ShadowDashEffectIsOn = false;
 }
 
+
+
 void Player::ResetFallValue()
 {
 	StateCalTime = 0.0f;
@@ -219,6 +222,13 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("27.EndFocus").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("28.GetOnFocus").GetFullPath());
 		
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("29.AnticScream").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("30.LoopScream").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("31.EndScream").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.FireballCast").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("90.FireballHitEnemyEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("91.FireballHitWallEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("92.ScreamEffect").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("94.FocusEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("95.LoopFocusEffect").GetFullPath());
@@ -286,7 +296,7 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DownShadowDash", .SpriteName = "19.DownShadowDash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DashEffect", .SpriteName = "103.DashEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashEffect", .SpriteName = "104.ShadowDashEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashRechargedEffect", .SpriteName = "105.ShadowDashRechargedEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	//PlayerRenderer->CreateAnimation({ .AnimationName = "ShadowDashRechargedEffect", .SpriteName = "105.ShadowDashRechargedEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
 	//Healing
 	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticFocus", .SpriteName = "25.AnticFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
@@ -297,6 +307,15 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopFocusEffect", .SpriteName = "95.LoopFocusEffect",  .FrameInter = 0.055f, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "EndFocusEffect", .SpriteName = "96.EndFocusEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "HealingEffect", .SpriteName = "97.HealingEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+
+	//Scream
+	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticScream", .SpriteName = "29.AnticScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopScream", .SpriteName = "30.LoopScream",  .FrameInter = 0.07f, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "EndScream", .SpriteName = "31.EndScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballCast", .SpriteName = "32.FireballCast",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballHitEnemyEffect", .SpriteName = "90.FireballHitEnemyEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballHitWallEffect", .SpriteName = "91.FireballHitWallEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+	//PlayerRenderer->CreateAnimation({ .AnimationName = "ScreamEffect", .SpriteName = "92.ScreamEffect",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
 
 	if (nullptr == Pivot)
 	{
@@ -393,4 +412,12 @@ PlayerSlashAnimation Player::CalAttackAnimation()
 
 		return PlayerSlashAnimation::Slash2;
 	}
+}
+
+void Player::SetScreamSkillEffect()
+{
+	std::shared_ptr<class ScreamEffect> ScreamSkillEffect = GetLevel()->CreateActor<ScreamEffect>();
+	ScreamSkillEffect->GetTransform()->SetParent(Pivot->GetTransform());
+	ScreamSkillEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
+	ScreamSkillEffect->GetTransform()->SetLocalPosition({ 0, 129.5f , -70});
 }
