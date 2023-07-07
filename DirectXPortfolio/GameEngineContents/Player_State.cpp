@@ -32,6 +32,8 @@ void Player::StateInit()
 				SkillCalTime = 0.0f;
 			}
 
+			
+
 			if (SkillCalTime >= 0.3f)
 			{
 				FSM.ChangeState("Healing");

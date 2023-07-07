@@ -1,0 +1,15 @@
+version: 2
+type: animation
+name: Scream1 Base
+consistent_sprite_size: true
+enable_borders: false
+use_sprite_name: false
+sprites: 8
+0	Scream1 Base_000.png
+1	Scream1 Base_001.png
+2	Scream1 Base_002.png
+3	Scream1 Base_003.png
+4	Scream1 Base_004.png
+5	Scream1 Base_005.png
+6	Scream1 Base_006.png
+7	Scream1 Base_007.png
