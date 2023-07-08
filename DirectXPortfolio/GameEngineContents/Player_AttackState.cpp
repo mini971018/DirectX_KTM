@@ -279,4 +279,37 @@ void Player::AttackStateInit()
 
 		}
 	);
+
+	FSM.CreateState(
+		{
+			.Name = "Fireball",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("FireballCast");
+			SetFireBallCastEffect();
+			SetFireBall();
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (false == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
 }

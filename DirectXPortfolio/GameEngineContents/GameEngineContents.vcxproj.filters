@@ -46,6 +46,15 @@
     <ClInclude Include="ScreamEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerFireBall.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FireballCastEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBallHitWallEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -103,6 +112,15 @@
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
     <ClCompile Include="ScreamEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFireBall.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FireballCastEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBallHitWallEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>

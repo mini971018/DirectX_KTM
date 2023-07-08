@@ -14,10 +14,11 @@ ScreamEffect::~ScreamEffect()
 
 void ScreamEffect::Start()
 {
-	ScreamEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::SkillEffect);
+	ScreamEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::BFPF_Effect);
 	ScreamEffectRenderer->CreateAnimation({ .AnimationName = "ScreamEffect", .SpriteName = "92.ScreamEffect", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 	ScreamEffectRenderer->ChangeAnimation("ScreamEffect");
-	//ScreamEffectRenderer->GetTransform()->SetLocalPosition({ 0, 50, 0 });
+	//ScreamEffectRenderer->GetTransform()->SetParent(GetTransform());
+	//ScreamEffectRenderer->GetTransform()->SetLocalPosition({ 0, 0, 0 });
 }
 
 void ScreamEffect::Update(float _Delta)

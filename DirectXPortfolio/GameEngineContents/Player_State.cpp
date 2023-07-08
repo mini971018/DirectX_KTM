@@ -38,6 +38,11 @@ void Player::StateInit()
 				return;
 			}
 		
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("Fireball");
+				return;
+			}
 
 			if (SkillCalTime >= 0.3f)
 			{
@@ -129,6 +134,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("Fireball");
+				return;
+			}
+
 			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
 			{
 				SetDashState();
@@ -199,6 +210,7 @@ void Player::StateInit()
 		}
 	);
 
+	//ToIdleState
 	FSM.CreateState(
 		{
 			.Name = "SprintToIdle",
@@ -214,7 +226,7 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Skill"))
 			{
 				FSM.ChangeState("Idle");
 				return;
@@ -292,6 +304,12 @@ void Player::StateInit()
 			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
 			{
 				FSM.ChangeState("Scream");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("Fireball");
 				return;
 			}
 
@@ -381,6 +399,12 @@ void Player::StateInit()
 			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
 			{
 				FSM.ChangeState("Scream");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("Fireball");
 				return;
 			}
 
@@ -482,6 +506,12 @@ void Player::StateInit()
 			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
 			{
 				FSM.ChangeState("Scream");
+				return;
+			}
+
+			if (true == GameEngineInput::IsUp("Skill"))
+			{
+				FSM.ChangeState("Fireball");
 				return;
 			}
 

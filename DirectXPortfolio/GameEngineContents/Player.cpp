@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "ShadowDashRechargedEffect.h"
 #include "ScreamEffect.h"
+#include "PlayerFireBall.h"
+#include "FireballCastEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -96,8 +98,6 @@ bool Player::IsGround(float4 _Pos)
 {
 	if (nullptr != PlayerColmapTexture)
 	{
-		float4 CheckPos = GetTransform()->GetWorldPosition();
-
 		if (GameEnginePixelColor::Black == PlayerColmapTexture->GetPixel(static_cast<int>(_Pos.x), static_cast<int>(-_Pos.y)))
 		{
 			return true;
@@ -225,7 +225,13 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("29.AnticScream").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("30.LoopScream").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("31.EndScream").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.FireballCast").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("86.FireballCastEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("87.AnticFireBallEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("88.LoopFireBallEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("89.EndFireBallEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("90.FireballHitEnemyEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("91.FireballHitWallEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("92.ScreamEffect").GetFullPath());
@@ -312,10 +318,10 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticScream", .SpriteName = "29.AnticScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopScream", .SpriteName = "30.LoopScream",  .FrameInter = 0.07f, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "EndScream", .SpriteName = "31.EndScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+
+	//Fireball
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballCast", .SpriteName = "32.FireballCast",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballHitEnemyEffect", .SpriteName = "90.FireballHitEnemyEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballHitWallEffect", .SpriteName = "91.FireballHitWallEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	//PlayerRenderer->CreateAnimation({ .AnimationName = "ScreamEffect", .SpriteName = "92.ScreamEffect",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+
 
 	if (nullptr == Pivot)
 	{
@@ -414,10 +420,44 @@ PlayerSlashAnimation Player::CalAttackAnimation()
 	}
 }
 
+void Player::SetFireBall()
+{
+	std::shared_ptr<class PlayerFireBall> FireBall = GetLevel()->CreateActor<PlayerFireBall>();
+	FireBall->GetTransform()->SetWorldPosition(Pivot->GetTransform()->GetWorldPosition());
+	FireBall->SetFireBall(PlayerColmapTexture, PlayerDir);
+}
+
+void Player::SetFireBallCastEffect()
+{
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+	
+
+	std::shared_ptr<class FireballCastEffect> CastEffect = GetLevel()->CreateActor<FireballCastEffect>();
+	//CastEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.5f });
+
+	if (float4::Left == PlayerDir)
+	{
+		CastEffect->GetTransform()->SetLocalNegativeScaleX();
+		
+		float4 EffectPos = float4{ PivotPos.x -50.0f, PivotPos.y, -70.0f };
+
+		CastEffect->GetTransform()->SetLocalPosition(EffectPos);
+	}
+	else
+	{
+		float4 EffectPos = float4{ PivotPos.x + 50.0f, PivotPos.y, -70.0f };
+
+		CastEffect->GetTransform()->SetLocalPosition(EffectPos);
+	}
+
+}
+
 void Player::SetScreamSkillEffect()
 {
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+	float4 EffectPos = { PivotPos.x, PivotPos.y + 130.0f, -70.0f };
+
 	std::shared_ptr<class ScreamEffect> ScreamSkillEffect = GetLevel()->CreateActor<ScreamEffect>();
-	ScreamSkillEffect->GetTransform()->SetParent(Pivot->GetTransform());
 	ScreamSkillEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
-	ScreamSkillEffect->GetTransform()->SetLocalPosition({ 0, 129.5f , -70});
+	ScreamSkillEffect->GetTransform()->SetLocalPosition(EffectPos);
 }

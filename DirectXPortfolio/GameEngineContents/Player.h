@@ -37,6 +37,8 @@ private:
 	float4 PivotPos = float4::Zero;
 	float4 PlayerDir = float4::Right;
 
+	void SetPlayerRendererPivot();
+
 	//이동 관련
 	const float MoveSpeed = 400.0f;
 	const float DashSpeed = 1100.0f;
@@ -56,8 +58,21 @@ private:
 	void ResetShadowDashValue();
 	bool ShadowDashEffectIsOn = false;
 
+	//공격 애니메이션 처리
+	void CalSlashAnimation();
+	PlayerSlashAnimation CalAttackAnimation();
+	PlayerSlashAnimation CurrentSlash = PlayerSlashAnimation::Slash1;
+	float SlashCalTime = 1.0f;
+
 	//Skill 관련
 	float SkillCalTime = 0.0f;
+	void SetFireBall();
+	void SetFireBallCastEffect();
+
+	//이펙트 관련
+	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
+
+	void SetScreamSkillEffect();
 
 
 	//점프 관련
@@ -65,8 +80,7 @@ private:
 
 	void ResetFallValue();
 
-	void SetPlayerRendererPivot();
-	
+	//플레이어 Init
 	void SpriteInit();
 	void StateInit();
 	void AttackStateInit();
@@ -78,6 +92,7 @@ private:
 	void CameraMoveLerp();
 	void CameraDeltaClamp();
 
+	//스테이트 관련
 	GameEngineFSM FSM;
 	PlayerState CurrentState = PlayerState::Idle;
 
@@ -86,16 +101,7 @@ private:
 	float StateCalFloat = 0.0f;
 	int StateCalCount = 0;
 
-	//공격 애니메이션 처리
-	void CalSlashAnimation();
-	PlayerSlashAnimation CalAttackAnimation();
-	PlayerSlashAnimation CurrentSlash = PlayerSlashAnimation::Slash1;
-	float SlashCalTime = 1.0f;
 
-	//이펙트 관련
-	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
-
-	void SetScreamSkillEffect();
 
 };
 
