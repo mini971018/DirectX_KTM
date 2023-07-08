@@ -2,9 +2,11 @@
 
 #include "Player.h"
 #include "ShadowDashRechargedEffect.h"
+#include "FocusEffect.h"
 #include "ScreamEffect.h"
 #include "PlayerFireBall.h"
 #include "FireballCastEffect.h"
+#include "HealingEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -309,10 +311,6 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopFocus", .SpriteName = "26.LoopFocus",  .FrameInter = 0.055f, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "EndFocus", .SpriteName = "27.EndFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "GetOnFocus", .SpriteName = "28.GetOnFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "FocusEffect", .SpriteName = "94.FocusEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopFocusEffect", .SpriteName = "95.LoopFocusEffect",  .FrameInter = 0.055f, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "EndFocusEffect", .SpriteName = "96.EndFocusEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	PlayerRenderer->CreateAnimation({ .AnimationName = "HealingEffect", .SpriteName = "97.HealingEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
 	//Scream
 	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticScream", .SpriteName = "29.AnticScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
@@ -345,6 +343,10 @@ void Player::EffectInit()
 	//ShadowDashRecharged
 	ShadowDashRechargedEffectActor = GetLevel()->CreateActor<ShadowDashRechargedEffect>();
 	ShadowDashRechargedEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+
+	FocusEffectActor = GetLevel()->CreateActor<FocusEffect>();
+	FocusEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+
 }
 
 void Player::CameraMoveLerp()
@@ -460,4 +462,14 @@ void Player::SetScreamSkillEffect()
 	std::shared_ptr<class ScreamEffect> ScreamSkillEffect = GetLevel()->CreateActor<ScreamEffect>();
 	ScreamSkillEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
 	ScreamSkillEffect->GetTransform()->SetLocalPosition(EffectPos);
+}
+
+void Player::SetHealingEffect()
+{
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+	float4 EffectPos = { PivotPos.x, PivotPos.y, -70.0f };
+
+	std::shared_ptr<class HealingEffect> HealingUpEffect = GetLevel()->CreateActor<HealingEffect>();
+	//HealingUpEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
+	HealingUpEffect->GetTransform()->SetLocalPosition(EffectPos);
 }

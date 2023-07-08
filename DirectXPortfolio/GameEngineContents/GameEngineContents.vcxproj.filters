@@ -55,6 +55,12 @@
     <ClInclude Include="FireBallHitWallEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="FocusEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HealingEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -121,6 +127,12 @@
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
     <ClCompile Include="FireBallHitWallEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FocusEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HealingEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>

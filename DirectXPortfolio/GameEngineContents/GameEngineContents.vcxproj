@@ -182,6 +182,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FocusEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="HealingEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HollowKnightBoss.h">
       <SubType>
       </SubType>
@@ -258,6 +266,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FireBallHitWallEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FocusEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HealingEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

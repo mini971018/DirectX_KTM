@@ -35,10 +35,6 @@ void PlayerFireBall::Start()
 	FIreBallRenderer->GetTransform()->SetParent(Pivot->GetTransform());
 	WallCheckTransform->GetTransform()->SetParent(Pivot->GetTransform());
 	WallCheckTransform->GetTransform()->SetLocalPosition({ 100.0f, 0.0f });
-
-	//FIreBallRenderer->CreateAnimation({ .AnimationName = "FireballHitEnemyEffect", .SpriteName = "90.FireballHitEnemyEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-	//FIreBallRenderer->CreateAnimation({ .AnimationName = "FireballHitWallEffect", .SpriteName = "91.FireballHitWallEffect",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
-
 }
 
 void PlayerFireBall::Update(float _Delta)

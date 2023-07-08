@@ -713,7 +713,17 @@ void HollowKnightBoss::StateInit()
 		{
 			if (true == BossRenderer->IsAnimationEnd())
 			{
-				FSM.ChangeState("Idle");
+				if (CheckRenderRotationValue())
+				{
+					FSM.ChangeState("Turn");
+					return;
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
+
+				}
 				return;
 			}
 

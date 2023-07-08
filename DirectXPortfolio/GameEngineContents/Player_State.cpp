@@ -16,7 +16,7 @@ void Player::StateInit()
 		{
 			PlayerRenderer->ChangeAnimation("Idle");
 
-			PivotPos = { 0, 90.0f };
+			PivotPos = { 0, 95.0f };
 			SkillCalTime = 0.0f;
 			SetPlayerRendererPivot();
 		},

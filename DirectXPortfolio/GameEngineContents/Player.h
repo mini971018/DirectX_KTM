@@ -71,9 +71,10 @@ private:
 
 	//이펙트 관련
 	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
+	std::shared_ptr<class FocusEffect> FocusEffectActor = nullptr;
 
 	void SetScreamSkillEffect();
-
+	void SetHealingEffect();
 
 	//점프 관련
 	bool DoubleJumpable = true;

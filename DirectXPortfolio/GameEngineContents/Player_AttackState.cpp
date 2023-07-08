@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
+#include "FocusEffect.h"
+
 #include "Player.h"
 
 void Player::AttackStateInit()
@@ -156,6 +158,7 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("AnticFocus");
+			FocusEffectActor->OnFocusEffect();
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -171,6 +174,7 @@ void Player::AttackStateInit()
 			{
 				//체력회복
 				PlayerRenderer->ChangeAnimation("GetOnFocus");
+				SetHealingEffect();
 				StateCalTime = 0.0f;
 			}
 
@@ -195,6 +199,7 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("EndFocus");
+			FocusEffectActor->OffFocusEffect();
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)

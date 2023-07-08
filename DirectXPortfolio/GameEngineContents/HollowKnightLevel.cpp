@@ -58,7 +58,7 @@ void HollowKnightLevel::Start()
 
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
-		//std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
+		std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
 	}
 }
 
