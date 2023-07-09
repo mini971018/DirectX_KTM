@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineLevel.h>
 
 #include "FocusEffect.h"
+#include "SlashEffect.h"
 
 #include "Player.h"
 
@@ -23,15 +24,19 @@ void Player::AttackStateInit()
 			switch (CurrentSlash)
 			{
 			case PlayerSlashAnimation::Slash1:
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash1, NormalSlashPos);
 				PlayerRenderer->ChangeAnimation("Slash1");
 				break;
 			case PlayerSlashAnimation::Slash2:
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash2, NormalSlashPos);
 				PlayerRenderer->ChangeAnimation("Slash2");
 				break;
 			case PlayerSlashAnimation::UpperSlash:
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::UpperSlash, UpperSlashPos);
 				PlayerRenderer->ChangeAnimation("UpSlash");
 				break;
 			case PlayerSlashAnimation::DownSlash:
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::DownSlash, DownSlashPos);
 				PlayerRenderer->ChangeAnimation("DownSlash");
 				break;
 			default:

@@ -37,9 +37,6 @@
     <ClInclude Include="BindBreakEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
-    <ClInclude Include="RoarEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight</Filter>
-    </ClInclude>
     <ClInclude Include="ShadowDashRechargedEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
@@ -60,6 +57,15 @@
     </ClInclude>
     <ClInclude Include="HealingEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleJumpEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RoarEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +139,12 @@
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
     <ClCompile Include="HealingEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleJumpEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>

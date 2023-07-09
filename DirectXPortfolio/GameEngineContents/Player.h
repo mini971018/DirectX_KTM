@@ -72,6 +72,12 @@ private:
 	//이펙트 관련
 	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
 	std::shared_ptr<class FocusEffect> FocusEffectActor = nullptr;
+	std::shared_ptr<class DoubleJumpEffect> JumpEffectActor = nullptr;
+	std::shared_ptr<class SlashEffect> SlashEffectActor = nullptr;
+
+	const float4 NormalSlashPos = { -30, 70 };
+	const float4 UpperSlashPos = { 0, 100 };
+	const float4 DownSlashPos = { 0, 0 };
 
 	void SetScreamSkillEffect();
 	void SetHealingEffect();

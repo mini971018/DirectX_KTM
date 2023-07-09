@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
+#include "DoubleJumpEffect.h";
+
 #include "Player.h"
 
 void Player::StateInit()
@@ -375,6 +377,8 @@ void Player::StateInit()
 		{
 			PlayerRenderer->ChangeAnimation("DoubleJump");
 
+			JumpEffectActor->JumpEffectOn();
+
 			if (CurrentState != PlayerState::Slash)
 			{
 				ResetFallValue();
@@ -457,6 +461,8 @@ void Player::StateInit()
 		},
 			.End = [this]()
 		{
+			JumpEffectActor->JumpEffectOff();
+
 			CurrentState = PlayerState::Jump;
 		},
 

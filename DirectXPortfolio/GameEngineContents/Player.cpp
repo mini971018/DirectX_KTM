@@ -7,6 +7,8 @@
 #include "PlayerFireBall.h"
 #include "FireballCastEffect.h"
 #include "HealingEffect.h"
+#include "DoubleJumpEffect.h"
+#include "SlashEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -61,6 +63,9 @@ void Player::Update(float _Delta)
 	}
 
 	SetStateAbleValue();
+
+	float4 TEST = JumpEffectActor->GetTransform()->GetLocalScale();
+
 }
 
 void Player::Render(float _Delta)
@@ -320,7 +325,6 @@ void Player::AnimationInit()
 	//Fireball
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballCast", .SpriteName = "32.FireballCast",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
-
 	if (nullptr == Pivot)
 	{
 		Pivot = CreateComponent<GameEngineComponent>();
@@ -347,6 +351,13 @@ void Player::EffectInit()
 	FocusEffectActor = GetLevel()->CreateActor<FocusEffect>();
 	FocusEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 
+	JumpEffectActor = GetLevel()->CreateActor<DoubleJumpEffect>();
+	JumpEffectActor->GetTransform()->SetLocalNegativeScaleX();
+	JumpEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+
+	SlashEffectActor = GetLevel()->CreateActor<SlashEffect>();
+	SlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+	SlashEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 }
 
 void Player::CameraMoveLerp()
