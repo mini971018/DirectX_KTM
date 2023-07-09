@@ -14,7 +14,7 @@ ScreamEffect::~ScreamEffect()
 
 void ScreamEffect::Start()
 {
-	ScreamEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::BFPF_Effect);
+	ScreamEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::BFPB_Effect);
 	ScreamEffectRenderer->CreateAnimation({ .AnimationName = "ScreamEffect", .SpriteName = "92.ScreamEffect", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 	ScreamEffectRenderer->ChangeAnimation("ScreamEffect");
 	//ScreamEffectRenderer->GetTransform()->SetParent(GetTransform());

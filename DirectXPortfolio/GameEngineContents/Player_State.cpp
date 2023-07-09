@@ -5,7 +5,8 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
-#include "DoubleJumpEffect.h";
+#include "DoubleJumpEffect.h"
+#include "DashEffect.h"
 
 #include "Player.h"
 
@@ -618,6 +619,7 @@ void Player::StateInit()
 		{
 			PlayerRenderer->ChangeAnimation("Dash");
 
+			DashEffectActor->OnDashEffect();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -662,7 +664,7 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("ShadowDash");
-
+			SetShadowDashEffect();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -741,7 +743,7 @@ void Player::StateInit()
 
 			if (true == GameEngineInput::IsDown("Dash"))
 			{
-				FSM.ChangeState("Dash");
+				SetDashState();
 				return;
 			}
 		},

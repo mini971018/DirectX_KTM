@@ -9,6 +9,8 @@
 #include "HealingEffect.h"
 #include "DoubleJumpEffect.h"
 #include "SlashEffect.h"
+#include "DashEffect.h"
+#include "ShadowDashEffect.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -318,7 +320,7 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "GetOnFocus", .SpriteName = "28.GetOnFocus",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
 	//Scream
-	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticScream", .SpriteName = "29.AnticScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "AnticScream", .SpriteName = "29.AnticScream",  .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "LoopScream", .SpriteName = "30.LoopScream",  .FrameInter = 0.07f, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "EndScream", .SpriteName = "31.EndScream",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
 
@@ -358,6 +360,10 @@ void Player::EffectInit()
 	SlashEffectActor = GetLevel()->CreateActor<SlashEffect>();
 	SlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
 	SlashEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+
+	DashEffectActor = GetLevel()->CreateActor<DashEffect>();
+	DashEffectActor->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
+	DashEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 }
 
 void Player::CameraMoveLerp()
@@ -444,7 +450,6 @@ void Player::SetFireBallCastEffect()
 {
 	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
 	
-
 	std::shared_ptr<class FireballCastEffect> CastEffect = GetLevel()->CreateActor<FireballCastEffect>();
 	//CastEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.5f });
 
@@ -464,6 +469,29 @@ void Player::SetFireBallCastEffect()
 	}
 
 }
+
+void Player::SetShadowDashEffect()
+{
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+
+	std::shared_ptr<class ShadowDashEffect> ShadowDashEffectActor = GetLevel()->CreateActor<ShadowDashEffect>();
+	ShadowDashEffectActor->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f});
+
+	if (float4::Left == PlayerDir)
+	{
+		float4 EffectPos = float4{ PivotPos.x + 150.0f, PivotPos.y - 60.0f};
+
+		ShadowDashEffectActor->GetTransform()->SetWorldPosition(EffectPos);
+	}
+	else
+	{
+		ShadowDashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+		float4 EffectPos = float4{ PivotPos.x - 150.0f, PivotPos.y -60.0f };
+
+		ShadowDashEffectActor->GetTransform()->SetWorldPosition(EffectPos);
+	}
+}
+
 
 void Player::SetScreamSkillEffect()
 {

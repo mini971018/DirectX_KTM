@@ -67,6 +67,12 @@
     <ClInclude Include="RoarEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
+    <ClInclude Include="DashEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowDashEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -145,6 +151,12 @@
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
     <ClCompile Include="SlashEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DashEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowDashEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>

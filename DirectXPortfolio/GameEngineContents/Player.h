@@ -68,12 +68,14 @@ private:
 	float SkillCalTime = 0.0f;
 	void SetFireBall();
 	void SetFireBallCastEffect();
+	void SetShadowDashEffect();
 
 	//ÀÌÆåÆ® °ü·Ã
 	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;
 	std::shared_ptr<class FocusEffect> FocusEffectActor = nullptr;
 	std::shared_ptr<class DoubleJumpEffect> JumpEffectActor = nullptr;
 	std::shared_ptr<class SlashEffect> SlashEffectActor = nullptr;
+	std::shared_ptr<class DashEffect> DashEffectActor = nullptr;
 
 	const float4 NormalSlashPos = { -30, 70 };
 	const float4 UpperSlashPos = { 0, 100 };
