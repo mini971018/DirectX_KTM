@@ -306,6 +306,7 @@ void Player::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			StateCalTime += _DeltaTime;
 
 			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
 			{
@@ -344,7 +345,7 @@ void Player::StateInit()
 			}
 			else if (StateCalTime >= 0.35f)
 			{
-				StateCalFloat *= 0.95f;
+				StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
 
 				if (StateCalFloat <= 100.0f)
 				{
@@ -381,7 +382,6 @@ void Player::StateInit()
 			}
 
 			//SetGravity(_DeltaTime);
-			StateCalTime += _DeltaTime;
 
 		},
 			.End = [this]()
@@ -446,7 +446,7 @@ void Player::StateInit()
 			}
 			else if (StateCalTime >= 0.35f)
 			{
-				StateCalFloat *= 0.95f;
+				StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
 
 				if (StateCalFloat <= 100.0f)
 				{
@@ -506,7 +506,7 @@ void Player::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			Gravity *= 1.05f;
+			Gravity = Gravity + (2500.0f * _DeltaTime);
 
 			if (Gravity >= 950.0f)
 			{

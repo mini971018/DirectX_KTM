@@ -85,7 +85,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			CurrentDashSpeed = CurrentDashSpeed * 0.9f;
+			CurrentDashSpeed -= (DashSpeed * 3.0f * _DeltaTime);
 			GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
 
 			if (CurrentDashSpeed <= 300.0f)

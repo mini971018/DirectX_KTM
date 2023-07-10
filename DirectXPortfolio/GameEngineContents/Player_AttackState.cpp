@@ -81,7 +81,7 @@ void Player::AttackStateInit()
 
 				else if (StateCalTime >= 0.35f)
 				{
-					StateCalFloat *= 0.95f;
+					StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
 
 					if (StateCalFloat <= 100.0f)
 					{
@@ -106,7 +106,7 @@ void Player::AttackStateInit()
 			}
 			else if (PlayerState::Fall == CurrentState)
 			{
-				Gravity *= 1.05f;
+				Gravity = Gravity + (2500.0f * _DeltaTime);
 
 				if (Gravity >= 750.0f)
 				{
