@@ -266,7 +266,6 @@ void HollowKnightBoss::Update(float _Delta)
 		FSM.ChangeState("Idle");
 	}
 
-
 	if (GameEngineInput::IsUp("TestButton4"))
 	{
 		CurrentHp -= 400.0f;
@@ -626,4 +625,20 @@ bool HollowKnightBoss::CounterAvailability()
 {
 	//To do : Collision 추가 후 로직 구현 (플레이어가 콜리전과 맞닿아 있고, 방향이 서로 다름)
 	return true;
+}
+
+bool HollowKnightBoss::BossStageStart()
+{
+	float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+
+	float Value = fabs(BossToPlayerDir.x);
+
+	if (Value <= StartDistanceX)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

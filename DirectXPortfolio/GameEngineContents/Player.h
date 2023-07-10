@@ -20,6 +20,13 @@ public:
 	static void SetCurrentLevelPlayer(std::shared_ptr<Player> _Player);
 
 	void InitPlayer(std::string_view ColMap);
+	void SetPlayerCanMoveState(bool _State)
+	{
+		CanMoveState = _State;
+	}
+	void OnRoarLockState(float4 _PlayerDir);
+	void OffRoarLockState();
+
 
 protected:
 	void Start();
@@ -48,6 +55,8 @@ private:
 	bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
 	
+	bool CanMoveState = true;
+
 	//대쉬 관련
 	bool Dashable = true; //대쉬가 가능한지
 	bool ShadowDashable = true;;

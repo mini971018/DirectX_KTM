@@ -157,7 +157,6 @@ void Player::ResetShadowDashValue()
 }
 
 
-
 void Player::ResetFallValue()
 {
 	StateCalTime = 0.0f;
@@ -326,6 +325,10 @@ void Player::AnimationInit()
 
 	//Fireball
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballCast", .SpriteName = "32.FireballCast",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+
+	//Roarlock
+	PlayerRenderer->CreateAnimation({ .AnimationName = "RoarLock", .SpriteName = "20.RoarLock",  .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true, });
+	PlayerRenderer->CreateAnimation({ .AnimationName = "RoarLockLoop", .SpriteName = "21.RoarLockLoop",  .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true, });
 
 	if (nullptr == Pivot)
 	{
@@ -511,4 +514,16 @@ void Player::SetHealingEffect()
 	std::shared_ptr<class HealingEffect> HealingUpEffect = GetLevel()->CreateActor<HealingEffect>();
 	//HealingUpEffect->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
 	HealingUpEffect->GetTransform()->SetLocalPosition(EffectPos);
+}
+
+void Player::OnRoarLockState(float4 _PlayerDir)
+{
+	PlayerDir = _PlayerDir;
+
+	FSM.ChangeState("RoarLock");
+}
+
+void Player::OffRoarLockState()
+{
+	FSM.ChangeState("Idle");
 }

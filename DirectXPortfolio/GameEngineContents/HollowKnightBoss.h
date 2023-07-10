@@ -108,6 +108,10 @@ private:
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase4; //현재 패턴의 번호
 	bool IsNextPhase();
 
+	//StageStart
+	bool BossStageStart();
+	const float StartDistanceX = 600.0f;
+
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
 	std::string_view CurrentState = "";

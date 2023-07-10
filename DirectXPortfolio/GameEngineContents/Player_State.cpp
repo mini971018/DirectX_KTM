@@ -26,71 +26,74 @@ void Player::StateInit()
 			.Update = [this](float _DeltaTime)
 		{
 
-			if (true == GameEngineInput::IsPress("Skill"))
+			if (true == CanMoveState)
 			{
-				SkillCalTime += _DeltaTime;
-			}
-			else
-			{
-				SkillCalTime = 0.0f;
-			}
+				if (true == GameEngineInput::IsPress("Skill"))
+				{
+					SkillCalTime += _DeltaTime;
+				}
+				else
+				{
+					SkillCalTime = 0.0f;
+				}
 
-			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
-			{
-				FSM.ChangeState("Scream");
-				return;
-			}
-		
-			if (true == GameEngineInput::IsUp("Skill"))
-			{
-				FSM.ChangeState("Fireball");
-				return;
-			}
+				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+				{
+					FSM.ChangeState("Scream");
+					return;
+				}
 
-			if (SkillCalTime >= 0.3f)
-			{
-				FSM.ChangeState("Healing");
-				return;
-			}
+				if (true == GameEngineInput::IsUp("Skill"))
+				{
+					FSM.ChangeState("Fireball");
+					return;
+				}
 
-			if (false == IsGround(GetTransform()->GetWorldPosition()))
-			{
-				FSM.ChangeState("Fall");
-				return;
-			}
+				if (SkillCalTime >= 0.3f)
+				{
+					FSM.ChangeState("Healing");
+					return;
+				}
 
-			if (true == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
-			{
-				PlayerDir = float4::Right;
+				if (false == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
 
-				FSM.ChangeState("Sprint");
-				return;
-			}
+				if (true == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
+				{
+					PlayerDir = float4::Right;
 
-			if (false == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft"))
-			{
-				PlayerDir = float4::Left;
+					FSM.ChangeState("Sprint");
+					return;
+				}
 
-				FSM.ChangeState("Sprint");
-				return;
-			}
+				if (false == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft"))
+				{
+					PlayerDir = float4::Left;
 
-			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
-			{
-				SetDashState();
-				return;
-			}
+					FSM.ChangeState("Sprint");
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Attack"))
-			{
-				FSM.ChangeState("Slash");
-				return;
-			}
+				if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+				{
+					SetDashState();
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Jump"))
-			{
-				FSM.ChangeState("Jump");
-				return;
+				if (true == GameEngineInput::IsDown("Attack"))
+				{
+					FSM.ChangeState("Slash");
+					return;
+				}
+
+				if (true == GameEngineInput::IsDown("Jump"))
+				{
+					FSM.ChangeState("Jump");
+					return;
+				}
 			}
 		},
 			.End = [this]()
@@ -128,6 +131,12 @@ void Player::StateInit()
 			if (false == IsGround(GetTransform()->GetWorldPosition()))
 			{
 				FSM.ChangeState("Fall");
+				return;
+			}
+
+			if (false == CanMoveState)
+			{
+				FSM.ChangeState("Idle");
 				return;
 			}
 
@@ -229,6 +238,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (false == CanMoveState)
+			{
+				FSM.ChangeState("Idle");
+				return;
+			}
+
 			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Skill"))
 			{
 				FSM.ChangeState("Idle");
@@ -293,6 +308,12 @@ void Player::StateInit()
 		{
 
 			if (StateCalTime >= 0.1f && false == GameEngineInput::IsPress("Jump"))
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+
+			if (false == CanMoveState)
 			{
 				FSM.ChangeState("Fall");
 				return;
@@ -394,6 +415,11 @@ void Player::StateInit()
 				return;
 			}
 
+			if (false == CanMoveState)
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
 
 			if (true == GameEngineInput::IsPress("Attack"))
 			{
@@ -498,56 +524,60 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			if (true == CanMoveState)
 			{
-				SetDashState();
-				return;
-			}
 
-			if (true == GameEngineInput::IsDown("Attack"))
-			{
-				FSM.ChangeState("Slash");
-				return;
-			}
-
-			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
-			{
-				FSM.ChangeState("Scream");
-				return;
-			}
-
-			if (true == GameEngineInput::IsUp("Skill"))
-			{
-				FSM.ChangeState("Fireball");
-				return;
-			}
-
-			if (true == DoubleJumpable && true == GameEngineInput::IsDown("Jump"))
-			{
-				FSM.ChangeState("DoubleJump");
-				DoubleJumpable = false;
-				return;
-			}
-
-			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
-			{
-				if (float4::Right == PlayerDir)
+				if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
 				{
-					PlayerDir = float4::Left;
-					Pivot->GetTransform()->SetLocalPositiveScaleX();
+					SetDashState();
+					return;
 				}
 
-				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
-			}
-			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
-			{
-				if (float4::Left == PlayerDir)
+				if (true == GameEngineInput::IsDown("Attack"))
 				{
-					PlayerDir = float4::Right;
-					Pivot->GetTransform()->SetLocalNegativeScaleX();
+					FSM.ChangeState("Slash");
+					return;
 				}
 
-				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+				{
+					FSM.ChangeState("Scream");
+					return;
+				}
+
+				if (true == GameEngineInput::IsUp("Skill"))
+				{
+					FSM.ChangeState("Fireball");
+					return;
+				}
+
+				if (true == DoubleJumpable && true == GameEngineInput::IsDown("Jump"))
+				{
+					FSM.ChangeState("DoubleJump");
+					DoubleJumpable = false;
+					return;
+				}
+
+				if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+				{
+					if (float4::Right == PlayerDir)
+					{
+						PlayerDir = float4::Left;
+						Pivot->GetTransform()->SetLocalPositiveScaleX();
+					}
+
+					GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
+				}
+				else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+				{
+					if (float4::Left == PlayerDir)
+					{
+						PlayerDir = float4::Right;
+						Pivot->GetTransform()->SetLocalNegativeScaleX();
+					}
+
+					GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+				}
 			}
 
 			SetGravity(_DeltaTime);
@@ -578,28 +608,31 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Skill"))
+			if (true == CanMoveState)
 			{
-				FSM.ChangeState("Idle");
-				return;
-			}
+				if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft") || true == GameEngineInput::IsPress("Skill"))
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Attack"))
-			{
-				FSM.ChangeState("Slash");
-				return;
-			}
+				if (true == GameEngineInput::IsDown("Attack"))
+				{
+					FSM.ChangeState("Slash");
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Jump"))
-			{
-				FSM.ChangeState("Jump");
-				return;
-			}
+				if (true == GameEngineInput::IsDown("Jump"))
+				{
+					FSM.ChangeState("Jump");
+					return;
+				}
 
-			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
-			{
-				SetDashState();
-				return;
+				if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+				{
+					SetDashState();
+					return;
+				}
 			}
 
 		},
@@ -623,6 +656,22 @@ void Player::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (false == CanMoveState)
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("DashToIdle");
+					return;
+				}
+				else
+				{
+					ResetFallValue();
+
+					FSM.ChangeState("Fall");
+					return;
+				}
+			}
+
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				if (true == IsGround(GetTransform()->GetWorldPosition()))
@@ -668,6 +717,21 @@ void Player::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (false == CanMoveState)
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("DashToIdle");
+					return;
+				}
+				else
+				{
+					ResetFallValue();
+
+					FSM.ChangeState("Fall");
+					return;
+				}
+			}
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				if (true == IsGround(GetTransform()->GetWorldPosition()))
@@ -723,33 +787,85 @@ void Player::StateInit()
 				}
 			}
 
-			if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
-			{
-				FSM.ChangeState("Idle");
-				return;
-			}
 
-			if (true == GameEngineInput::IsDown("Attack"))
+			if (true == CanMoveState)
 			{
-				FSM.ChangeState("Slash");
-				return;
-			}
+				if (true == GameEngineInput::IsPress("MoveRight") || true == GameEngineInput::IsPress("MoveLeft"))
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Jump"))
-			{
-				FSM.ChangeState("Jump");
-				return;
-			}
+				if (true == GameEngineInput::IsDown("Attack"))
+				{
+					FSM.ChangeState("Slash");
+					return;
+				}
 
-			if (true == GameEngineInput::IsDown("Dash"))
-			{
-				SetDashState();
-				return;
+				if (true == GameEngineInput::IsDown("Jump"))
+				{
+					FSM.ChangeState("Jump");
+					return;
+				}
+
+				if (true == GameEngineInput::IsDown("Dash"))
+				{
+					SetDashState();
+					return;
+				}
 			}
 		},
 			.End = [this]()
 		{
 			CurrentState = PlayerState::Idle;
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "RoarLock",
+			.Start = [this]()
+		{
+			if (float4::Left == PlayerDir)
+			{
+				Pivot->GetTransform()->SetLocalNegativeScaleX();
+			}
+			else
+			{
+				Pivot->GetTransform()->SetLocalPositiveScaleX();
+			}
+
+			PlayerRenderer->ChangeAnimation("RoarLock");
+
+
+			Gravity = 950.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				PlayerRenderer->ChangeAnimation("RoarLockLoop");
+			}
+
+			if (false == IsGround(GetTransform()->GetWorldPosition()))
+			{
+				SetGravity(_DeltaTime);
+
+				if (PlayerDir == float4::Left)
+				{
+					GetTransform()->AddWorldPosition(float4::Right * 50.0f * _DeltaTime);
+				}
+				else
+				{
+					GetTransform()->AddWorldPosition(float4::Right * 50.0f * _DeltaTime);
+				}
+			}
+		},
+			.End = [this]()
+		{
+			
 		},
 
 		}

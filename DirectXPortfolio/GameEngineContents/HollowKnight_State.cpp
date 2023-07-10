@@ -17,11 +17,12 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			StateCalTime = 0.0f;
-
+			CurrentState = "ChainIdle";
+			BossRenderer->ChangeAnimation("ChainIdle");
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (GameEngineInput::IsUp("TestButton"))
+			if (true == BossStageStart())
 			{
 				FSM.ChangeState("ChainRoar");
 				return;
@@ -41,6 +42,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("ChainIdle");
+			Player::CurrentLevelPlayer->SetPlayerCanMoveState(false);
 
 			//float4 EffectPos = GetTransform()->GetWorldPosition();
 			//EffectPos += {-10, 300};
@@ -192,6 +194,20 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f; //로어이펙트 주기
 			StateCalTime2 = 0.0f;  //다음 스테이트로 넘어가는 시간
 			
+			float4 RoarLockDir;
+			float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+
+			if (BossToPlayerDir.x >= 0.0f)
+			{
+				RoarLockDir = float4::Right;
+			}
+			else
+			{
+				RoarLockDir = float4::Left;
+			}
+
+			Player::CurrentLevelPlayer->OnRoarLockState(RoarLockDir);
+
 			//float4 EffectPos = GetTransform()->GetWorldPosition();
 			//EffectPos += { 125, 365 };
 			//RoarEffectPos = EffectPos;
@@ -233,6 +249,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("RoarToIdle");
+			Player::CurrentLevelPlayer->OffRoarLockState();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -244,7 +261,7 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
-
+			Player::CurrentLevelPlayer->SetPlayerCanMoveState(true);
 		},
 
 		}
