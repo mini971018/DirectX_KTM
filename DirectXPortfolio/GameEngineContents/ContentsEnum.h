@@ -89,3 +89,9 @@ enum class PlayerSlashAnimation
 	UpperSlash,
 	DownSlash,
 };
+
+enum class HollowKnightCollisionType
+{
+	Player,
+	Boss,
+};

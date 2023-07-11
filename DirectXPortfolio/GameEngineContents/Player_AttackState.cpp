@@ -82,7 +82,7 @@ void Player::AttackStateInit()
 				else if (StateCalTime >= 0.35f)
 				{
 					StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
-
+			
 					if (StateCalFloat <= 100.0f)
 					{
 						CurrentState = PlayerState::Fall;
@@ -121,7 +121,7 @@ void Player::AttackStateInit()
 				{
 					SetGravity(_DeltaTime);
 				}
-				
+
 				if (true == PlayerRenderer->IsAnimationEnd())
 				{
 					FSM.ChangeState("Fall");

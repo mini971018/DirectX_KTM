@@ -17,6 +17,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 std::shared_ptr<Player> Player::CurrentLevelPlayer = nullptr;
 // 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
@@ -41,6 +42,7 @@ void Player::Start()
 	AnimationInit();
 	StateInit();
 	EffectInit();
+	CollisionInit();
 }
 
 void Player::Update(float _Delta)
@@ -66,7 +68,10 @@ void Player::Update(float _Delta)
 
 	SetStateAbleValue();
 
-	float4 TEST = JumpEffectActor->GetTransform()->GetLocalScale();
+	if (GameEngineInput::IsDown("SwitchCollisionDebug"))
+	{
+		GameEngineLevel::IsDebugSwitch();
+	}
 
 }
 
@@ -95,6 +100,8 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("Jump", 'Z');
 		GameEngineInput::CreateKey("Dash", 'C');
 		GameEngineInput::CreateKey("Skill", 'A');
+
+		GameEngineInput::CreateKey("SwitchCollisionDebug", '9');
 	}
 }
 
@@ -128,6 +135,7 @@ void Player::SetGravity(float _Delta)
 
 	GetTransform()->SetWorldPosition(NextPos);
 }
+
 
 void Player::SetStateAbleValue()
 {
@@ -369,6 +377,15 @@ void Player::EffectInit()
 	DashEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 }
 
+void Player::CollisionInit()
+{
+	PlayerCollision = CreateComponent<GameEngineCollision>();
+	PlayerCollision->SetColType(ColType::AABBBOX2D);
+	PlayerCollision->GetTransform()->SetLocalScale({ 52.0f, 114.0f, 1.0f});
+	PlayerCollision->GetTransform()->SetLocalPosition({ 0.0f, 65.0f , -70.0f});
+	PlayerCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Player));
+}
+
 void Player::CameraMoveLerp()
 {
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
@@ -526,4 +543,22 @@ void Player::OnRoarLockState(float4 _PlayerDir)
 void Player::OffRoarLockState()
 {
 	FSM.ChangeState("Idle");
+}
+
+void Player::SetPlayerCollisionPos(float _Value)
+{
+	if (0.0f == _Value)
+	{
+		PlayerCollision->GetTransform()->SetLocalPosition(PlayerCollisionPos);
+		return;
+	}
+
+	if (float4::Left == PlayerDir)
+	{
+		PlayerCollision->GetTransform()->AddLocalPosition({ -_Value, 0 });	
+	}
+	else
+	{
+		PlayerCollision->GetTransform()->AddLocalPosition({ _Value, 0 });
+	}
 }

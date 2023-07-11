@@ -90,7 +90,6 @@ void HollowKnightBossRoom::CreateMap()
 		Chain10->SetScaleToTexture("Chain.png");
 		Chain10->GetTransform()->SetLocalPosition({ 1174, -124, 400 });
 		Chain10->GetTransform()->SetWorldRotation({ 0, 0, 20 });
-
 	}
 
 	//BG

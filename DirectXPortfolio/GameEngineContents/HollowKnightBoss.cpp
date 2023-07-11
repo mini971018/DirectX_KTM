@@ -8,6 +8,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <map>
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "Player.h"
 #include "RoarEffect.h"
@@ -27,6 +28,7 @@ void HollowKnightBoss::Start()
 {
 	SpriteInit();
 	AnimationInit();
+	CollisionInit();
 	StateInit();
 	AttackStateInit();
 	BossPatternInit();
@@ -252,6 +254,15 @@ void HollowKnightBoss::AnimationInit()
 	}
 }
 
+void HollowKnightBoss::CollisionInit()
+{
+	HollowKnightCollision = CreateComponent<GameEngineCollision>();
+	HollowKnightCollision->SetColType(ColType::AABBBOX2D);
+	HollowKnightCollision->GetTransform()->SetLocalScale({ 175.0f, 290.0f, 1.0f });
+	HollowKnightCollision->GetTransform()->SetLocalPosition({ 0.0f, 175.0f , -70.0f });
+	HollowKnightCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Boss));
+}
+
 void HollowKnightBoss::Update(float _Delta)
 {
 	FSM.Update(_Delta);
@@ -269,6 +280,13 @@ void HollowKnightBoss::Update(float _Delta)
 	if (GameEngineInput::IsUp("TestButton4"))
 	{
 		CurrentHp -= 400.0f;
+	}
+
+	std::shared_ptr<GameEngineCollision> ColTest = HollowKnightCollision->Collision(HollowKnightCollisionType::Player);
+
+	if (ColTest != nullptr)
+	{
+
 	}
 }
 

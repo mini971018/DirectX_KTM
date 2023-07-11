@@ -36,8 +36,14 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer;
 	std::shared_ptr<class GameEngineTexture> BossColmapTexture;
 
+	//보스 Init
 	void SpriteInit();
 	void AnimationInit();
+	void CollisionInit();
+
+	//Collision 관련
+	std::shared_ptr<class GameEngineCollision> HollowKnightCollision = nullptr;
+	//const float4 HollowKnightCollisionPos = { 0.0f, 65.0f , -70.0f };
 
 	//RoarEffect관련
 	float4 RoarEffectPos = float4::Zero;

@@ -49,12 +49,13 @@ private:
 	//이동 관련
 	const float MoveSpeed = 400.0f;
 	const float DashSpeed = 1100.0f;
-	const float JumpForce = 850.0f;
-	
+	const float JumpForce = 950.0f;
+	const float MaxGravity = 1050.0f;
+
 	float Gravity = 450.0f; //중력 크기
 	bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
-	
+
 	bool CanMoveState = true;
 
 	//대쉬 관련
@@ -93,6 +94,13 @@ private:
 	void SetScreamSkillEffect();
 	void SetHealingEffect();
 
+	//Collision관련
+	std::shared_ptr<class GameEngineCollision> PlayerCollision = nullptr;
+	
+	const float4 PlayerCollisionPos = { 0.0f, 65.0f , -70.0f };
+
+	void SetPlayerCollisionPos(float _Value = 0.0f);
+
 	//점프 관련
 	bool DoubleJumpable = true;
 
@@ -104,6 +112,7 @@ private:
 	void AttackStateInit();
 	void AnimationInit();
 	void EffectInit();
+	void CollisionInit();
 
 	//카메라 이동
 	float CamDeltaTime = 0.0f;

@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "DoubleJumpEffect.h"
 #include "DashEffect.h"
@@ -119,6 +120,7 @@ void Player::StateInit()
 			.Name = "Sprint",
 			.Start = [this]()
 		{
+			SetPlayerCollisionPos(10);
 			PlayerRenderer->ChangeAnimation("AnticSprint");
 		},
 			.Update = [this](float _DeltaTime)
@@ -217,6 +219,7 @@ void Player::StateInit()
 			.End = [this]()
 		{
 			CurrentState = PlayerState::Sprint;
+			SetPlayerCollisionPos(0);
 		},
 
 		}
@@ -343,7 +346,7 @@ void Player::StateInit()
 				SetDashState();
 				return;
 			}
-			else if (StateCalTime >= 0.35f)
+			else if (StateCalTime >= 0.3f)
 			{
 				StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
 
@@ -377,7 +380,7 @@ void Player::StateInit()
 					PlayerDir = float4::Right;
 					Pivot->GetTransform()->SetLocalNegativeScaleX();
 				}
-
+		
 				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
 			}
 
@@ -444,7 +447,7 @@ void Player::StateInit()
 				SetDashState();
 				return;
 			}
-			else if (StateCalTime >= 0.35f)
+			else if (StateCalTime >= 0.3f)
 			{
 				StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
 
@@ -508,9 +511,9 @@ void Player::StateInit()
 		{
 			Gravity = Gravity + (2500.0f * _DeltaTime);
 
-			if (Gravity >= 950.0f)
+			if (Gravity >= MaxGravity)
 			{
-				Gravity = 950.0f;
+				Gravity = MaxGravity;
 			}
 
 			if (true == PlayerRenderer->IsAnimationEnd())
@@ -526,7 +529,6 @@ void Player::StateInit()
 
 			if (true == CanMoveState)
 			{
-
 				if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
 				{
 					SetDashState();
@@ -645,13 +647,15 @@ void Player::StateInit()
 		}
 	);
 
+
+	//PlayerDash
 	FSM.CreateState(
 		{
 			.Name = "Dash",
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("Dash");
-
+			SetPlayerCollisionPos(20);
 			DashEffectActor->OnDashEffect();
 		},
 			.Update = [this](float _DeltaTime)
@@ -702,6 +706,7 @@ void Player::StateInit()
 		{
 			CurrentState = PlayerState::Dash;
 			Dashable = false;
+			SetPlayerCollisionPos(0);
 		},
 
 		}
@@ -713,6 +718,7 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("ShadowDash");
+			PlayerCollision->Off();
 			SetShadowDashEffect();
 		},
 			.Update = [this](float _DeltaTime)
@@ -762,6 +768,7 @@ void Player::StateInit()
 		{
 			CurrentState = PlayerState::Dash;
 			ResetShadowDashValue();
+			PlayerCollision->On();
 			Dashable = false;
 		},
 		}
