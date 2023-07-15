@@ -44,6 +44,8 @@ private:
 	//Collision 관련
 	std::shared_ptr<class GameEngineCollision> HollowKnightCollision = nullptr;
 	//const float4 HollowKnightCollisionPos = { 0.0f, 65.0f , -70.0f };
+	void SetDamagedColor();
+	const float4 DamagedColor = float4{ static_cast<float>((201.0f *0.75f) /255.0f) , static_cast<float>((84.0f * 0.75f) /255.0f), static_cast<float>((16.0f * 0.75f) / 255.0f) , 0};
 
 	//RoarEffect관련
 	float4 RoarEffectPos = float4::Zero;
@@ -55,9 +57,13 @@ private:
     bool IsGround(float4 _Pos); //지면에 닿아있는지 여부
 	void SetGravity(float _Delta); //중력 적용
 
-	//
+	//PVE 관련
 	const float BossHP = 1250.0f;
 	float CurrentHp = BossHP;
+	void GetDamageCheck();
+	void GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos = float4::Null);
+	float DamagedTime = 0.0f; //n초에 한번씩만 공격받을 수 있도록
+	const float ConstDamagedTime = 0.3f;
 
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init

@@ -262,6 +262,21 @@ void HollowKnightBoss::CollisionInit()
 	HollowKnightCollision->GetTransform()->SetLocalPosition({ 0.0f, 175.0f , -70.0f });
 	HollowKnightCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Boss));
 }
+ 
+void HollowKnightBoss::SetDamagedColor()
+{
+	if (DamagedTime <= ConstDamagedTime)
+	{
+		BossRenderer->ColorOptionValue.PlusColor = DamagedColor;
+		BossRenderer->ColorOptionValue.MulColor = DamagedColor;
+		BossRenderer->ColorOptionValue.MulColor.a = 1.0f;
+	}
+	else
+	{
+		BossRenderer->ColorOptionValue.PlusColor = float4::Null;
+		BossRenderer->ColorOptionValue.MulColor = float4::One;
+	}
+}
 
 void HollowKnightBoss::Update(float _Delta)
 {
@@ -282,12 +297,10 @@ void HollowKnightBoss::Update(float _Delta)
 		CurrentHp -= 400.0f;
 	}
 
-	std::shared_ptr<GameEngineCollision> ColTest = HollowKnightCollision->Collision(HollowKnightCollisionType::Player);
+	DamagedTime += _Delta;
 
-	if (ColTest != nullptr)
-	{
-
-	}
+	GetDamageCheck();
+	SetDamagedColor();
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -395,6 +408,8 @@ void HollowKnightBoss::ResetBoss()
 
 	CurrentPhase = HollowKnightPatternEnum::Phase1;
 	CurrentHp = BossHP;
+	HollowKnightCollision->Off();
+	
 }
 
 void HollowKnightBoss::SetRandomPattern()
@@ -659,4 +674,56 @@ bool HollowKnightBoss::BossStageStart()
 	{
 		return false;
 	}
+}
+
+void HollowKnightBoss::GetDamageCheck()
+{
+	if (DamagedTime < ConstDamagedTime)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> AttackCollision = HollowKnightCollision->Collision(HollowKnightCollisionType::PlayerAttack);
+	std::shared_ptr<GameEngineCollision> SkillCollision = HollowKnightCollision->Collision(HollowKnightCollisionType::PlayerSkill);
+
+	float AttackDamage = Player::CurrentLevelPlayer->GetPlayerDamage();
+	float SkillDamage = Player::CurrentLevelPlayer->GetPlayerSkillDamage();
+
+	if (AttackCollision != nullptr)
+	{
+		GetDamage(AttackDamage, PlayerAttackType::Slash, AttackCollision->GetTransform()->GetWorldPosition());
+	}
+
+	if (SkillCollision != nullptr)
+	{
+		GetDamage(SkillDamage, PlayerAttackType::Skill);
+	}
+}
+
+void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos)
+{
+	CurrentHp -= _Damage;
+	
+	float4 EffectPos = float4::Null;
+
+	switch (_Type)
+	{
+	case PlayerAttackType::Slash:
+		//Hit Slash Effect 추가
+		EffectPos = float4::Lerp(HollowKnightCollision->GetTransform()->GetWorldPosition(), _Pos, 0.5f);
+		Player::CurrentLevelPlayer->SetEnemyHitEffect(EffectPos, float4{ 3 , 3 });
+		Player::CurrentLevelPlayer->SetEnemyHitSlashEffect(EffectPos, float4{ 1 ,1 });
+		break;
+	case PlayerAttackType::Skill:
+		EffectPos = Pivot->GetTransform()->GetWorldPosition();
+		EffectPos = EffectPos - float4{ 0, 30.0f };
+		Player::CurrentLevelPlayer->SetFireballHitEffect(EffectPos, float4{2 ,2});
+		//Hit Skill Effect 추가
+		break;
+	default:
+		MsgAssert("보스의 GetDamage 중 존재할 수 없는 데미지 타입 입니다.");
+		break;
+	}
+
+	DamagedTime = 0.0f;
 }

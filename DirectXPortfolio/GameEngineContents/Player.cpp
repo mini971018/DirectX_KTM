@@ -11,7 +11,11 @@
 #include "SlashEffect.h"
 #include "DashEffect.h"
 #include "ShadowDashEffect.h"
+#include "FireballHitEnemyEffect.h"
+#include "PlayerHitEffect.h"
+#include "PlayerHitSlashEffect.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineCamera.h>
@@ -244,6 +248,11 @@ void Player::SpriteInit()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.FireballCast").GetFullPath());
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("82.HitEffect").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("83.HitSlashEffect1").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("84.HitSlashEffect2").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("85.HitSkillEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("86.FireballCastEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("87.AnticFireBallEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("88.LoopFireBallEffect").GetFullPath());
@@ -369,8 +378,8 @@ void Player::EffectInit()
 	JumpEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 
 	SlashEffectActor = GetLevel()->CreateActor<SlashEffect>();
-	SlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
-	SlashEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+	//SlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+	SlashEffectActor->GetTransform()->SetParent(GetTransform());
 
 	DashEffectActor = GetLevel()->CreateActor<DashEffect>();
 	DashEffectActor->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
@@ -413,6 +422,15 @@ void Player::CameraMoveLerp()
 
 void Player::CalSlashAnimation()
 {
+	if (float4::Right == PlayerDir)
+	{
+		SlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+	}
+	else
+	{
+		SlashEffectActor->GetTransform()->SetLocalPositiveScaleX();
+	}
+	
 	if (GameEngineInput::IsPress("MoveUp"))
 	{
 		CurrentSlash = PlayerSlashAnimation::UpperSlash;
@@ -561,4 +579,34 @@ void Player::SetPlayerCollisionPos(float _Value)
 	{
 		PlayerCollision->GetTransform()->AddLocalPosition({ _Value, 0 });
 	}
+}
+
+void Player::SetFireballHitEffect(float4 _Pos, float4 _Scale)
+{
+	std::shared_ptr<class FireballHitEnemyEffect> FireballHitEnemyEffectActor = GetLevel()->CreateActor<FireballHitEnemyEffect>();
+
+	FireballHitEnemyEffectActor->SetFireballHitEffect(_Pos, _Scale);
+}
+
+void Player::SetEnemyHitSlashEffect(float4 _Pos, float4 _Scale)
+{
+	std::shared_ptr<class PlayerHitSlashEffect> PlayerHitSlashEffectActor = GetLevel()->CreateActor<PlayerHitSlashEffect>();
+
+	float4 _Dir = _Pos - GetTransform()->GetWorldPosition();
+
+	PlayerHitSlashEffectActor->SetEnemyHitSlashEffect(_Pos, _Scale, CurrentSlash);
+
+	if (_Dir.x <= 0.0f)
+	{
+		PlayerHitSlashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+	}
+}
+
+void Player::SetEnemyHitEffect(float4 _Pos, float4 _Scale)
+{
+	float RandomFloat = GameEngineRandom::MainRandom.RandomFloat(-55.0f, 5.0f);
+
+	std::shared_ptr<class PlayerHitEffect> PlayerHitEffectActor = GetLevel()->CreateActor<PlayerHitEffect>();
+
+	PlayerHitEffectActor->SetEnemyHitEffect(_Pos, _Scale, RandomFloat);
 }

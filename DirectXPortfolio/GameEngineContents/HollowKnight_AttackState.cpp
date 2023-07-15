@@ -126,7 +126,7 @@ void HollowKnightBoss::AttackStateInit()
 				FSM.ChangeState("Slash1");
 				return;
 			}
-		},
+		}, 
 			.End = [this]()
 		{
 
@@ -144,7 +144,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (CurrentPhase == HollowKnightPatternEnum::Phase1)
+			if (CurrentPhase != HollowKnightPatternEnum::Phase4)
 			{
 				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed* _DeltaTime);
 			}

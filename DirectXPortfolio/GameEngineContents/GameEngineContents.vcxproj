@@ -186,6 +186,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FireballHitEnemyEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FireBallHitWallEffect.h">
       <SubType>
       </SubType>
@@ -231,6 +235,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayerFireBall.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerHitEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerHitSlashEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -289,6 +301,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FireballHitEnemyEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FireBallHitWallEffect.cpp">
       <SubType>
       </SubType>
@@ -336,6 +352,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerFireBall.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerHitEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerHitSlashEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

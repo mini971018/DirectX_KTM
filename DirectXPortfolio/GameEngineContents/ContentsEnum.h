@@ -94,4 +94,12 @@ enum class HollowKnightCollisionType
 {
 	Player,
 	Boss,
+	PlayerAttack,
+	PlayerSkill,
+};
+
+enum class PlayerAttackType
+{
+	Slash,
+	Skill
 };

@@ -22,5 +22,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> ScreamEffectRenderer;
 
+	std::shared_ptr<class GameEngineCollision> ScreamSkillCollision = nullptr;
+
 };
 

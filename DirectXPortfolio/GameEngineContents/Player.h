@@ -27,6 +27,19 @@ public:
 	void OnRoarLockState(float4 _PlayerDir);
 	void OffRoarLockState();
 
+	float GetPlayerDamage()
+	{
+		return PlayerDamage;
+	}
+
+	float GetPlayerSkillDamage()
+	{
+		return PlayerSkillDamage;
+	}
+	
+	void SetFireballHitEffect(float4 _Pos, float4 _Scale);
+	void SetEnemyHitSlashEffect(float4 _Pos, float4 _Scale);
+	void SetEnemyHitEffect(float4 _Pos, float4 _Scale);
 
 protected:
 	void Start();
@@ -45,6 +58,10 @@ private:
 	float4 PlayerDir = float4::Right;
 
 	void SetPlayerRendererPivot();
+
+	//전투 관련
+	const float PlayerDamage = 13.0f;
+	const float PlayerSkillDamage = 20.0f;
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;

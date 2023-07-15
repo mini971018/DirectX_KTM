@@ -15,7 +15,7 @@ public:
 	SlashEffect& operator=(const SlashEffect& _Other) = delete;
 	SlashEffect& operator=(SlashEffect&& _Other) noexcept = delete;
 
-	void SetSlashEffect(PlayerSlashAnimation _SlashType, float4 _Pos);
+	void SetSlashEffect(PlayerSlashAnimation _SlashType, float4 _Pos, float _Damage);
 
 protected:
 	void Start();
@@ -23,5 +23,15 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> SlashEffectRenderer;
+	std::shared_ptr<class GameEngineCollision> SlashCollision = nullptr;
+
+	const float4 UpperSlashCollisionPos = {0, 110};
+	const float4 UpperSlashCollisionScale = {140, 165};
+	const float4 DownSlashCollisionPos = {0, 0};
+	const float4 DownSlashCollisionScale = {140, 165};
+	const float4 SlashCollisionPos = {-87, 62, -70.0f};
+	const float4 SlashCollisionScale = {130, 115, 1};
+
+	float SlashDamage = 0.0f;
 };
 

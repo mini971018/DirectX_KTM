@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "RoarEffect.h"
 #include "Player.h"
@@ -275,7 +276,7 @@ void HollowKnightBoss::StateInit()
 		{
 			PivotPos = { 0 , 290 };
 			SetBossRendererPivot();
-
+			HollowKnightCollision->On();
 			BossRenderer->ChangeAnimation("Idle");
 		},
 			.Update = [this](float _DeltaTime)

@@ -34,5 +34,7 @@ private:
 
 	bool IsWall = false;
 	float4 Dir = float4::Right;
+
+	std::shared_ptr<class GameEngineCollision> FireballCollision = nullptr;
 };
 

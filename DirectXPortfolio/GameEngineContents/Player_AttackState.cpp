@@ -24,19 +24,19 @@ void Player::AttackStateInit()
 			switch (CurrentSlash)
 			{
 			case PlayerSlashAnimation::Slash1:
-				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash1, NormalSlashPos);
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash1, NormalSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("Slash1");
 				break;
 			case PlayerSlashAnimation::Slash2:
-				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash2, NormalSlashPos);
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash2, NormalSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("Slash2");
 				break;
 			case PlayerSlashAnimation::UpperSlash:
-				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::UpperSlash, UpperSlashPos);
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::UpperSlash, UpperSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("UpSlash");
 				break;
 			case PlayerSlashAnimation::DownSlash:
-				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::DownSlash, DownSlashPos);
+				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::DownSlash, DownSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("DownSlash");
 				break;
 			default:

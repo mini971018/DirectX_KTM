@@ -2,6 +2,7 @@
 
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "FireBallHitWallEffect.h"
 
 #include "PlayerFireBall.h"
@@ -35,6 +36,12 @@ void PlayerFireBall::Start()
 	FIreBallRenderer->GetTransform()->SetParent(Pivot->GetTransform());
 	WallCheckTransform->GetTransform()->SetParent(Pivot->GetTransform());
 	WallCheckTransform->GetTransform()->SetLocalPosition({ 100.0f, 0.0f });
+
+	FireballCollision = CreateComponent<GameEngineCollision>();
+	FireballCollision->SetColType(ColType::AABBBOX2D);
+	FireballCollision->On();
+	FireballCollision->GetTransform()->SetLocalScale({ 105, 67 });
+	FireballCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::PlayerSkill));
 }
 
 void PlayerFireBall::Update(float _Delta)
@@ -47,8 +54,15 @@ void PlayerFireBall::Update(float _Delta)
 			{
 				FIreBallRenderer->Death();
 				FIreBallRenderer = nullptr;
-				Death();
 			}
+
+			if (FireballCollision != nullptr)
+			{
+				FireballCollision->Death();
+				FireballCollision = nullptr;
+			}
+
+			Death();
 		}
 	}
 	else
@@ -87,8 +101,16 @@ void PlayerFireBall::SetFireBall(std::shared_ptr<class GameEngineTexture> _Colma
 	CurrentColmapTexture = _Colmap;
 	Dir = _Dir;
 
+
 	if (float4::Left == _Dir)
 	{
 		Pivot->GetTransform()->SetLocalNegativeScaleX();
+		FireballCollision->GetTransform()->SetLocalPosition({ -50, -5 });
 	}
+	else
+	{
+		FireballCollision->GetTransform()->SetLocalPosition({ 50, -5 });
+	}
+	
+
 }
