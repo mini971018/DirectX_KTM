@@ -43,6 +43,16 @@ private:
 
 	//Collision ฐüทร
 	std::shared_ptr<class GameEngineCollision> HollowKnightCollision = nullptr;
+	const float4 HollowKnightCollisionIdleScale = { 175.0f, 290.0f, 1.0f };
+	const float4 HollowKnightCollisionIdlePos = { 30.0f, -95.0f , -70.0f };
+	void SetIdleCollision();
+	void SetCollisionValue(float4 _Scale , float4 _Pos);
+
+	std::shared_ptr<class GameEngineCollision> AttackCollision = nullptr;
+	void SetSlashAttackCollision();
+	const float4 SlashCollisionScale = { 265,267,1 };
+	const float4 SlashCollisionPos = { 260.0f, -95.0f , -70.0f };
+
 	//const float4 HollowKnightCollisionPos = { 0.0f, 65.0f , -70.0f };
 	void SetDamagedColor();
 	const float4 DamagedColor = float4{ static_cast<float>((201.0f *0.75f) /255.0f) , static_cast<float>((84.0f * 0.75f) /255.0f), static_cast<float>((16.0f * 0.75f) / 255.0f) , 0};

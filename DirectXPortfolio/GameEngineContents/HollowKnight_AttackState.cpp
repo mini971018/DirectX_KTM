@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "RoarEffect.h"
 #include "Player.h"
@@ -18,7 +19,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticDashAttack");
-
+			SetCollisionValue(float4{ 295,290,1 }, float4{ -30.0f, -95.0f , -70.0f });
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -45,7 +46,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("DashAttack");
-
+			SetIdleCollision();
 			StateCalTime = 0.0f;
 			CurrentDashSpeed = DashSpeed;
 		},
@@ -82,6 +83,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("EndDashAttack");
+			SetCollisionValue(float4{ 235,290,1 }, float4{ -30.0f, -95.0f , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -117,6 +119,8 @@ void HollowKnightBoss::AttackStateInit()
 			.Name = "AnticSlash1",
 			.Start = [this]()
 		{
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
+
 			BossRenderer->ChangeAnimation("AnticSlash1");
 		},
 			.Update = [this](float _DeltaTime)
@@ -129,7 +133,7 @@ void HollowKnightBoss::AttackStateInit()
 		}, 
 			.End = [this]()
 		{
-
+			SetIdleCollision();
 		},
 
 		}
@@ -141,6 +145,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Slash1");
+			SetSlashAttackCollision();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -162,7 +167,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
+			AttackCollision->Off();
 		},
 
 		}
@@ -197,6 +202,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Slash2");
+			SetSlashAttackCollision();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -210,7 +216,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
+			AttackCollision->Off();
 		},
 
 		}
@@ -245,6 +251,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Slash3");
+			SetSlashAttackCollision();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -258,7 +265,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
+			AttackCollision->Off();
 		},
 
 		}
@@ -272,6 +279,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticCounter");
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -306,6 +314,7 @@ void HollowKnightBoss::AttackStateInit()
 			if (true == CounterAvailability())
 			{
 				FSM.ChangeState("BlockCounter");
+				return;
 			}
 
 			if (0.7f <= StateCalTime)
@@ -318,7 +327,6 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
 		},
 
 		}
@@ -347,6 +355,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
+			SetIdleCollision();
 
 		},
 
@@ -359,7 +368,6 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("BlockCounter");
-
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -374,6 +382,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
+			SetIdleCollision();
 
 		},
 
@@ -386,6 +395,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Slash2");
+			SetSlashAttackCollision();
 
 			StateCalTime = 0.0f;
 		},
@@ -403,7 +413,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
+			AttackCollision->Off();
 		},
 
 		}

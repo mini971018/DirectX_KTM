@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "RoarEffect.h"
 #include "Player.h"
@@ -276,6 +277,7 @@ void HollowKnightBoss::StateInit()
 		{
 			PivotPos = { 0 , 290 };
 			SetBossRendererPivot();
+			SetIdleCollision();
 			HollowKnightCollision->On();
 			BossRenderer->ChangeAnimation("Idle");
 		},
@@ -324,6 +326,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Turn");
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -382,7 +385,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticTeleport");
-
+			HollowKnightCollision->Off();
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -420,7 +423,7 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->On();
 			BossRenderer->ChangeAnimation("EndTeleport");
-
+			HollowKnightCollision->On();
 		},
 			.Update = [this](float _DeltaTime)
 		{

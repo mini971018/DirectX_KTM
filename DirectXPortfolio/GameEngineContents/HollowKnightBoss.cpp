@@ -256,11 +256,20 @@ void HollowKnightBoss::AnimationInit()
 
 void HollowKnightBoss::CollisionInit()
 {
+	//보스 몸통
 	HollowKnightCollision = CreateComponent<GameEngineCollision>();
 	HollowKnightCollision->SetColType(ColType::AABBBOX2D);
-	HollowKnightCollision->GetTransform()->SetLocalScale({ 175.0f, 290.0f, 1.0f });
-	HollowKnightCollision->GetTransform()->SetLocalPosition({ 0.0f, 175.0f , -70.0f });
+	HollowKnightCollision->GetTransform()->SetParent(Pivot->GetTransform());
+
+	SetIdleCollision();
+
 	HollowKnightCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Boss));
+
+	//공격 콜리전
+	AttackCollision = CreateComponent<GameEngineCollision>();
+	AttackCollision->SetColType(ColType::AABBBOX2D);
+	AttackCollision->GetTransform()->SetParent(Pivot->GetTransform());
+	AttackCollision->Off();
 }
  
 void HollowKnightBoss::SetDamagedColor()
@@ -492,7 +501,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::ChestShot;
+	//PatternNum = HollowKnightAttackState::Counter;
 
 	switch (PatternNum)
 	{
@@ -726,4 +735,22 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 	}
 
 	DamagedTime = 0.0f;
+}
+
+void HollowKnightBoss::SetIdleCollision()
+{
+	SetCollisionValue(HollowKnightCollisionIdleScale, HollowKnightCollisionIdlePos);
+}
+
+void HollowKnightBoss::SetCollisionValue(float4 _Scale, float4 _Pos)
+{
+	HollowKnightCollision->GetTransform()->SetLocalScale(_Scale);
+	HollowKnightCollision->GetTransform()->SetLocalPosition(_Pos);
+}
+
+void HollowKnightBoss::SetSlashAttackCollision()
+{
+	AttackCollision->GetTransform()->SetLocalScale(SlashCollisionScale);
+	AttackCollision->GetTransform()->SetLocalPosition(SlashCollisionPos);
+	AttackCollision->On();
 }
