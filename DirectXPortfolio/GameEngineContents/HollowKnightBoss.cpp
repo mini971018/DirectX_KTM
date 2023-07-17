@@ -454,7 +454,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::AttackReady;
+	//PatternNum = HollowKnightNoneAttackState::SelfStab;
 
 	switch (PatternNum)
 	{
@@ -501,7 +501,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::Counter;
+	//PatternNum = HollowKnightAttackState::SmallShot;
 
 	switch (PatternNum)
 	{
@@ -698,6 +698,7 @@ void HollowKnightBoss::GetDamageCheck()
 	float AttackDamage = Player::CurrentLevelPlayer->GetPlayerDamage();
 	float SkillDamage = Player::CurrentLevelPlayer->GetPlayerSkillDamage();
 
+
 	if (AttackCollision != nullptr)
 	{
 		GetDamage(AttackDamage, PlayerAttackType::Slash, AttackCollision->GetTransform()->GetWorldPosition());
@@ -707,10 +708,16 @@ void HollowKnightBoss::GetDamageCheck()
 	{
 		GetDamage(SkillDamage, PlayerAttackType::Skill);
 	}
+
 }
 
 void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos)
 {
+	if (true == DamageReduceState)
+	{
+		_Damage = 1.0f;
+	}
+
 	CurrentHp -= _Damage;
 	
 	float4 EffectPos = float4::Null;
@@ -724,8 +731,8 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 		Player::CurrentLevelPlayer->SetEnemyHitSlashEffect(EffectPos, float4{ 1 ,1 });
 		break;
 	case PlayerAttackType::Skill:
-		EffectPos = Pivot->GetTransform()->GetWorldPosition();
-		EffectPos = EffectPos - float4{ 0, 30.0f };
+		EffectPos = HollowKnightCollision->GetTransform()->GetWorldPosition();
+		//EffectPos = EffectPos - float4{ 0, 30.0f };
 		Player::CurrentLevelPlayer->SetFireballHitEffect(EffectPos, float4{2 ,2});
 		//Hit Skill Effect 추가
 		break;
@@ -734,6 +741,7 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 		break;
 	}
 
+	StateCalBool = true; //stunland 상태에서 데미지를 체크하기 위해
 	DamagedTime = 0.0f;
 }
 
@@ -745,7 +753,7 @@ void HollowKnightBoss::SetIdleCollision()
 void HollowKnightBoss::SetCollisionValue(float4 _Scale, float4 _Pos)
 {
 	HollowKnightCollision->GetTransform()->SetLocalScale(_Scale);
-	HollowKnightCollision->GetTransform()->SetLocalPosition(_Pos);
+	HollowKnightCollision->GetTransform()->SetLocalPosition({_Pos.x, _Pos.y, 0.0f});
 }
 
 void HollowKnightBoss::SetSlashAttackCollision()

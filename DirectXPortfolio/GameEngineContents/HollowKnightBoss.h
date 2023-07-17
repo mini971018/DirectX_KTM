@@ -33,7 +33,7 @@ private:
 	float4 PivotPos = float4::Zero; //보스 렌더러의 애니메이션의 각 중심이 될 위치
 	void SetBossRendererPivot();
 	
-	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer;
+	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer; 
 	std::shared_ptr<class GameEngineTexture> BossColmapTexture;
 
 	//보스 Init
@@ -44,14 +44,14 @@ private:
 	//Collision 관련
 	std::shared_ptr<class GameEngineCollision> HollowKnightCollision = nullptr;
 	const float4 HollowKnightCollisionIdleScale = { 175.0f, 290.0f, 1.0f };
-	const float4 HollowKnightCollisionIdlePos = { 30.0f, -95.0f , -70.0f };
+	const float4 HollowKnightCollisionIdlePos = { 0.0f, -110.0f , -70.0f };
 	void SetIdleCollision();
 	void SetCollisionValue(float4 _Scale , float4 _Pos);
 
 	std::shared_ptr<class GameEngineCollision> AttackCollision = nullptr;
 	void SetSlashAttackCollision();
 	const float4 SlashCollisionScale = { 265,267,1 };
-	const float4 SlashCollisionPos = { 260.0f, -95.0f , -70.0f };
+	const float4 SlashCollisionPos = { 260.0f, -110.0f , 0.0f };
 
 	//const float4 HollowKnightCollisionPos = { 0.0f, 65.0f , -70.0f };
 	void SetDamagedColor();
@@ -72,8 +72,9 @@ private:
 	float CurrentHp = BossHP;
 	void GetDamageCheck();
 	void GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos = float4::Null);
-	float DamagedTime = 0.0f; //n초에 한번씩만 공격받을 수 있도록
+	float DamagedTime = 1.0f; //n초에 한번씩만 공격받을 수 있도록
 	const float ConstDamagedTime = 0.3f;
+	bool DamageReduceState = false;
 
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
@@ -137,5 +138,7 @@ private:
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
 	std::string_view CurrentState = "";
+
+	
 };
 

@@ -19,7 +19,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticDashAttack");
-			SetCollisionValue(float4{ 295,290,1 }, float4{ -30.0f, -95.0f , -70.0f });
+			SetCollisionValue(float4{ 295,290,1 }, float4{ -75.0f, HollowKnightCollisionIdlePos.y - 20.0f , -70.0f });
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -83,7 +83,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("EndDashAttack");
-			SetCollisionValue(float4{ 235,290,1 }, float4{ -30.0f, -95.0f , -70.0f });
+			SetCollisionValue(float4{ 235,290,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -119,7 +119,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Name = "AnticSlash1",
 			.Start = [this]()
 		{
-			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -110.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 
 			BossRenderer->ChangeAnimation("AnticSlash1");
 		},
@@ -279,7 +279,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticCounter");
-			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -90.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -453,7 +453,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticSmallShot");
-
+			SetCollisionValue(float4{ 245,325,1 }, float4{ -80.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -505,7 +505,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("EndSmallShot");
-
+			SetCollisionValue(float4{ 225,300,1 }, float4{ -70.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -624,7 +624,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticPuppet");
-
+			
 			StateCalTime = 0.0f;
 			StateCalInt = 0;
 		},
@@ -651,6 +651,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("UpPuppet");
+			SetCollisionValue(float4{ 245,317,1 }, float4{ 10.0f, HollowKnightCollisionIdlePos.y + 10, -70.0f });
 
 			PivotPos = { 0 , 268 };
 			SetBossRendererPivot();
@@ -686,6 +687,8 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("DownPuppet");
 			Gravity = 2000.0f;
+
+			SetCollisionValue(float4{ 282,243,1 }, float4{ 0.0f, HollowKnightCollisionIdlePos.y + 120, -70.0f });
 
 			PivotPos = { 0 , 103 };
 			SetBossRendererPivot();
@@ -787,6 +790,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticChestShot");
+			SetCollisionValue(float4{ 257,337,1 }, float4{ -10.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 
 		},
 			.Update = [this](float _DeltaTime)

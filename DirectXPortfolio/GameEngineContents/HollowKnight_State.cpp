@@ -159,7 +159,6 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
-
 		},
 
 		}
@@ -171,6 +170,10 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("RoarAntic");
+
+			SetCollisionValue({287, 304, 1}, float4{-70.0f, HollowKnightCollisionIdlePos.y , -70.0f});
+			HollowKnightCollision->On();
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -218,6 +221,8 @@ void HollowKnightBoss::StateInit()
 			CreateRoarEffect(RoarType::White, RoarEffectPos);
 
 			BossRenderer->ChangeAnimation("Roar");
+
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -264,6 +269,7 @@ void HollowKnightBoss::StateInit()
 			.End = [this]()
 		{
 			Player::CurrentLevelPlayer->SetPlayerCanMoveState(true);
+
 		},
 
 		}
@@ -275,7 +281,7 @@ void HollowKnightBoss::StateInit()
 			.Name = "Idle",
 			.Start = [this]()
 		{
-			PivotPos = { 0 , 290 };
+			PivotPos = { 0 , 280 };
 			SetBossRendererPivot();
 			SetIdleCollision();
 			HollowKnightCollision->On();
@@ -326,7 +332,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("Turn");
-			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, -95.0f , -70.0f });
+			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -40.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -339,6 +345,7 @@ void HollowKnightBoss::StateInit()
 			.End = [this]()
 		{
 			RotationRenderPivotY();
+			SetIdleCollision();
 		},
 			
 		}
@@ -423,7 +430,6 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->On();
 			BossRenderer->ChangeAnimation("EndTeleport");
-			HollowKnightCollision->On();
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -447,7 +453,7 @@ void HollowKnightBoss::StateInit()
 		},
 			.End = [this]()
 		{
-
+			HollowKnightCollision->On();
 		},
 
 		}
@@ -552,9 +558,12 @@ void HollowKnightBoss::StateInit()
 			.Name = "AnticSelfStab",
 			.Start = [this]()
 		{
+			DamageReduceState = true;
 			BossRenderer->ChangeAnimation("AnticSelfStab");
 			StateCalInt = 0;
 			StateCalTime = 0.0f;
+			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -584,6 +593,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("SelfStab");
+			SetCollisionValue(float4{ 195,380,1 }, float4{ -80.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
 
 			StateCalTime = 0.0f;
 		},
@@ -638,7 +648,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("ReSelfStab");
-
+			DamageReduceState = true;
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -701,8 +711,11 @@ void HollowKnightBoss::StateInit()
 			.Name = "StunLand",
 			.Start = [this]()
 		{
+			DamageReduceState = false;
 			BossRenderer->ChangeAnimation("StunLand");
+			SetCollisionValue(float4{ 180,190,1 }, float4{ 0.0f, -159.0f , -70.0f });
 			StateCalTime = 0.0f;
+			StateCalBool = false;
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -712,11 +725,16 @@ void HollowKnightBoss::StateInit()
 				return;
 			}
 
+			if (true == StateCalBool)
+			{
+				FSM.ChangeState("StunToIdle");
+				return;
+			}
+
 			StateCalTime += _DeltaTime;
 		},
 			.End = [this]()
 		{
-
 		},
 
 		}
