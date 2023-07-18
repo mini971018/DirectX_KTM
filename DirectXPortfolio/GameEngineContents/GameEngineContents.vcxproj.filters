@@ -82,6 +82,9 @@
     <ClInclude Include="PlayerHitEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="HollowKnightBlasts.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="PlayerHitEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HollowKnightBlasts.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

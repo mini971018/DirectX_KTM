@@ -76,6 +76,12 @@ private:
 	const float ConstDamagedTime = 0.3f;
 	bool DamageReduceState = false;
 
+	//Blasts 관련
+	void SetBlasts();
+	const float MinBlastsPosX = 1475.0f + 100.0f;
+	const float MaxBlastsPosX = 4550.0f - 100.0f;
+	
+
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
 	void AttackStateInit();

@@ -202,6 +202,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="HollowKnightBlasts.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HollowKnightBoss.h">
       <SubType>
       </SubType>
@@ -314,6 +318,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="HealingEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HollowKnightBlasts.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -14,7 +14,7 @@
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
 #include "HollowKnightBoss.h"
-
+#include "HollowKnightBlasts.h"
 
 HollowKnightBoss::HollowKnightBoss() 
 {
@@ -501,7 +501,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::SmallShot;
+	//PatternNum = HollowKnightAttackState::Blasts;
 
 	switch (PatternNum)
 	{
@@ -761,4 +761,32 @@ void HollowKnightBoss::SetSlashAttackCollision()
 	AttackCollision->GetTransform()->SetLocalScale(SlashCollisionScale);
 	AttackCollision->GetTransform()->SetLocalPosition(SlashCollisionPos);
 	AttackCollision->On();
+}
+
+void HollowKnightBoss::SetBlasts()
+{
+	
+	float4 Pos = GetTransform()->GetWorldPosition();
+	float4 LeftPos = Pos;
+	float4 RightPos = Pos;
+	float Interval = 275.0f;
+
+	while (LeftPos.x >= MinBlastsPosX)
+	{
+		LeftPos.x -= Interval;
+		std::shared_ptr<class HollowKnightBlasts> LeftBlasts = GetLevel()->CreateActor<HollowKnightBlasts>();
+		LeftBlasts->GetTransform()->SetWorldPosition({ LeftPos.x, LeftPos.y - 5.0f, -70.0f });
+	}
+
+	while (RightPos.x <= MaxBlastsPosX)
+	{
+		RightPos.x += Interval;
+		std::shared_ptr<class HollowKnightBlasts> RightBlasts = GetLevel()->CreateActor<HollowKnightBlasts>();
+		RightBlasts->GetTransform()->SetWorldPosition({ RightPos.x, RightPos.y - 5.0f, -70.0f });
+	}
+
+	std::shared_ptr<class HollowKnightBlasts> Blasts = GetLevel()->CreateActor<HollowKnightBlasts>();
+	Blasts->GetTransform()->SetWorldPosition({ Pos.x, Pos.y - 5.0f, -70.0f });
+
+
 }

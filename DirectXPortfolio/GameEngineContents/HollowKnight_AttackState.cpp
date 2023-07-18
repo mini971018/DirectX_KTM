@@ -595,13 +595,14 @@ void HollowKnightBoss::AttackStateInit()
 			.Name = "LandBlasts",
 			.Start = [this]()
 		{
+			SetBlasts();
 			BossRenderer->ChangeAnimation("LandBlasts");
 
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (1.0f <= StateCalTime)
+			if (0.7f <= StateCalTime)
 			{
 				FSM.ChangeState("Recover");
 				return;

@@ -625,7 +625,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("ReAnticSelfStab");
-
+			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -648,6 +648,8 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("ReSelfStab");
+			SetCollisionValue(float4{ 195,380,1 }, float4{ -80.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
+
 			DamageReduceState = true;
 		},
 			.Update = [this](float _DeltaTime)
