@@ -31,7 +31,7 @@ void HollowKnightBlasts::Start()
 	BlastsRenderer->ChangeAnimation("AnticEffectBlasts");
 	BlastsRenderer->GetTransform()->SetLocalPosition({ 0.0f, 200.0f, 0.0f });
 	BlastsRenderer->GetTransform()->SetLocalScale({ 360.0f, 415.0f, 1.0f });
-	BlastsRenderer->On();
+	BlastsRenderer->On() ;
 
 	BlastsCollision = CreateComponent<GameEngineCollision>();
 	BlastsCollision->SetColType(ColType::AABBBOX2D);

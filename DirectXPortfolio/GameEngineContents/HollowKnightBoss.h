@@ -40,6 +40,7 @@ private:
 	void SpriteInit();
 	void AnimationInit();
 	void CollisionInit();
+	void EffectInit();
 
 	//Collision 관련
 	std::shared_ptr<class GameEngineCollision> HollowKnightCollision = nullptr;
@@ -53,7 +54,7 @@ private:
 	const float4 SlashCollisionScale = { 265,267,1 };
 	const float4 SlashCollisionPos = { 260.0f, -110.0f , 0.0f };
 
-	//const float4 HollowKnightCollisionPos = { 0.0f, 65.0f , -70.0f };
+	//
 	void SetDamagedColor();
 	const float4 DamagedColor = float4{ static_cast<float>((201.0f *0.75f) /255.0f) , static_cast<float>((84.0f * 0.75f) /255.0f), static_cast<float>((16.0f * 0.75f) / 255.0f) , 0};
 
@@ -81,6 +82,9 @@ private:
 	const float MinBlastsPosX = 1475.0f + 100.0f;
 	const float MaxBlastsPosX = 4550.0f - 100.0f;
 	
+	//Shot 관련
+	void SetBullet(float4 _Dir, float4 _Pos);
+	std::shared_ptr<class HollowKnightSmallShotEffect> SmallShotEffectActor = nullptr;
 
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
@@ -92,6 +96,7 @@ private:
 	bool StateCalBool = false;
 	int StateCalInt = 0;
 	float4 StateCalPos = float4::Zero;
+	float4 StateCalDir = float4::Zero;
 
 	// 랜덤한 패턴이 나오게끔 구현하기 위한 변수들
 	std::map<short, std::vector<short>> BossPatterns;

@@ -88,7 +88,7 @@ void Player::CreateKey()
 {
 	if (false == GameEngineInput::IsKey("ChangeNextLevel"))
 	{
-		GameEngineInput::CreateKey("TestButton", '1');
+		GameEngineInput::CreateKey("TestButton1", '1');
 		GameEngineInput::CreateKey("TestButton2", '2');
 		GameEngineInput::CreateKey("TestButton3", '3');
 		GameEngineInput::CreateKey("TestButton4", '4');

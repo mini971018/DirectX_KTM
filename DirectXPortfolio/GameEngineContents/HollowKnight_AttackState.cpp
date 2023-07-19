@@ -9,6 +9,7 @@
 #include "RoarEffect.h"
 #include "Player.h"
 #include "HollowKnightBoss.h"
+#include "HollowKnightSmallShotEffect.h"
 
 void HollowKnightBoss::AttackStateInit()
 {
@@ -478,18 +479,51 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("SmallShot");
+			SmallShotEffectActor->OnEffect();
+			StateCalPos = SmallShotEffectActor->GetTransform()->GetWorldPosition();
 
+			if (float4::Left == ReturnPatternDir())
+			{
+				StateCalPos += {50.0f, 0.0f, 0.0f};
+				StateCalDir = float4{ -1.5f, -2.5f, 0.0f };
+			}
+			else
+			{
+				StateCalPos += {-50.0f, 0.0f, 0.0f};
+				StateCalDir = float4{ 1.5f, -2.5f, 0.0f };
+			}
 			StateCalTime = 0.0f;
+			StateCalTime2 = 2.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (2.0f <= StateCalTime)
+			float _Value = 15.0f;
+
+			if (1.5f <= StateCalTime)
 			{
+				SmallShotEffectActor->OffEffect();
 				FSM.ChangeState("EndSmallShot");
 				return;
 			}
 
+			if (StateCalTime2 >= 1.5f / 8)
+			{
+				if (float4::Left == ReturnPatternDir())
+				{
+					SetBullet(StateCalDir, StateCalPos);
+					StateCalDir.RotaitonZDeg(-_Value);
+					StateCalTime2 = 0.0f;
+				}
+				else
+				{
+					SetBullet(StateCalDir, StateCalPos);
+					StateCalDir.RotaitonZDeg(_Value);
+					StateCalTime2 = 0.0f;
+				}
+			}
+
 			StateCalTime += _DeltaTime;
+			StateCalTime2 += _DeltaTime;
 		},
 			.End = [this]()
 		{

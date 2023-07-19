@@ -62,6 +62,12 @@ void PlayerFireBall::Update(float _Delta)
 				FireballCollision = nullptr;
 			}
 
+			if (WallCheckTransform != nullptr)
+			{
+				WallCheckTransform->Death();
+				WallCheckTransform = nullptr;
+			}
+
 			Death();
 		}
 	}

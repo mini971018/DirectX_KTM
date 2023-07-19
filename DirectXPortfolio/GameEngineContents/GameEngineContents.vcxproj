@@ -218,7 +218,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="HollowKnightBullet.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HollowKnightLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="HollowKnightSmallShotEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -337,7 +345,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="HollowKnightBullet.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="HollowKnightLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HollowKnightSmallShotEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

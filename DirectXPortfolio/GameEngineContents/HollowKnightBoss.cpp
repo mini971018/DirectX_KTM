@@ -15,6 +15,8 @@
 #include "BindBreakEffect.h"
 #include "HollowKnightBoss.h"
 #include "HollowKnightBlasts.h"
+#include "HollowKnightBullet.h"
+#include "HollowKnightSmallShotEffect.h"
 
 HollowKnightBoss::HollowKnightBoss() 
 {
@@ -32,6 +34,7 @@ void HollowKnightBoss::Start()
 	StateInit();
 	AttackStateInit();
 	BossPatternInit();
+	EffectInit();
 
 	//To do : 이후 레벨 들어올 때 
 	ResetBoss();
@@ -123,6 +126,9 @@ void HollowKnightBoss::SpriteInit()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("58.AnticTeleport").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("59.EndTeleport").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("97.HollowKnightBulletSplash").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("98.HollowKnightBullet").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
 
@@ -287,9 +293,22 @@ void HollowKnightBoss::SetDamagedColor()
 	}
 }
 
+void HollowKnightBoss::EffectInit()
+{
+	SmallShotEffectActor = GetLevel()->CreateActor<HollowKnightSmallShotEffect>();
+
+	SmallShotEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+	SmallShotEffectActor->GetTransform()->SetLocalPosition({ 140, 0, 0 });
+}
+
 void HollowKnightBoss::Update(float _Delta)
 {
 	FSM.Update(_Delta);
+
+	if (GameEngineInput::IsUp("TestButton1"))
+	{
+		//SetBullet();
+	}
 
 	if (GameEngineInput::IsUp("TestButton2"))
 	{
@@ -501,7 +520,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::Blasts;
+	PatternNum = HollowKnightAttackState::SmallShot;
 
 	switch (PatternNum)
 	{
@@ -765,7 +784,6 @@ void HollowKnightBoss::SetSlashAttackCollision()
 
 void HollowKnightBoss::SetBlasts()
 {
-	
 	float4 Pos = GetTransform()->GetWorldPosition();
 	float4 LeftPos = Pos;
 	float4 RightPos = Pos;
@@ -787,6 +805,13 @@ void HollowKnightBoss::SetBlasts()
 
 	std::shared_ptr<class HollowKnightBlasts> Blasts = GetLevel()->CreateActor<HollowKnightBlasts>();
 	Blasts->GetTransform()->SetWorldPosition({ Pos.x, Pos.y - 5.0f, -70.0f });
+}
 
+void HollowKnightBoss::SetBullet(float4 _Dir, float4 _Pos)
+{
+	std::shared_ptr<class HollowKnightBullet> BulletTest = GetLevel()->CreateActor<HollowKnightBullet>();
+	BulletTest->GetTransform()->SetWorldPosition(_Pos);
+	BulletTest->SetBullet(BossColmapTexture, _Dir);
 
+	
 }

@@ -695,7 +695,7 @@ void HollowKnightBoss::StateInit()
 				FSM.ChangeState("StunLand");
 				return;
 			}
-
+ 
 			StateCalTime += _DeltaTime;
 
 		},

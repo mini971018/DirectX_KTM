@@ -223,59 +223,59 @@ void HollowKnightBossRoom::CreateMap()
 
 		Rag10->SetScaleToTexture("Rag.png");
 		Rag10->GetTransform()->AddLocalScale({ 100,150 });
-		Rag10->GetTransform()->SetLocalPosition({ 1700, 380, 370 });
+		Rag10->GetTransform()->SetLocalPosition({ 1700, 680, 370 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag10_1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag10_1->SetScaleToTexture("Rag.png");
 		Rag10_1->GetTransform()->AddLocalScale({ 100,150 });
-		Rag10_1->GetTransform()->SetLocalPosition({ 2000, 550, 390 });
+		Rag10_1->GetTransform()->SetLocalPosition({ 2000, 650, 390 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag11 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag11->SetScaleToTexture("Rag.png");
-		Rag11->GetTransform()->SetLocalPosition({ -250, 330, 360 });
+		Rag11->GetTransform()->SetLocalPosition({ -250, 680, 360 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag12 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag12->SetScaleToTexture("Rag.png");
-		Rag12->GetTransform()->SetLocalPosition({ 800, 400, 300 });
+		Rag12->GetTransform()->SetLocalPosition({ 800, 600, 300 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag13 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag13->SetScaleToTexture("Rag.png");
 		Rag13->GetTransform()->AddLocalScale({ 100,100 });
-		Rag13->GetTransform()->SetLocalPosition({ 540, 400, 400 });
+		Rag13->GetTransform()->SetLocalPosition({ 540, 600, 400 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag13_1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag13_1->SetScaleToTexture("Rag.png");
 		Rag13_1->GetTransform()->AddLocalScale({ 100,100 });
-		Rag13_1->GetTransform()->SetLocalPosition({ 1300, 450, 400 });
+		Rag13_1->GetTransform()->SetLocalPosition({ 1300, 650, 400 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag14 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag14->SetScaleToTexture( "Rag.png");
 		Rag14->GetTransform()->AddLocalScale({ 50,150 });
-		Rag14->GetTransform()->SetLocalPosition({ 1100, 450, 550 });
+		Rag14->GetTransform()->SetLocalPosition({ 1100, 650, 550 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag15 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag15->SetScaleToTexture("Rag.png");
 		Rag15->GetTransform()->AddLocalScale({ 100,150 });
-		Rag15->GetTransform()->SetLocalPosition({ 500, 550, 600 });
+		Rag15->GetTransform()->SetLocalPosition({ 500, 750, 600 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag16 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		Rag16->SetScaleToTexture("Rag.png");
 		Rag16->GetTransform()->AddLocalScale({ 200,200 });
-		Rag16->GetTransform()->SetLocalPosition({ 1000, 750, 600 });
+		Rag16->GetTransform()->SetLocalPosition({ 1000, 850, 600 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> Rag17 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 		Rag17->SetScaleToTexture("Rag.png");
 		Rag17->GetTransform()->AddLocalScale({ 100,100 });
-		Rag17->GetTransform()->SetLocalPosition({ 200, 500, 550 });
+		Rag17->GetTransform()->SetLocalPosition({ 200, 700, 550 });
 	}
 
 
