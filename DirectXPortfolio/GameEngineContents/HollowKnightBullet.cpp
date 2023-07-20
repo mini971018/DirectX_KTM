@@ -92,10 +92,10 @@ void HollowKnightBullet::Update(float _Delta)
 	}
 }
 
-void HollowKnightBullet::SetBullet(std::shared_ptr<class GameEngineTexture> _Colmap, float4 _Dir)
+void HollowKnightBullet::SetBullet(std::shared_ptr<class GameEngineTexture> _Colmap, float4 _Dir, float _Force)
 {
 	Dir = _Dir.NormalizeReturn();
 	CurrentColmapTexture = _Colmap;
 
-	Dir *= Speed;
+	Dir *= _Force;
 }

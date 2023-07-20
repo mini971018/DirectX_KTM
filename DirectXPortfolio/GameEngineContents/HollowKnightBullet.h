@@ -15,7 +15,7 @@ public:
 	HollowKnightBullet& operator=(const HollowKnightBullet& _Other) = delete;
 	HollowKnightBullet& operator=(HollowKnightBullet&& _Other) noexcept = delete;
 
-	void SetBullet(std::shared_ptr<class GameEngineTexture> _Colmap, float4 _Dir);
+	void SetBullet(std::shared_ptr<class GameEngineTexture> _Colmap, float4 _Dir, float _Force);
 
 protected:
 	void Start();
@@ -33,7 +33,6 @@ private:
 	bool IsWall = false;
 
 	const float Gravity = 1200.0f;
-	const float Speed = 1600.0f;
 
 	const float4 GetAngleVector = { 1, 0, 0 };
 

@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "HollowKnightBoss.h"
 #include "HollowKnightSmallShotEffect.h"
+#include "ChestShotEffect.h"
 
 void HollowKnightBoss::AttackStateInit()
 {
@@ -510,13 +511,13 @@ void HollowKnightBoss::AttackStateInit()
 			{
 				if (float4::Left == ReturnPatternDir())
 				{
-					SetBullet(StateCalDir, StateCalPos);
+					SetBullet(StateCalDir, StateCalPos, 1600.0f);
 					StateCalDir.RotaitonZDeg(-_Value);
 					StateCalTime2 = 0.0f;
 				}
 				else
 				{
-					SetBullet(StateCalDir, StateCalPos);
+					SetBullet(StateCalDir, StateCalPos, 1600.0f);
 					StateCalDir.RotaitonZDeg(_Value);
 					StateCalTime2 = 0.0f;
 				}
@@ -851,13 +852,35 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("ShotChest");
 
+			StateCalBool = false;
+
 			StateCalTime = 0.0f;
+			StateCalTime2 = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
 			if (StateCalTime <= 0.1f)
 			{
 				GetTransform()->AddWorldPosition(float4::Up * 2500.0f * _DeltaTime);
+			}
+
+			if (StateCalTime >= 0.5f && StateCalBool == false)
+			{
+				//ÃÑ¾Ë ½î±â ½ÃÀÛ
+				StateCalBool = true;
+				ChestShotEffectActor->OnEffect();
+			}
+
+			if (true == StateCalBool)
+			{
+				if (StateCalTime2 > 0.3f)
+				{
+					//ÃÑ¾Ë ¹ß»ç
+					SetRandomBullet();
+					SetRandomBullet();
+					SetRandomBullet();
+					StateCalTime2 = 0.0f;
+				}
 			}
 
 			if (StateCalTime >= 8.0f)
@@ -867,10 +890,11 @@ void HollowKnightBoss::AttackStateInit()
 			}
 
 			StateCalTime += _DeltaTime;
+			StateCalTime2 += _DeltaTime;
 		},
 			.End = [this]()
 		{
-
+			ChestShotEffectActor->OffEffect();
 		},
 
 		}

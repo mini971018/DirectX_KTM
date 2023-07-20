@@ -91,6 +91,9 @@
     <ClInclude Include="HollowKnightSmallShotEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
+    <ClInclude Include="ChestShotEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -193,6 +196,9 @@
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
     <ClCompile Include="HollowKnightSmallShotEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestShotEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
   </ItemGroup>

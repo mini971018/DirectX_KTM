@@ -83,8 +83,10 @@ private:
 	const float MaxBlastsPosX = 4550.0f - 100.0f;
 	
 	//Shot 관련
-	void SetBullet(float4 _Dir, float4 _Pos);
+	void SetBullet(float4 _Dir, float4 _Pos, float _Force);
+	void SetRandomBullet();
 	std::shared_ptr<class HollowKnightSmallShotEffect> SmallShotEffectActor = nullptr;
+	std::shared_ptr<class ChestShotEffect> ChestShotEffectActor = nullptr;
 
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init

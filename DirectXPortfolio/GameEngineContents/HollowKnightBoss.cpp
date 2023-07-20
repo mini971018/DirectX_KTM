@@ -17,6 +17,7 @@
 #include "HollowKnightBlasts.h"
 #include "HollowKnightBullet.h"
 #include "HollowKnightSmallShotEffect.h"
+#include "ChestShotEffect.h"
 
 HollowKnightBoss::HollowKnightBoss() 
 {
@@ -299,6 +300,11 @@ void HollowKnightBoss::EffectInit()
 
 	SmallShotEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
 	SmallShotEffectActor->GetTransform()->SetLocalPosition({ 140, 0, 0 });
+
+	ChestShotEffectActor = GetLevel()->CreateActor<ChestShotEffect>();
+
+	ChestShotEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+	ChestShotEffectActor->GetTransform()->SetLocalPosition({ 0, 0, 0 });
 }
 
 void HollowKnightBoss::Update(float _Delta)
@@ -520,7 +526,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::SmallShot;
+	PatternNum = HollowKnightAttackState::ChestShot;
 
 	switch (PatternNum)
 	{
@@ -807,11 +813,30 @@ void HollowKnightBoss::SetBlasts()
 	Blasts->GetTransform()->SetWorldPosition({ Pos.x, Pos.y - 5.0f, -70.0f });
 }
 
-void HollowKnightBoss::SetBullet(float4 _Dir, float4 _Pos)
+void HollowKnightBoss::SetBullet(float4 _Dir, float4 _Pos, float _Force)
 {
 	std::shared_ptr<class HollowKnightBullet> BulletTest = GetLevel()->CreateActor<HollowKnightBullet>();
 	BulletTest->GetTransform()->SetWorldPosition(_Pos);
-	BulletTest->SetBullet(BossColmapTexture, _Dir);
+	BulletTest->SetBullet(BossColmapTexture, _Dir, _Force);
+}
 
-	
+void HollowKnightBoss::SetRandomBullet()
+{
+	float4 _Dir = { 1, 0, 0 };
+
+	float Angle = 130.0f;
+	float Force = 1000.0f;
+
+	int RandomInt = GameEngineRandom::MainRandom.RandomInt(0, 1);
+	float RandomFloat = GameEngineRandom::MainRandom.RandomFloat(-Angle / 2.0f, Angle / 2.0f);
+	float RandomFloat2 = GameEngineRandom::MainRandom.RandomFloat(Force - 200.0f, Force + 200.0f);
+
+	if (RandomInt == 0)
+	{
+		_Dir *= -1;
+	}
+
+	_Dir.RotaitonZDeg(RandomFloat);
+
+	SetBullet(_Dir, Pivot->GetTransform()->GetWorldPosition(), RandomFloat2);
 }
