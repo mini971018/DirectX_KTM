@@ -93,6 +93,7 @@ private:
 	void AttackStateInit();
 
 	// 스테이트에서 사용되는 변수들
+	float StateCalFloat = 0.0f;
 	float StateCalTime  = 0.0f;
 	float StateCalTime2 = 0.0f;
 	bool StateCalBool = false;

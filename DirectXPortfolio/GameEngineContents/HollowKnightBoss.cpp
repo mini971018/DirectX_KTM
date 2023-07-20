@@ -526,7 +526,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::ChestShot;
+	PatternNum = HollowKnightAttackState::PuppetSlam;
 
 	switch (PatternNum)
 	{
@@ -708,6 +708,9 @@ bool HollowKnightBoss::BossStageStart()
 	{
 		return false;
 	}
+
+	
+
 }
 
 void HollowKnightBoss::GetDamageCheck()

@@ -681,6 +681,7 @@ void HollowKnightBoss::AttackStateInit()
 		}
 	);
 
+
 	FSM.CreateState(
 		{
 			.Name = "UpPuppet",
@@ -689,24 +690,43 @@ void HollowKnightBoss::AttackStateInit()
 			BossRenderer->ChangeAnimation("UpPuppet");
 			SetCollisionValue(float4{ 245,317,1 }, float4{ 10.0f, HollowKnightCollisionIdlePos.y + 10, -70.0f });
 
+			StateCalPos = GetTransform()->GetWorldPosition();
+
 			PivotPos = { 0 , 268 };
 			SetBossRendererPivot();
-
+			StateCalFloat = 0.0f;
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (GetTransform()->GetWorldPosition().y <= -800.0f)
+			float4 Destination = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
+			Destination.y = -850.0f;
+
+			if (Destination.XYDistance(GetTransform()->GetWorldPosition()) > 5.0f)
 			{
-				GetTransform()->AddWorldPosition({ 0.0f, 1000.0f * _DeltaTime });
+				float4 Destination = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
+				Destination.y = -850.0f;
+
+				if (StateCalFloat >= 1.0f)
+				{
+					StateCalFloat = 1.0f;
+				}
+
+				float4 Pos = float4::Lerp(StateCalPos, Destination, StateCalFloat);
+				GetTransform()->SetWorldPosition(float4::Lerp(StateCalPos, Destination, StateCalFloat));
 			}
 			else
+			{
+				StateCalTime += _DeltaTime;
+			}
+
+			if (StateCalTime > 0.25f)
 			{
 				FSM.ChangeState("DownPuppet");
 				return;
 			}
 
-
+			StateCalFloat += (_DeltaTime * 2.5f);
 		},
 			.End = [this]()
 		{
@@ -722,7 +742,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("DownPuppet");
-			Gravity = 2000.0f;
+			Gravity = 2750.0f;
 
 			SetCollisionValue(float4{ 282,243,1 }, float4{ 0.0f, HollowKnightCollisionIdlePos.y + 120, -70.0f });
 
@@ -767,7 +787,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (StateCalTime >= 0.1f)
+			if (StateCalTime >= 0.07f)
 			{
 				if (StateCalInt <= 3)
 				{
