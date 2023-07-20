@@ -696,10 +696,12 @@ void HollowKnightBoss::AttackStateInit()
 			SetBossRendererPivot();
 			StateCalFloat = 0.0f;
 			StateCalTime = 0.0f;
+
+			StateCalDir = float4::Null;
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			float4 Destination = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
+			/*float4 Destination = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
 			Destination.y = -850.0f;
 
 			if (Destination.XYDistance(GetTransform()->GetWorldPosition()) > 5.0f)
@@ -725,8 +727,47 @@ void HollowKnightBoss::AttackStateInit()
 				FSM.ChangeState("DownPuppet");
 				return;
 			}
+			StateCalFloat += (_DeltaTime * 2.5f);*/
 
-			StateCalFloat += (_DeltaTime * 2.5f);
+
+			if (GetTransform()->GetWorldPosition().y <= -850.0f)
+			{
+				GetTransform()->AddWorldPosition(float4::Up * 1000.0f * _DeltaTime);
+			}
+
+			float Speed = 3000.0f;
+			float Clamp = 1000.0f;
+
+			float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+
+			if (BossToPlayerDir.x < 0.0f)
+			{
+				StateCalDir += float4::Left * Speed * _DeltaTime;
+			}
+			else
+			{
+				StateCalDir += float4::Right * Speed * _DeltaTime;
+			}
+
+			if (StateCalDir.x >= Clamp)
+			{
+				StateCalDir.x = Clamp;
+			}
+			else if (StateCalDir.x <= -Clamp)
+			{
+				StateCalDir.x = -Clamp;
+			}
+
+			GetTransform()->AddWorldPosition(StateCalDir * _DeltaTime);
+
+			if (StateCalTime >= 0.75f)
+			{
+				FSM.ChangeState("DownPuppet");
+				return;
+			}
+
+
+			StateCalTime += _DeltaTime;
 		},
 			.End = [this]()
 		{
@@ -749,7 +790,6 @@ void HollowKnightBoss::AttackStateInit()
 			PivotPos = { 0 , 103 };
 			SetBossRendererPivot();
 
-			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -760,6 +800,30 @@ void HollowKnightBoss::AttackStateInit()
 			}
 			else
 			{
+				float Speed = 3000.0f;
+				float Clamp = 1000.0f;
+
+				float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+
+				if (BossToPlayerDir.x < 0.0f)
+				{
+					StateCalDir += float4::Left * Speed * _DeltaTime;
+				}
+				else
+				{
+					StateCalDir += float4::Right * Speed * _DeltaTime;
+				}
+
+				if (StateCalDir.x >= Clamp)
+				{
+					StateCalDir.x = Clamp;
+				}
+				else if (StateCalDir.x <= -Clamp)
+				{
+					StateCalDir.x = -Clamp;
+				}
+
+				GetTransform()->AddWorldPosition(StateCalDir * _DeltaTime);
 				GetTransform()->AddWorldPosition(float4::Down * Gravity * _DeltaTime);
 			}
 
