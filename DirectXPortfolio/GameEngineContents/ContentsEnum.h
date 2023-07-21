@@ -105,3 +105,9 @@ enum class PlayerAttackType
 	Skill,
 	SelfStab
 };
+
+enum class CameraClampType
+{
+	HollowKnightBossRoom,
+	HollowKnightInBoss,
+};

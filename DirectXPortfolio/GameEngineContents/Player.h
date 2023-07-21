@@ -19,7 +19,7 @@ public:
 	// 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
 	static void SetCurrentLevelPlayer(std::shared_ptr<Player> _Player);
 
-	void InitPlayer(std::string_view ColMap);
+	void InitPlayer(std::string_view ColMap, CameraClampType _ClampType);
 	void SetPlayerCanMoveState(bool _State)
 	{
 		CanMoveState = _State;
@@ -36,9 +36,6 @@ public:
 	{
 		return PlayerSkillDamage;
 	}
-	
-	void OnCameraShake();
-	void OffCameraShake();
 
 	float4 GetPlayerCollisionPos();
 
@@ -136,12 +133,18 @@ private:
 	void EffectInit();
 	void CollisionInit();
 
-	//카메라 이동
+	//카메라 관련
 	float CamDeltaTime = 0.0f;
 	void CameraMoveLerp();
-	void CameraDeltaClamp();
 
 	bool IsCameraShake = true;
+	
+	float4 CamTargetPos = float4::Null;
+
+	float4 SetCameraTarget(float4 _Pos);
+	float4 SetCameraClamp(float4 _Pos);
+
+	CameraClampType ClampType = CameraClampType::HollowKnightBossRoom;
 
 	//스테이트 관련
 	GameEngineFSM FSM;

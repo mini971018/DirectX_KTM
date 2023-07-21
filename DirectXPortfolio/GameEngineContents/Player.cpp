@@ -181,7 +181,7 @@ void Player::SetPlayerRendererPivot()
 	Pivot->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
 }
 
-void Player::InitPlayer(std::string_view ColMap)
+void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType)
 {
 	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find(ColMap);
 
@@ -189,6 +189,8 @@ void Player::InitPlayer(std::string_view ColMap)
 	{
 		PlayerColmapTexture = ColmapTexture;
 	}
+
+	ClampType = _ClampType;
 }
 
 void Player::SpriteInit()
@@ -398,25 +400,10 @@ void Player::CollisionInit()
 void Player::CameraMoveLerp()
 {
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
-	float4 CamTargetPos = GetTransform()->GetWorldPosition();
+	CamTargetPos = GetTransform()->GetWorldPosition();
 
-	float Value = 30.0f;
-
-	float RandomXValue = GameEngineRandom::MainRandom.RandomFloat(-Value, Value);
-	float RandomYValue = GameEngineRandom::MainRandom.RandomFloat(-Value, Value);
-
-	if (true == IsCameraShake)
-	{
-		CamTargetPos += {RandomXValue, 0};
-	}
-
-	CamTargetPos.z = -1000.0f;
-	CamTargetPos.y = CameraPos.y + RandomYValue;
-
-	//CamTargetPos.y += 400.0f;
-
-	//float4 ScreenSize = GameEngineWindow::GetScreenSize();
-	//CamTargetPos += { -(ScreenSize.x / 2), (ScreenSize.y / 2) - 420.0f };
+	CamTargetPos = SetCameraTarget(CamTargetPos);
+	CamTargetPos = SetCameraClamp(CamTargetPos);
 
 	float value = CameraPos.XYDistance(CamTargetPos);
 
@@ -426,6 +413,15 @@ void Player::CameraMoveLerp()
 	{
 		CamDeltaTime = 0.0f;
 	}
+}
+
+// 포지션을 카메라 값에 맞는 값으로 리턴
+float4 Player::SetCameraTarget(float4 _Pos)
+{
+	_Pos.y += 393.0f;
+	_Pos.z = -1000.0f;
+
+	return _Pos;
 }
 
 void Player::CalSlashAnimation()
@@ -458,6 +454,33 @@ void Player::CalSlashAnimation()
 	{
 		CurrentSlash = CalAttackAnimation();
 	}
+}
+
+float4 Player::SetCameraClamp(float4 _Pos)
+{
+	switch (ClampType)
+	{
+	case CameraClampType::HollowKnightBossRoom:
+		if (_Pos.x < 834.0f)
+		{
+			_Pos.x = 834.0f;
+		}
+		
+		if (_Pos.x > 3850.0f)
+		{
+			_Pos.x = 3850.0f;
+		}
+
+		_Pos.y = -960.0f;
+
+		break;
+	case CameraClampType::HollowKnightInBoss:
+		break;
+	default:
+		break;
+	}
+
+	return _Pos;
 }
 
 PlayerSlashAnimation Player::CalAttackAnimation()
