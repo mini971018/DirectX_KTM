@@ -98,57 +98,57 @@ void HollowKnightBossRoom::CreateMap()
 		std::shared_ptr<class GameEngineSpriteRenderer> BG5 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG5->SetTexture( "BG1.png");
-		BG5->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG5->GetTransform()->SetLocalPosition({ 300, -142, 950 });
+		BG5->GetTransform()->SetLocalScale({ 1024, 2648 });    //(190, 256)
+		BG5->GetTransform()->SetLocalPosition({ 300, -242, 950 });
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG6 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG6->SetTexture("BG1.png");
-		BG6->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG6->GetTransform()->SetLocalPosition({ 750, -142, 850 });
+		BG6->GetTransform()->SetLocalScale({ 1024, 2648 });    //(190, 256)
+		BG6->GetTransform()->SetLocalPosition({ 750, -242, 850 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG3 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG3->SetTexture("BG1.png");
-		BG3->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
-		BG3->GetTransform()->SetLocalPosition({ -122, -112, 800 });
+		BG3->GetTransform()->SetLocalScale({ -1024, 2648 });    //(190, 256)
+		BG3->GetTransform()->SetLocalPosition({ -122, -212, 800 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG4 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG4->SetTexture( "BG1.png");
-		BG4->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG4->GetTransform()->SetLocalPosition({ 1300, -112, 800 });
+		BG4->GetTransform()->SetLocalScale({ 1024, 2648 });    //(190, 256)
+		BG4->GetTransform()->SetLocalPosition({ 1300, -212, 800 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG1->SetTexture("BG1.png");
-		BG1->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
-		BG1->GetTransform()->SetLocalPosition({ -822, -82, 750 });
+		BG1->GetTransform()->SetLocalScale({ -1024, 2648 });    //(190, 256)
+		BG1->GetTransform()->SetLocalPosition({ -822, -182, 750 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG2->SetTexture("BG1.png");
-		BG2->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG2->GetTransform()->SetLocalPosition({ 1950, -82, 750 });
+		BG2->GetTransform()->SetLocalScale({ 1024, 2648 });    //(190, 256)
+		BG2->GetTransform()->SetLocalPosition({ 1950, -182, 750 });
 
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG1_1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG1_1->SetTexture( "BG1.png");
-		BG1_1->GetTransform()->SetLocalScale({ -1024, 2048 });    //(190, 256)
-		BG1_1->GetTransform()->SetLocalPosition({ -1422, -52, 550 });
+		BG1_1->GetTransform()->SetLocalScale({ -1024, 2648 });    //(190, 256)
+		BG1_1->GetTransform()->SetLocalPosition({ -1422, -152, 550 });
 
 
 		std::shared_ptr<class GameEngineSpriteRenderer> BG2_1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
 
 		BG2_1->SetTexture("BG1.png");
-		BG2_1->GetTransform()->SetLocalScale({ 1024, 2048 });    //(190, 256)
-		BG2_1->GetTransform()->SetLocalPosition({ 2550, -52, 550 });
+		BG2_1->GetTransform()->SetLocalScale({ 1024, 2648 });    //(190, 256)
+		BG2_1->GetTransform()->SetLocalPosition({ 2550, -152, 550 });
 
 	}
 

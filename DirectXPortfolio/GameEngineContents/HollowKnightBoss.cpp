@@ -488,7 +488,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::SelfStab;
+	//PatternNum = HollowKnightNoneAttackState::SelfStab;
 
 	switch (PatternNum)
 	{
@@ -509,11 +509,11 @@ void HollowKnightBoss::SetRandomPattern()
 		break;
 	case HollowKnightNoneAttackState::SelfStab:
 		//3페이즈부터 SelfStab
-		//if (static_cast<short>(CurrentPhase) <= 1)
-		//{
-		//	SetRandomPattern();
-		//	break;
-		//}
+		if (static_cast<short>(CurrentPhase) <= 1)
+		{
+			SetRandomPattern();
+			break;
+		}
 		StateCalInt = 0;
 		CurrentState = "ReAnticSelfStab";
 		FSM.ChangeState(CurrentState);
@@ -535,7 +535,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::PuppetSlam;
+	//PatternNum = HollowKnightAttackState::PuppetSlam;
 
 	switch (PatternNum)
 	{

@@ -15,7 +15,7 @@ SelfStabEffect::~SelfStabEffect()
 
 void SelfStabEffect::Start()
 {
-	SelfStabEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::BFPF_Effect);
+	SelfStabEffectRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperEffect);
 	SelfStabEffectRenderer->CreateAnimation({ .AnimationName = "SelfStabFlash", .SpriteName = "95.SelfStabFlash", .FrameInter = 0.05f, .Loop = false, .ScaleToTexture = true });
 	SelfStabEffectRenderer->ChangeAnimation("SelfStabFlash");
 }

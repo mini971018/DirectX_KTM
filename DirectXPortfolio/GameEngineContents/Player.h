@@ -37,6 +37,9 @@ public:
 		return PlayerSkillDamage;
 	}
 	
+	void OnCameraShake();
+	void OffCameraShake();
+
 	float4 GetPlayerCollisionPos();
 
 	void SetFireballHitEffect(float4 _Pos, float4 _Scale);
@@ -138,6 +141,8 @@ private:
 	void CameraMoveLerp();
 	void CameraDeltaClamp();
 
+	bool IsCameraShake = true;
+
 	//스테이트 관련
 	GameEngineFSM FSM;
 	PlayerState CurrentState = PlayerState::Idle;
@@ -146,8 +151,6 @@ private:
 	float StateCalTime = 0.0f;
 	float StateCalFloat = 0.0f;
 	int StateCalCount = 0;
-
-
 
 };
 

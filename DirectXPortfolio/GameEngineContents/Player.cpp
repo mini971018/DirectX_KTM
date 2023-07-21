@@ -400,8 +400,18 @@ void Player::CameraMoveLerp()
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
 	float4 CamTargetPos = GetTransform()->GetWorldPosition();
 
+	float Value = 30.0f;
+
+	float RandomXValue = GameEngineRandom::MainRandom.RandomFloat(-Value, Value);
+	float RandomYValue = GameEngineRandom::MainRandom.RandomFloat(-Value, Value);
+
+	if (true == IsCameraShake)
+	{
+		CamTargetPos += {RandomXValue, 0};
+	}
+
 	CamTargetPos.z = -1000.0f;
-	CamTargetPos.y = CameraPos.y;
+	CamTargetPos.y = CameraPos.y + RandomYValue;
 
 	//CamTargetPos.y += 400.0f;
 
@@ -416,8 +426,6 @@ void Player::CameraMoveLerp()
 	{
 		CamDeltaTime = 0.0f;
 	}
-	
-
 }
 
 void Player::CalSlashAnimation()
