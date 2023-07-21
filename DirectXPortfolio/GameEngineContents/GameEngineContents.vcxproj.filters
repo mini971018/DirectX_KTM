@@ -94,6 +94,15 @@
     <ClInclude Include="ChestShotEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
+    <ClInclude Include="SlamEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfStabEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="HitDustEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -199,6 +208,15 @@
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
     <ClCompile Include="ChestShotEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SlamEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfStabEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="HitDustEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
   </ItemGroup>

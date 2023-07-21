@@ -77,6 +77,9 @@ private:
 	const float ConstDamagedTime = 0.3f;
 	bool DamageReduceState = false;
 
+	//SlamEffect
+	void SetSlamEffect();
+
 	//Blasts 관련
 	void SetBlasts();
 	const float MinBlastsPosX = 1475.0f + 100.0f;
@@ -91,6 +94,10 @@ private:
 	GameEngineFSM FSM;
 	void StateInit();  //상태 머신 스테이트들 init
 	void AttackStateInit();
+
+	//HitEffect
+	void PlayerHitEffect();
+	void SetHitEffect(float4 _Dir);
 
 	// 스테이트에서 사용되는 변수들
 	float StateCalFloat = 0.0f;
@@ -140,6 +147,7 @@ private:
 
 	//SelfStab
 	int StabCount = 3;
+	void SetStabEffect();
 
 	//SwapPhase
 	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase4; //현재 패턴의 번호

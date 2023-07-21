@@ -206,6 +206,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="HitDustEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HollowKnightBlasts.h">
       <SubType>
       </SubType>
@@ -274,11 +278,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SelfStabEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ShadowDashEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ShadowDashRechargedEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SlamEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -334,6 +346,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="HealingEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="HitDustEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -413,11 +429,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="SelfStabEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ShadowDashEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="ShadowDashRechargedEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="SlamEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

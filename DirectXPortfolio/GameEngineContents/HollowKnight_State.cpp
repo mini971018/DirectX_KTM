@@ -564,6 +564,7 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f;
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
 
+			CurrentState = "SelfStab";
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -594,6 +595,9 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("SelfStab");
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -80.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
+			SetHitEffect(-ReturnPatternDir());
+			SetStabEffect();
+			GetDamage(1.0f, PlayerAttackType::SelfStab);
 
 			StateCalTime = 0.0f;
 		},
@@ -626,6 +630,7 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("ReAnticSelfStab");
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
+			CurrentState = "SelfStab";
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -649,6 +654,9 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("ReSelfStab");
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -80.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
+			SetHitEffect(-ReturnPatternDir());
+			SetStabEffect();
+			GetDamage(1.0f, PlayerAttackType::SelfStab);
 
 			DamageReduceState = true;
 		},
@@ -713,6 +721,7 @@ void HollowKnightBoss::StateInit()
 			.Name = "StunLand",
 			.Start = [this]()
 		{
+			CurrentState = "StunLand";
 			DamageReduceState = false;
 			BossRenderer->ChangeAnimation("StunLand");
 			SetCollisionValue(float4{ 180,190,1 }, float4{ 0.0f, -159.0f , -70.0f });
@@ -727,7 +736,8 @@ void HollowKnightBoss::StateInit()
 				return;
 			}
 
-			if (true == StateCalBool)
+			
+			if (0.3f <= StateCalTime && true == StateCalBool)
 			{
 				FSM.ChangeState("StunToIdle");
 				return;

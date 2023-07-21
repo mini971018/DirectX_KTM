@@ -18,6 +18,9 @@
 #include "HollowKnightBullet.h"
 #include "HollowKnightSmallShotEffect.h"
 #include "ChestShotEffect.h"
+#include "SlamEffect.h"
+#include "SelfStabEffect.h"
+#include "HitDustEffect.h"
 
 HollowKnightBoss::HollowKnightBoss() 
 {
@@ -128,12 +131,18 @@ void HollowKnightBoss::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("58.AnticTeleport").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("59.EndTeleport").GetFullPath());
 
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("95.SelfStabFlash").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("96.SlamEffect").GetFullPath());
+
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("97.HollowKnightBulletSplash").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("98.HollowKnightBullet").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("99.ShieldBreakEffect").GetFullPath());
 
-		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("100.HitDust").GetFullPath());
+
+		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("100.HitDust").GetFullPath());
 
 	}
 }
@@ -479,7 +488,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::SelfStab;
+	PatternNum = HollowKnightNoneAttackState::SelfStab;
 
 	switch (PatternNum)
 	{
@@ -500,11 +509,11 @@ void HollowKnightBoss::SetRandomPattern()
 		break;
 	case HollowKnightNoneAttackState::SelfStab:
 		//3페이즈부터 SelfStab
-		if (static_cast<short>(CurrentPhase) <= 1)
-		{
-			SetRandomPattern();
-			break;
-		}
+		//if (static_cast<short>(CurrentPhase) <= 1)
+		//{
+		//	SetRandomPattern();
+		//	break;
+		//}
 		StateCalInt = 0;
 		CurrentState = "ReAnticSelfStab";
 		FSM.ChangeState(CurrentState);
@@ -536,7 +545,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 		break;
 	case HollowKnightAttackState::Slash:
 		CurrentState = "AnticSlash1";
-		FSM.ChangeState(CurrentState);
+		FSM.ChangeState(CurrentState); 
 		break; 
 	case HollowKnightAttackState::Counter:
 		CurrentState = "AnticCounter";
@@ -726,7 +735,6 @@ void HollowKnightBoss::GetDamageCheck()
 	float AttackDamage = Player::CurrentLevelPlayer->GetPlayerDamage();
 	float SkillDamage = Player::CurrentLevelPlayer->GetPlayerSkillDamage();
 
-
 	if (AttackCollision != nullptr)
 	{
 		GetDamage(AttackDamage, PlayerAttackType::Slash, AttackCollision->GetTransform()->GetWorldPosition());
@@ -736,7 +744,6 @@ void HollowKnightBoss::GetDamageCheck()
 	{
 		GetDamage(SkillDamage, PlayerAttackType::Skill);
 	}
-
 }
 
 void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos)
@@ -755,14 +762,19 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 	case PlayerAttackType::Slash:
 		//Hit Slash Effect 추가
 		EffectPos = float4::Lerp(HollowKnightCollision->GetTransform()->GetWorldPosition(), _Pos, 0.5f);
+		PlayerHitEffect();
 		Player::CurrentLevelPlayer->SetEnemyHitEffect(EffectPos, float4{ 3 , 3 });
 		Player::CurrentLevelPlayer->SetEnemyHitSlashEffect(EffectPos, float4{ 1 ,1 });
 		break;
 	case PlayerAttackType::Skill:
+		PlayerHitEffect();
 		EffectPos = HollowKnightCollision->GetTransform()->GetWorldPosition();
 		//EffectPos = EffectPos - float4{ 0, 30.0f };
 		Player::CurrentLevelPlayer->SetFireballHitEffect(EffectPos, float4{2 ,2});
 		//Hit Skill Effect 추가
+		break;
+	case PlayerAttackType::SelfStab:
+
 		break;
 	default:
 		MsgAssert("보스의 GetDamage 중 존재할 수 없는 데미지 타입 입니다.");
@@ -789,6 +801,36 @@ void HollowKnightBoss::SetSlashAttackCollision()
 	AttackCollision->GetTransform()->SetLocalScale(SlashCollisionScale);
 	AttackCollision->GetTransform()->SetLocalPosition(SlashCollisionPos);
 	AttackCollision->On();
+}
+
+void HollowKnightBoss::SetSlamEffect()
+{
+	std::shared_ptr<class SlamEffect> SlamEffectActor = GetLevel()->CreateActor<SlamEffect>();
+	SlamEffectActor->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+	SlamEffectActor->GetTransform()->AddLocalPosition({ 0, 100, 0 });
+	SlamEffectActor->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
+}
+
+void HollowKnightBoss::SetStabEffect()
+{
+	std::shared_ptr<class SelfStabEffect> SelfStabEffectActor = GetLevel()->CreateActor<SelfStabEffect>();
+	SelfStabEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+	//SelfStabEffectActor->GetTransform()->SetWorldPosition(Pivot->GetTransform()->GetWorldPosition());
+	SelfStabEffectActor->GetTransform()->SetLocalPosition({0, 0, 0});
+	SelfStabEffectActor->GetTransform()->AddLocalPosition({-120, -50, 0});
+	SelfStabEffectActor->GetTransform()->SetLocalScale({1.5f, 1.5f, 1.0f});
+	SelfStabEffectActor->GetTransform()->SetLocalRotation({ 0, 0, -45.0f });
+	//SelfStabEffectActor->GetTransform()->AddLocalPosition({ 0, 100, 0 });
+
+	//if (float4::Left == ReturnPatternDir())
+	//{
+	//	SelfStabEffectActor->GetTransform()->SetLocalRotation({ 0, 0, -45.0f });
+	//}
+	//else
+	//{
+	//	SelfStabEffectActor->GetTransform()->SetLocalRotation({ 0, 0, 45.0f });
+	//}
+
 }
 
 void HollowKnightBoss::SetBlasts()
@@ -818,9 +860,9 @@ void HollowKnightBoss::SetBlasts()
 
 void HollowKnightBoss::SetBullet(float4 _Dir, float4 _Pos, float _Force)
 {
-	std::shared_ptr<class HollowKnightBullet> BulletTest = GetLevel()->CreateActor<HollowKnightBullet>();
-	BulletTest->GetTransform()->SetWorldPosition(_Pos);
-	BulletTest->SetBullet(BossColmapTexture, _Dir, _Force);
+	std::shared_ptr<class HollowKnightBullet> BulletActor = GetLevel()->CreateActor<HollowKnightBullet>();
+	BulletActor->GetTransform()->SetWorldPosition(_Pos);
+	BulletActor->SetBullet(BossColmapTexture, _Dir, _Force);
 }
 
 void HollowKnightBoss::SetRandomBullet()
@@ -842,4 +884,79 @@ void HollowKnightBoss::SetRandomBullet()
 	_Dir.RotaitonZDeg(RandomFloat);
 
 	SetBullet(_Dir, Pivot->GetTransform()->GetWorldPosition(), RandomFloat2);
+}
+
+void HollowKnightBoss::PlayerHitEffect()
+{
+	float4 PlayerToBossDir = HollowKnightCollision->GetTransform()->GetWorldPosition() - Player::CurrentLevelPlayer->GetPlayerCollisionPos();
+	float Value = HollowKnightCollision->GetTransform()->GetWorldScale().y / 2;
+
+	if (PlayerToBossDir.y >= fabs(Value) || PlayerToBossDir.y <= -fabs(Value))
+	{
+		SetHitEffect(float4::Up);
+		
+		return;
+	}
+	
+	if (PlayerToBossDir.x <= 0.0f)
+	{
+		SetHitEffect(float4::Left);
+	}
+	else
+	{
+		SetHitEffect(float4::Right);
+	}
+
+}
+
+void HollowKnightBoss::SetHitEffect(float4 _Dir)
+{
+	//float4 PlayerToBossDir = HollowKnightCollision->GetTransform()->GetWorldPosition() - Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
+	float4 EffectDir = float4::Null;
+	float Angle;
+
+	if (float4::Up == _Dir)
+	{
+		EffectDir = float4::Up;
+		Angle = 30.0f;
+	}
+	else if (float4::Left == _Dir)
+	{
+		EffectDir = float4::Left;
+		Angle = 45.0f;
+	}
+	else if (float4::Right == _Dir)
+	{
+		EffectDir = float4::Right;
+		Angle = 45.0f;
+	}
+	else
+	{
+		MsgAssert("HollowKnight SetHitEffect 중 존재할 수 없는 값 입니다");
+	}
+
+	for (int i = 0; i < 9; ++i)
+	{
+		float4 AngleDir = EffectDir;
+		float RandomAngle = 0.0f;
+
+		if (_Dir == float4::Up)
+		{
+			RandomAngle = GameEngineRandom::MainRandom.RandomFloat(-Angle, Angle);
+		}
+		else if (_Dir == float4::Left)
+		{
+			RandomAngle = GameEngineRandom::MainRandom.RandomFloat(-Angle, 0);
+		}
+		else
+		{
+			RandomAngle = GameEngineRandom::MainRandom.RandomFloat(0, Angle);
+		}
+
+		AngleDir.RotaitonZDeg(RandomAngle);
+
+		std::shared_ptr<class HitDustEffect> HitDustEffectActor = GetLevel()->CreateActor<HitDustEffect>();
+		HitDustEffectActor->GetTransform()->SetWorldPosition(HollowKnightCollision->GetTransform()->GetWorldPosition());
+		HitDustEffectActor->SetHitDust(AngleDir);
+	}
 }

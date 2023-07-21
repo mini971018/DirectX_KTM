@@ -631,6 +631,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			SetBlasts();
+			SetSlamEffect();
 			BossRenderer->ChangeAnimation("LandBlasts");
 
 			StateCalTime = 0.0f;
@@ -843,6 +844,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("SlamPuppet");
+			SetSlamEffect();
 
 			PivotPos = { 0 , 150 };
 			SetBossRendererPivot();

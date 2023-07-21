@@ -102,5 +102,6 @@ enum class HollowKnightCollisionType
 enum class PlayerAttackType
 {
 	Slash,
-	Skill
+	Skill,
+	SelfStab
 };

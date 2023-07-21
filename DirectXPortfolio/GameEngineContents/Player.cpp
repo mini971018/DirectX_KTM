@@ -581,6 +581,11 @@ void Player::SetPlayerCollisionPos(float _Value)
 	}
 }
 
+float4 Player::GetPlayerCollisionPos()
+{
+	return PlayerCollision->GetTransform()->GetWorldPosition();
+}
+
 void Player::SetFireballHitEffect(float4 _Pos, float4 _Scale)
 {
 	std::shared_ptr<class FireballHitEnemyEffect> FireballHitEnemyEffectActor = GetLevel()->CreateActor<FireballHitEnemyEffect>();

@@ -37,6 +37,8 @@ public:
 		return PlayerSkillDamage;
 	}
 	
+	float4 GetPlayerCollisionPos();
+
 	void SetFireballHitEffect(float4 _Pos, float4 _Scale);
 	void SetEnemyHitSlashEffect(float4 _Pos, float4 _Scale);
 	void SetEnemyHitEffect(float4 _Pos, float4 _Scale);
