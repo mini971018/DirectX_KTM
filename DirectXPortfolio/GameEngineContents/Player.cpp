@@ -54,12 +54,7 @@ void Player::Update(float _Delta)
 	FSM.Update(_Delta);
 
 	//카메라 관련
-	CamDeltaTime += _Delta * 10.0f;
-	if (CamDeltaTime >= 1.0f)
-	{
-		CamDeltaTime = 1.0f;
-	}
-	CameraMoveLerp();
+	CameraMoveLerp(_Delta);
 
 	SlashCalTime += _Delta; // 일반공격 애니메이션을 확인하기 위한 변수
 	ShadowDashCalTime += _Delta; // ShadowDash 쿨타임 계산을 위한 변수
@@ -77,6 +72,10 @@ void Player::Update(float _Delta)
 		GameEngineLevel::IsDebugSwitch();
 	}
 
+	SetIsCameraShake();
+	CameraShakeTime -= _Delta;
+
+	Test();
 }
 
 void Player::Render(float _Delta)
@@ -93,6 +92,8 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("TestButton3", '3');
 		GameEngineInput::CreateKey("TestButton4", '4');
 		
+		GameEngineInput::CreateKey("TestButton8", '8');
+
 		GameEngineInput::CreateKey("ChangeNextLevel", '0');
 
 		GameEngineInput::CreateKey("MoveUp", VK_UP);
@@ -111,7 +112,7 @@ void Player::CreateKey()
 
 void Player::Test()
 {
-	GetTransform()->AddWorldPosition({ 960.0f, 0.0f });
+
 }
 
 bool Player::IsGround(float4 _Pos)
@@ -397,17 +398,65 @@ void Player::CollisionInit()
 	PlayerCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Player));
 }
 
-void Player::CameraMoveLerp()
+void Player::SetCameraShakeOff()
+{
+	CameraShakeTime = 0.0f;
+}
+
+void Player::SetCameraShakeLoop(float _Force)
+{
+	SetCameraShakeValue(100000.0f, _Force);
+}
+
+void Player::SetCameraShakeOnce(float _Force)
+{
+	SetCameraShakeValue(0.15f, _Force);
+}
+
+void Player::SetIsCameraShake()
+{
+	if (CameraShakeTime >= 0.0f)
+	{
+		IsCameraShake = true;
+	}
+	else
+	{
+		IsCameraShake = false;
+	}
+}
+
+void Player::CameraMoveLerp(float _Delta)
 {
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
-	CamTargetPos = GetTransform()->GetWorldPosition();
+	CamTarget = GetTransform()->GetWorldPosition();
 
-	CamTargetPos = SetCameraTarget(CamTargetPos);
-	CamTargetPos = SetCameraClamp(CamTargetPos);
+	CamTarget = SetCameraTarget(CamTarget);
+	CamTarget = SetCameraClamp(CamTarget);
 
-	float value = CameraPos.XYDistance(CamTargetPos);
+	float4 CamTargetPosValue = CamTarget;
 
-	GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(float4::Lerp(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition(), CamTargetPos, CamDeltaTime));
+	if (true == IsCameraShake)
+	{
+		CamDeltaTime += _Delta * 20.0f;
+		if (CamDeltaTime >= 1.0f)
+		{
+			CamDeltaTime = 1.0f;
+		}
+
+		CamTargetPosValue = SetCameraShake(CamTargetPosValue);
+	}
+	else
+	{
+		CamDeltaTime += _Delta * 10.0f;
+		if (CamDeltaTime >= 1.0f)
+		{
+			CamDeltaTime = 1.0f;
+		}
+	}
+
+	GetLevel()->GetMainCamera()->GetTransform()->SetWorldPosition(float4::Lerp(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition(), CamTargetPosValue, CamDeltaTime));
+
+	float value = CameraPos.XYDistance(CamTargetPosValue);
 
 	if (value >= 0.5f)
 	{
@@ -418,11 +467,54 @@ void Player::CameraMoveLerp()
 // 포지션을 카메라 값에 맞는 값으로 리턴
 float4 Player::SetCameraTarget(float4 _Pos)
 {
-	_Pos.y += 393.0f;
+	//_Pos.y += 393.0f;
 	_Pos.z = -1000.0f;
 
 	return _Pos;
 }
+
+float4 Player::SetCameraClamp(float4 _Pos)
+{
+	switch (ClampType)
+	{
+	case CameraClampType::HollowKnightBossRoom:
+		if (_Pos.x < 834.0f)
+		{
+			_Pos.x = 834.0f;
+		}
+
+		if (_Pos.x > 3850.0f)
+		{
+			_Pos.x = 3850.0f;
+		}
+
+		_Pos.y = -960.0f;
+
+		break;
+	case CameraClampType::HollowKnightInBoss:
+		break;
+	default:
+		break;
+	}
+
+	return _Pos;
+}
+
+float4 Player::SetCameraShake(float4 _Pos)
+{
+	float4 RandomPosDir = float4{ CameraShakeForce, 0.0f, 0.0f };
+	float RandomAngle = GameEngineRandom::MainRandom.RandomFloat(0, 359);
+
+	RandomPosDir.RotaitonZDeg(RandomAngle);
+	
+	return _Pos + RandomPosDir;
+
+	//float RandomFloatX = GameEngineRandom::MainRandom.RandomFloat(-_Value, _Value);
+	//float RandomFloatY = GameEngineRandom::MainRandom.RandomFloat(-_Value, _Value);
+
+	//return _Pos + float4{RandomFloatX, RandomFloatY, 0};
+}
+
 
 void Player::CalSlashAnimation()
 {
@@ -456,32 +548,6 @@ void Player::CalSlashAnimation()
 	}
 }
 
-float4 Player::SetCameraClamp(float4 _Pos)
-{
-	switch (ClampType)
-	{
-	case CameraClampType::HollowKnightBossRoom:
-		if (_Pos.x < 834.0f)
-		{
-			_Pos.x = 834.0f;
-		}
-		
-		if (_Pos.x > 3850.0f)
-		{
-			_Pos.x = 3850.0f;
-		}
-
-		_Pos.y = -960.0f;
-
-		break;
-	case CameraClampType::HollowKnightInBoss:
-		break;
-	default:
-		break;
-	}
-
-	return _Pos;
-}
 
 PlayerSlashAnimation Player::CalAttackAnimation()
 {

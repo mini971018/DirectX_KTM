@@ -19,6 +19,15 @@ public:
 	// 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
 	static void SetCurrentLevelPlayer(std::shared_ptr<Player> _Player);
 
+	void SetCameraShakeOnce(float _Force);
+	void SetCameraShakeOff();
+	void SetCameraShakeLoop(float _Force);
+	void SetCameraShakeValue(float _Value, float _Force)
+	{
+		CameraShakeTime = _Value;
+		CameraShakeForce = _Force;
+	}
+
 	void InitPlayer(std::string_view ColMap, CameraClampType _ClampType);
 	void SetPlayerCanMoveState(bool _State)
 	{
@@ -135,14 +144,19 @@ private:
 
 	//카메라 관련
 	float CamDeltaTime = 0.0f;
-	void CameraMoveLerp();
+	void CameraMoveLerp(float _Delta);
 
-	bool IsCameraShake = true;
-	
-	float4 CamTargetPos = float4::Null;
+	void SetIsCameraShake();
+
+	bool IsCameraShake = false;
+	float CameraShakeForce = 20.0f;
+	float CameraShakeTime = 0.0f;
+	float4 CamTarget = float4::Null;
+	std::shared_ptr<class GameEngineTransform> CamTargetTransform = nullptr;
 
 	float4 SetCameraTarget(float4 _Pos);
 	float4 SetCameraClamp(float4 _Pos);
+	float4 SetCameraShake(float4 _Pos);
 
 	CameraClampType ClampType = CameraClampType::HollowKnightBossRoom;
 

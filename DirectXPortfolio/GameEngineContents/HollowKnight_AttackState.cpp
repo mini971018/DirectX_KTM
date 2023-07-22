@@ -634,6 +634,8 @@ void HollowKnightBoss::AttackStateInit()
 			SetSlamEffect();
 			BossRenderer->ChangeAnimation("LandBlasts");
 
+			Player::CurrentLevelPlayer->SetCameraShakeOnce(15.0f);
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -849,6 +851,8 @@ void HollowKnightBoss::AttackStateInit()
 			PivotPos = { 0 , 150 };
 			SetBossRendererPivot();
 
+			Player::CurrentLevelPlayer->SetCameraShakeOnce(25.0f);
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -955,6 +959,7 @@ void HollowKnightBoss::AttackStateInit()
 				//ÃÑ¾Ë ½î±â ½ÃÀÛ
 				StateCalBool = true;
 				ChestShotEffectActor->OnEffect();
+				Player::CurrentLevelPlayer->SetCameraShakeLoop(20.0f);
 			}
 
 			if (true == StateCalBool)
@@ -971,6 +976,8 @@ void HollowKnightBoss::AttackStateInit()
 
 			if (StateCalTime >= 8.0f)
 			{
+				Player::CurrentLevelPlayer->SetCameraShakeOff();
+
 				FSM.ChangeState("ChestShotLand");
 				return;
 			}
