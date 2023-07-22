@@ -161,7 +161,7 @@ void HollowKnightBoss::AnimationInit()
 				std::shared_ptr BreakShieldEffect = GetLevel()->CreateActor<BindBreakEffect>();
 				BreakShieldEffect->SetBindBreakRenderer(GetTransform()->GetWorldPosition() + PivotPos);
 				
-				Player::CurrentLevelPlayer->SetCameraShakeLoop(20.0f);
+				Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 			});
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainFall", .SpriteName = "03.HollowKnightBreakChainFall",.Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainLand", .SpriteName = "04.HollowKnightBreakChainLand", .Loop = false, .ScaleToTexture = true });

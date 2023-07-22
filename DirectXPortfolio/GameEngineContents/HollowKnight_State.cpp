@@ -45,7 +45,7 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("ChainIdle");
 			Player::CurrentLevelPlayer->SetPlayerCanMoveState(false);
-			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
+			Player::CurrentLevelPlayer->SetCameraShakeLoop(30.0f);
 			//float4 EffectPos = GetTransform()->GetWorldPosition();
 			//EffectPos += {-10, 300};
 			//RoarEffectPos = EffectPos;
@@ -152,7 +152,7 @@ void HollowKnightBoss::StateInit()
 			BossRenderer->ChangeAnimation("BreakChainLand");
 			BossWeaponRenderer->Off();
 
-			Player::CurrentLevelPlayer->SetCameraShakeOnce(15.0f);
+			Player::CurrentLevelPlayer->SetCameraShakeOnce(20.0f);
 
 			StateCalTime = 0.0f;
 		},
@@ -231,7 +231,7 @@ void HollowKnightBoss::StateInit()
 
 			BossRenderer->ChangeAnimation("Roar");
 
-			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
+			Player::CurrentLevelPlayer->SetCameraShakeLoop(30.0f);
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -608,7 +608,7 @@ void HollowKnightBoss::StateInit()
 			SetStabEffect();
 			GetDamage(1.0f, PlayerAttackType::SelfStab);
 
-			Player::CurrentLevelPlayer->SetCameraShakeLoop(20.0f);
+			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 
 			StateCalTime = 0.0f;
 		},
@@ -669,7 +669,7 @@ void HollowKnightBoss::StateInit()
 			SetHitEffect(-ReturnPatternDir());
 			SetStabEffect();
 			GetDamage(1.0f, PlayerAttackType::SelfStab);
-			Player::CurrentLevelPlayer->SetCameraShakeLoop(20.0f);
+			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 
 			DamageReduceState = true;
 		},
@@ -716,6 +716,8 @@ void HollowKnightBoss::StateInit()
 		{
 			if (0.75f <= StateCalTime)
 			{
+				DamageReduceState = false;
+
 				FSM.ChangeState("StunLand");
 				return;
 			}

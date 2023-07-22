@@ -460,7 +460,7 @@ void HollowKnightBossRoom::CreateMap()
 
 			std::shared_ptr<class GameEngineSpriteRenderer> FloorEmblem2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
 			FloorEmblem2->SetScaleToTexture("FloorEmblem2.png");
-			FloorEmblem2->GetTransform()->SetLocalPosition({ 173, -637, -70 });
+			FloorEmblem2->GetTransform()->SetLocalPosition({ 173, -637, -71 });
 
 			std::shared_ptr<class GameEngineSpriteRenderer> Floor1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
 			Floor1->SetScaleToTexture("BlankFloor.png");
@@ -742,6 +742,10 @@ void HollowKnightBossRoom::CreateMap()
 		MainRoomImage->SetScaleToTexture("HollowKnightBossRoomMain.png");
 
 		MainRoomImage->GetTransform()->SetLocalPosition({ 0, 0, -70 }); //원본 크기 기준 z -> -70.0f
+
+		std::shared_ptr<class GameEngineSpriteRenderer> UpperImage = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperLayer);
+		UpperImage->SetScaleToTexture("UpperLayer.png");
+		UpperImage->GetTransform()->SetLocalPosition({ 0, -40, -70 });
 	}
 
 

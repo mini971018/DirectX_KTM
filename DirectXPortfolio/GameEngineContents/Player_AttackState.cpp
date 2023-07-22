@@ -230,7 +230,7 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("AnticScream");
-			SetCameraShakeLoop(15.0f);
+			SetCameraShakeLoop(20.0f);
 			SetScreamSkillEffect();
 			StateCalTime = 0.0f;
 		},
@@ -299,7 +299,7 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("FireballCast");
-			SetCameraShakeOnce(15.0f);
+			SetCameraShakeOnce(20.0f);
 			SetFireBallCastEffect();
 			SetFireBall();
 		},
