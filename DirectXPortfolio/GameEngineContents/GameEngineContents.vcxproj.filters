@@ -103,6 +103,9 @@
     <ClInclude Include="HitDustEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
+    <ClInclude Include="GetDamageEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -218,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="HitDustEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GetDamageEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

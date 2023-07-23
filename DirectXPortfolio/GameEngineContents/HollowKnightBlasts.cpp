@@ -36,7 +36,7 @@ void HollowKnightBlasts::Start()
 	BlastsCollision = CreateComponent<GameEngineCollision>();
 	BlastsCollision->SetColType(ColType::AABBBOX2D);
 	BlastsCollision->GetTransform()->SetLocalScale({ 125.0f, 900.5f, 1.0f });
-	BlastsCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::BossAttack));
+	BlastsCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::BossHardAttack));
 	BlastsCollision->Off();
 }
 

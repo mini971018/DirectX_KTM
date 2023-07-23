@@ -14,6 +14,7 @@
 #include "FireballHitEnemyEffect.h"
 #include "PlayerHitEffect.h"
 #include "PlayerHitSlashEffect.h"
+#include "GetDamageEffect.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -72,8 +73,12 @@ void Player::Update(float _Delta)
 		GameEngineLevel::IsDebugSwitch();
 	}
 
-	SetIsCameraShake();
 	CameraShakeTime -= _Delta;
+	SetIsCameraShake();
+
+	PlayerDamagedTime -= _Delta;
+	PlayerGetDamagedCheck();
+	SetPlayerColor(_Delta);
 
 	Test();
 }
@@ -192,6 +197,8 @@ void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType)
 	}
 
 	ClampType = _ClampType;
+	CurrentPlayerHP = PlayerMaxHP;
+
 }
 
 void Player::SpriteInit()
@@ -250,6 +257,10 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("31.EndScream").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.FireballCast").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("33.GetDamaged").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("81.GetDamagedEffect").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("82.HitEffect").GetFullPath());
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("83.HitSlashEffect1").GetFullPath());
@@ -346,6 +357,13 @@ void Player::AnimationInit()
 	//Roarlock
 	PlayerRenderer->CreateAnimation({ .AnimationName = "RoarLock", .SpriteName = "20.RoarLock",  .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "RoarLockLoop", .SpriteName = "21.RoarLockLoop",  .FrameInter = 0.065f, .Loop = false, .ScaleToTexture = true, });
+
+	//GetDamged
+	PlayerRenderer->CreateAnimation({ .AnimationName = "GetDamaged", .SpriteName = "33.GetDamaged",  .FrameInter = 0.05f, .Loop = true, .ScaleToTexture = true, });
+	PlayerRenderer->SetAnimationStartEvent("GetDamaged", 1, [this]
+		{
+			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
+		});
 
 	if (nullptr == Pivot)
 	{
@@ -645,6 +663,48 @@ void Player::SetHealingEffect()
 	HealingUpEffect->GetTransform()->SetLocalPosition(EffectPos);
 }
 
+void Player::SetGetDamagedEffect()
+{
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+	//float4 EffectPos = { PivotPos.x, PivotPos.y + 130.0f, -70.0f };
+
+	std::shared_ptr<class GetDamageEffect> GetDamageEffectActor = GetLevel()->CreateActor<GetDamageEffect>();
+	GetDamageEffectActor->GetTransform()->SetLocalScale({ 2.5f, 2.5f, 1.0f });
+	GetDamageEffectActor->GetTransform()->SetLocalPosition(PivotPos);
+}
+
+void Player::SetPlayerColor(float _Delta)
+{
+	if (PlayerDamagedTime >= 0)
+	{
+		DamagedColorAlpha += DamagedColorValue * _Delta * 1.85f;
+
+		if (DamagedColorAlpha >= 1.0f)
+		{
+			DamagedColorAlpha = 1.0f;
+			DamagedColorValue = -1.0f;
+		}
+		else if (DamagedColorAlpha <= 0.1f)
+		{
+			DamagedColorAlpha = 0.1f;
+			DamagedColorValue = 1.0f;
+		}
+
+		//PlayerRenderer->ColorOptionValue.PlusColor = float4{ 1.0f / 255.0f,  1.0f / 255.0f,  1.0f / 255.0f, 0 };
+		//PlayerRenderer->ColorOptionValue.MulColor = float4{ 1.0f / 255.0f,  1.0f / 255.0f,  1.0f / 255.0f, 0 };
+		//PlayerRenderer->ColorOptionValue.MulColor.a = 1.0f;
+
+		PlayerRenderer->ColorOptionValue.PlusColor = float4{ 0,  0,  0, 0 };
+		PlayerRenderer->ColorOptionValue.MulColor = float4{ 255 * DamagedColorAlpha / 255.0f,  255 * DamagedColorAlpha / 255.0f,  255 * DamagedColorAlpha / 255.0f, 1 };
+		PlayerRenderer->ColorOptionValue.MulColor.a = 1.0f;
+	}
+	else
+	{
+		PlayerRenderer->ColorOptionValue.PlusColor = float4::Null;
+		PlayerRenderer->ColorOptionValue.MulColor = float4::One;
+	}
+}
+
 void Player::OnRoarLockState(float4 _PlayerDir)
 {
 	PlayerDir = _PlayerDir;
@@ -708,4 +768,49 @@ void Player::SetEnemyHitEffect(float4 _Pos, float4 _Scale)
 	std::shared_ptr<class PlayerHitEffect> PlayerHitEffectActor = GetLevel()->CreateActor<PlayerHitEffect>();
 
 	PlayerHitEffectActor->SetEnemyHitEffect(_Pos, _Scale, RandomFloat);
+}
+
+void Player::PlayerGetDamagedCheck()
+{
+	if (PlayerDamagedTime > 0.0f)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> BossCollision = PlayerCollision->Collision(HollowKnightCollisionType::Boss);
+	std::shared_ptr<GameEngineCollision> BossAttackCollision = PlayerCollision->Collision(HollowKnightCollisionType::BossAttack);
+	std::shared_ptr<GameEngineCollision> BossHardAttackCollision = PlayerCollision->Collision(HollowKnightCollisionType::BossHardAttack);
+
+	if (BossCollision != nullptr)
+	{
+		PlayerGetDamage(1, PlayerCollision->GetTransform()->GetWorldPosition() - BossCollision->GetTransform()->GetWorldPosition());
+		return;
+	}
+
+	if (BossAttackCollision != nullptr)
+	{
+		PlayerGetDamage(1, PlayerCollision->GetTransform()->GetWorldPosition() - BossAttackCollision->GetTransform()->GetWorldPosition());
+		return;
+	}
+
+	if (BossHardAttackCollision != nullptr)
+	{
+		PlayerGetDamage(2, PlayerCollision->GetTransform()->GetWorldPosition() - BossHardAttackCollision->GetTransform()->GetWorldPosition());
+		return;
+	}
+}
+
+void Player::PlayerGetDamage(int _Damage, float4 _Dir)
+{
+	StateCalDir = _Dir;
+	PlayerDamagedTime = PlayerConstDamagedTime;
+
+	//UI 만들어서 데미지 깎이는 애니메이션 추가
+
+	DamagedColorAlpha = 0.0f;
+	DamagedColorValue = 1.0f;
+
+	CurrentPlayerHP -= _Damage;
+
+	FSM.ChangeState("GetDamaged");
 }

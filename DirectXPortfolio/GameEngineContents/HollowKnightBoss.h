@@ -16,8 +16,6 @@ public:
 	HollowKnightBoss& operator=(const HollowKnightBoss& _Other) = delete;
 	HollowKnightBoss& operator=(HollowKnightBoss&& _Other) noexcept = delete;
 
-
-
 protected:
 	void Start();
 	void Update(float _Delta) override;

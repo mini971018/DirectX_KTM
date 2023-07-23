@@ -95,6 +95,7 @@ enum class HollowKnightCollisionType
 	Player,
 	Boss,
 	BossAttack,
+	BossHardAttack,
 	PlayerAttack,
 	PlayerSkill,
 	CounterCheck,

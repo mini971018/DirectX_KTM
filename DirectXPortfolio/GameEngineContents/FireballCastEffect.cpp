@@ -14,7 +14,7 @@ FireballCastEffect::~FireballCastEffect()
 
 void FireballCastEffect::Start()
 {
-	CastEffect = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::BFPF_Effect);
+	CastEffect = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::UpperEffect);
 	CastEffect->CreateAnimation({ .AnimationName = "FireballCastEffect", .SpriteName = "86.FireballCastEffect", .FrameInter = 0.04f, .Loop = false, .ScaleToTexture = true });
 	CastEffect->ChangeAnimation("FireballCastEffect");
 }

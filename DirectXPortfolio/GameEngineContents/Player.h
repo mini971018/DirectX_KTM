@@ -71,8 +71,17 @@ private:
 	void SetPlayerRendererPivot();
 
 	//전투 관련
+	const int PlayerMaxHP = 7;
+	int CurrentPlayerHP = 0;
+
 	const float PlayerDamage = 13.0f;
 	const float PlayerSkillDamage = 20.0f;
+
+	float PlayerDamagedTime = 0.0f;
+	const float PlayerConstDamagedTime = 1.5f; //n초에 한번씩만 공격받음
+
+	void PlayerGetDamagedCheck();
+	void PlayerGetDamage(int _Damage, float4 _Dir);
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;
@@ -121,6 +130,13 @@ private:
 
 	void SetScreamSkillEffect();
 	void SetHealingEffect();
+	void SetGetDamagedEffect();
+
+	void SetPlayerColor(float _Delta);
+	const float4 PlayerDamagedColor = { 0, 0, 0, 0 };
+
+	float DamagedColorAlpha = 0.0f;
+	float DamagedColorValue = 1.0f;
 
 	//Collision관련
 	std::shared_ptr<class GameEngineCollision> PlayerCollision = nullptr;
@@ -168,6 +184,6 @@ private:
 	float StateCalTime = 0.0f;
 	float StateCalFloat = 0.0f;
 	int StateCalCount = 0;
-
+	float4 StateCalDir = float4::Null;
 };
 

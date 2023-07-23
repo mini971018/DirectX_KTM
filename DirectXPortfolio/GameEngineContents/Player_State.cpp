@@ -878,5 +878,61 @@ void Player::StateInit()
 		}
 	);
 
+	FSM.CreateState(
+		{
+			.Name = "GetDamaged",
+			.Start = [this]()
+		{
+			if (StateCalDir.x <= 0.0f)
+			{
+				PlayerDir = float4::Left;
+			}
+			else
+			{
+				PlayerDir = float4::Right;
+			}
+
+			PlayerRenderer->ChangeAnimation("GetDamaged");
+			SetGetDamagedEffect();
+
+			//시간 스케일 조정
+			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(0.2f);
+		},
+			.Update = [this](float _DeltaTime)
+		{
+
+			if (float4::Left == PlayerDir)
+			{
+				GetTransform()->AddWorldPosition(float4::Left * 300.0f * _DeltaTime);
+			}
+			else
+			{
+				GetTransform()->AddWorldPosition(float4::Right * 300.0f * _DeltaTime);
+			}
+
+			GetTransform()->AddWorldPosition(float4::Up * 200.0f * _DeltaTime);
+
+			if (true == PlayerRenderer->IsAnimationEnd())
+			{
+				if (true == IsGround(GetTransform()->GetWorldPosition()))
+				{
+					FSM.ChangeState("Fall");
+					return;
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
+			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 	FSM.ChangeState("Idle");
 }

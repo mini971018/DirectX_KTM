@@ -577,7 +577,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::Counter;
+	//PatternNum = HollowKnightAttackState::Counter;
 
 	switch (PatternNum)
 	{
@@ -790,11 +790,13 @@ void HollowKnightBoss::GetDamageCheck()
 	if (AttackCollision != nullptr)
 	{
 		GetDamage(AttackDamage, PlayerAttackType::Slash, AttackCollision->GetTransform()->GetWorldPosition());
+		return;
 	}
 
 	if (SkillCollision != nullptr)
 	{
 		GetDamage(SkillDamage, PlayerAttackType::Skill);
+		return;
 	}
 }
 

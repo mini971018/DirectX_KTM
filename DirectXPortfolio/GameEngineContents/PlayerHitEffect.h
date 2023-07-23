@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
-// 설명 :
+// 설명 : 플레이어 공격시 이펙트
 class PlayerHitEffect : public GameEngineActor
 {
 public:
