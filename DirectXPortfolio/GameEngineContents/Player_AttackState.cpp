@@ -46,6 +46,12 @@ void Player::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (true == Dashable && true == GameEngineInput::IsDown("Dash"))
+			{
+				SetDashState();
+				return;
+			}
+
 			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
 			{
 				if (float4::Right == PlayerDir)
@@ -65,6 +71,24 @@ void Player::AttackStateInit()
 				}
 
 				GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
+			}
+
+			if (CurrentSlash == PlayerSlashAnimation::DownSlash && true == SlashEffectActor->GetIsHit())
+			{
+				GetTransform()->AddWorldPosition(float4::Up * 650.0f * _DeltaTime);
+
+				CurrentState = PlayerState::Fall;
+
+				if (true == PlayerRenderer->IsAnimationEnd())
+				{
+					ResetFallValue();
+
+					FSM.ChangeState("Fall");
+					return;
+				}
+
+
+				return;
 			}
 
 			if (true == GameEngineInput::IsDown("Jump") && (PlayerState::Idle == CurrentState || PlayerState::Sprint == CurrentState))

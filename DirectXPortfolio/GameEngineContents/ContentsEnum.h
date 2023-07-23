@@ -97,13 +97,15 @@ enum class HollowKnightCollisionType
 	BossAttack,
 	PlayerAttack,
 	PlayerSkill,
+	CounterCheck,
 };
 
 enum class PlayerAttackType
 {
 	Slash,
 	Skill,
-	SelfStab
+	SelfStab,
+	CounterCheck,
 };
 
 enum class CameraClampType

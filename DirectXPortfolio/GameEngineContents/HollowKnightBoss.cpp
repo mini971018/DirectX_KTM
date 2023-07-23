@@ -9,6 +9,7 @@
 #include <map>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 #include "Player.h"
 #include "RoarEffect.h"
@@ -189,8 +190,12 @@ void HollowKnightBoss::AnimationInit()
 		//Counter
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticCounter", .SpriteName = "19.AnticCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "ReadyCounter", .SpriteName = "20.ReadyCounter", .FrameInter = 0.09f, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "NoneBlockCounter", .SpriteName = "21.NoneBlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "NoneBlockCounter", .SpriteName = "21.NoneBlockCounter", .FrameInter = 0.08f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "BlockCounter", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->SetAnimationStartEvent("BlockCounter", 1, [this]
+			{
+				GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
+			});
 		BossRenderer->CreateAnimation({ .AnimationName = "CounterSlash2", .SpriteName = "22.BlockCounter", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 
 		//SmallShot
@@ -278,24 +283,54 @@ void HollowKnightBoss::CollisionInit()
 	HollowKnightCollision = CreateComponent<GameEngineCollision>();
 	HollowKnightCollision->SetColType(ColType::AABBBOX2D);
 	HollowKnightCollision->GetTransform()->SetParent(Pivot->GetTransform());
+	HollowKnightCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Boss));
 
 	SetIdleCollision();
 
-	HollowKnightCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Boss));
 
 	//공격 콜리전
 	AttackCollision = CreateComponent<GameEngineCollision>();
 	AttackCollision->SetColType(ColType::AABBBOX2D);
 	AttackCollision->GetTransform()->SetParent(Pivot->GetTransform());
+	AttackCollision->GetTransform()->SetLocalScale(SlashCollisionScale);
+	AttackCollision->GetTransform()->SetLocalPosition(SlashCollisionPos);
+
+	AttackCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::BossAttack));
+
 	AttackCollision->Off();
+
+	//카운터 확인용 콜리전
+	CounterCollision = CreateComponent<GameEngineCollision>();
+	CounterCollision->SetColType(ColType::AABBBOX2D);
+	CounterCollision->GetTransform()->SetParent(Pivot->GetTransform());
+	CounterCollision->GetTransform()->SetLocalScale(CounterCollisionScale);
+	CounterCollision->GetTransform()->SetLocalPosition(CounterCollisionPos);
+	CounterCollision->Off();
+
+	CounterCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::CounterCheck));
+
+	CounterCollision2 = CreateComponent<GameEngineCollision>();
+	CounterCollision2->SetColType(ColType::AABBBOX2D);
+	CounterCollision2->GetTransform()->SetParent(Pivot->GetTransform());
+	CounterCollision2->GetTransform()->SetLocalScale(CounterCollision2Scale);
+	CounterCollision2->GetTransform()->SetLocalPosition(CounterCollision2Pos);
+	CounterCollision2->Off();
+
+	CounterCollision2->SetOrder(static_cast<int>(HollowKnightCollisionType::CounterCheck));
 }
  
-void HollowKnightBoss::SetDamagedColor()
+void HollowKnightBoss::SetBossColor()
 {
 	if (DamagedTime <= ConstDamagedTime)
 	{
 		BossRenderer->ColorOptionValue.PlusColor = DamagedColor;
 		BossRenderer->ColorOptionValue.MulColor = DamagedColor;
+		BossRenderer->ColorOptionValue.MulColor.a = 1.0f;
+	}
+	else if (CounterTime >= 0.0f)
+	{
+		BossRenderer->ColorOptionValue.PlusColor = float4{ CounterTime , CounterTime , CounterTime, 0.0f };
+		//BossRenderer->ColorOptionValue.MulColor = CounterColor;
 		BossRenderer->ColorOptionValue.MulColor.a = 1.0f;
 	}
 	else
@@ -304,6 +339,7 @@ void HollowKnightBoss::SetDamagedColor()
 		BossRenderer->ColorOptionValue.MulColor = float4::One;
 	}
 }
+
 
 void HollowKnightBoss::EffectInit()
 {
@@ -343,9 +379,11 @@ void HollowKnightBoss::Update(float _Delta)
 	}
 
 	DamagedTime += _Delta;
+	CounterTime -= (_Delta * 2.0f);
 
 	GetDamageCheck();
-	SetDamagedColor();
+	SetBossColor();
+	//SetCounterColor();
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -449,12 +487,14 @@ void HollowKnightBoss::ResetBoss()
 	Pivot->GetTransform()->SetLocalNegativeScaleX();
 	
 	BossRenderer->ChangeAnimation("ChainIdle");
+	BossRenderer->On();
 	BossWeaponRenderer->On();
 
 	CurrentPhase = HollowKnightPatternEnum::Phase1;
 	CurrentHp = BossHP;
 	HollowKnightCollision->Off();
 	
+	BossNoneDamageState = false;
 }
 
 void HollowKnightBoss::SetRandomPattern()
@@ -537,7 +577,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::PuppetSlam;
+	PatternNum = HollowKnightAttackState::Counter;
 
 	switch (PatternNum)
 	{
@@ -702,7 +742,17 @@ bool HollowKnightBoss::IsNextPhase()
 bool HollowKnightBoss::CounterAvailability()
 {
 	//To do : Collision 추가 후 로직 구현 (플레이어가 콜리전과 맞닿아 있고, 방향이 서로 다름)
-	return true;
+
+	std::shared_ptr<GameEngineCollision> PlayerAttackCollision = CounterCollision->Collision(HollowKnightCollisionType::PlayerAttack);
+	std::shared_ptr<GameEngineCollision> PlayerSkillCollision = CounterCollision->Collision(HollowKnightCollisionType::PlayerSkill);
+	std::shared_ptr<GameEngineCollision> PlayerCollision = CounterCollision2->Collision(HollowKnightCollisionType::Player);
+
+	if ((PlayerAttackCollision != nullptr || PlayerSkillCollision != nullptr) && PlayerCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool HollowKnightBoss::BossStageStart()
@@ -750,6 +800,11 @@ void HollowKnightBoss::GetDamageCheck()
 
 void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _Pos)
 {
+	if (true == BossNoneDamageState)
+	{
+		return;
+	}
+
 	if (true == DamageReduceState)
 	{
 		_Damage = 1.0f;
@@ -764,12 +819,12 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 	case PlayerAttackType::Slash:
 		//Hit Slash Effect 추가
 		EffectPos = float4::Lerp(HollowKnightCollision->GetTransform()->GetWorldPosition(), _Pos, 0.5f);
-		PlayerHitEffect();
+		HollowKnightHitEffect();
 		Player::CurrentLevelPlayer->SetEnemyHitEffect(EffectPos, float4{ 3 , 3 });
 		Player::CurrentLevelPlayer->SetEnemyHitSlashEffect(EffectPos, float4{ 1 ,1 });
 		break;
 	case PlayerAttackType::Skill:
-		PlayerHitEffect();
+		HollowKnightHitEffect();
 		EffectPos = HollowKnightCollision->GetTransform()->GetWorldPosition();
 		//EffectPos = EffectPos - float4{ 0, 30.0f };
 		Player::CurrentLevelPlayer->SetFireballHitEffect(EffectPos, float4{2 ,2});
@@ -800,9 +855,21 @@ void HollowKnightBoss::SetCollisionValue(float4 _Scale, float4 _Pos)
 
 void HollowKnightBoss::SetSlashAttackCollision()
 {
-	AttackCollision->GetTransform()->SetLocalScale(SlashCollisionScale);
-	AttackCollision->GetTransform()->SetLocalPosition(SlashCollisionPos);
 	AttackCollision->On();
+}
+
+void HollowKnightBoss::SetCounterCollision(bool _Value)
+{
+	if (_Value == true)
+	{
+		CounterCollision->On();
+		CounterCollision2->On();
+	}
+	else
+	{
+		CounterCollision->Off();
+		CounterCollision2->Off();
+	}
 }
 
 void HollowKnightBoss::SetSlamEffect()
@@ -832,7 +899,17 @@ void HollowKnightBoss::SetStabEffect()
 	//{
 	//	SelfStabEffectActor->GetTransform()->SetLocalRotation({ 0, 0, 45.0f });
 	//}
+}
 
+void HollowKnightBoss::SetCounterFlashEffect()
+{
+	std::shared_ptr<class SelfStabEffect> SelfStabEffectActor = GetLevel()->CreateActor<SelfStabEffect>();
+	SelfStabEffectActor->GetTransform()->SetParent(Pivot->GetTransform());
+	//SelfStabEffectActor->GetTransform()->SetWorldPosition(Pivot->GetTransform()->GetWorldPosition());
+	SelfStabEffectActor->GetTransform()->SetLocalPosition({ 0, 0, 0 });
+	SelfStabEffectActor->GetTransform()->AddLocalPosition({ 0, 0, 0 });
+	SelfStabEffectActor->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.0f });
+	SelfStabEffectActor->GetTransform()->SetLocalRotation({ 0, 0, -50.0f });
 }
 
 void HollowKnightBoss::SetBlasts()
@@ -888,7 +965,7 @@ void HollowKnightBoss::SetRandomBullet()
 	SetBullet(_Dir, Pivot->GetTransform()->GetWorldPosition(), RandomFloat2);
 }
 
-void HollowKnightBoss::PlayerHitEffect()
+void HollowKnightBoss::HollowKnightHitEffect()
 {
 	float4 PlayerToBossDir = HollowKnightCollision->GetTransform()->GetWorldPosition() - Player::CurrentLevelPlayer->GetPlayerCollisionPos();
 	float Value = HollowKnightCollision->GetTransform()->GetWorldScale().y / 2;

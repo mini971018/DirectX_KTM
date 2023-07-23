@@ -281,9 +281,6 @@ void Player::SpriteInit()
 
 		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("").GetFullPath());
 	}
-
-
-
 }
 
 void Player::AnimationInit()

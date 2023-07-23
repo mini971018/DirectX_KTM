@@ -65,6 +65,13 @@ void SlashEffect::Start()
 
 void SlashEffect::Update(float _Delta)
 {
+	std::shared_ptr<GameEngineCollision> HitCollision = SlashCollision->Collision(HollowKnightCollisionType::Boss);
+
+	if (nullptr != HitCollision)
+	{
+		IsHit = true;
+	}
+
 	if (true == SlashEffectRenderer->IsAnimationEnd())
 	{
 		SlashEffectRenderer->Off();
@@ -106,6 +113,7 @@ void SlashEffect::SetSlashEffect(PlayerSlashAnimation _SlashType, float4 _Pos, f
 	SlashEffectRenderer->ChangeAnimation(AnimationType);
 	SlashEffectRenderer->GetTransform()->SetLocalPosition(_Pos);
 	SlashEffectRenderer->On();
+	IsHit = false;
 
 
 }

@@ -47,15 +47,25 @@ private:
 	const float4 HollowKnightCollisionIdleScale = { 175.0f, 290.0f, 1.0f };
 	const float4 HollowKnightCollisionIdlePos = { 0.0f, -110.0f , -70.0f };
 	void SetIdleCollision();
-	void SetCollisionValue(float4 _Scale , float4 _Pos);
+	void SetCollisionValue(float4 _Scale, float4 _Pos);
 
 	std::shared_ptr<class GameEngineCollision> AttackCollision = nullptr;
 	void SetSlashAttackCollision();
 	const float4 SlashCollisionScale = { 265,267,1 };
 	const float4 SlashCollisionPos = { 260.0f, -110.0f , 0.0f };
 
-	//
-	void SetDamagedColor();
+	std::shared_ptr<class GameEngineCollision> CounterCollision = nullptr;
+	const float4 CounterCollisionScale = { 30,280,1 };
+	const float4 CounterCollisionPos = { 30, -110 , 0 };
+
+	std::shared_ptr<class GameEngineCollision> CounterCollision2 = nullptr;
+	const float4 CounterCollision2Scale = { 200,280,1 };
+	const float4 CounterCollision2Pos = { 150, -110 , 0 };
+
+	void SetCounterCollision(bool _Value);
+
+	//데미지 받았을 때 색깔 조정
+	void SetBossColor();
 	const float4 DamagedColor = float4{ static_cast<float>((201.0f *0.75f) /255.0f) , static_cast<float>((84.0f * 0.75f) /255.0f), static_cast<float>((16.0f * 0.75f) / 255.0f) , 0};
 
 	//RoarEffect관련
@@ -76,6 +86,8 @@ private:
 	float DamagedTime = 1.0f; //n초에 한번씩만 공격받을 수 있도록
 	const float ConstDamagedTime = 0.3f;
 	bool DamageReduceState = false;
+	bool BossNoneDamageState = false;
+	bool IsCounter = false;
 
 	//SlamEffect
 	void SetSlamEffect();
@@ -96,7 +108,7 @@ private:
 	void AttackStateInit();
 
 	//HitEffect
-	void PlayerHitEffect();
+	void HollowKnightHitEffect();
 	void SetHitEffect(float4 _Dir);
 
 	// 스테이트에서 사용되는 변수들
@@ -127,6 +139,9 @@ private:
 	//Counter
 	bool CounterAvailability();
 	const float CounterSlash2Speed = 4000.0f;
+	void SetCounterFlashEffect();
+	float CounterTime = 0.0f;
+	const float4 CounterColor = float4{ 1, 1, 1 , 0 };
 
 	//Teleport
 	const float MinTeleportDistance = 150.0f;

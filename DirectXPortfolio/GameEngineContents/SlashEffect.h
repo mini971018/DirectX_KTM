@@ -15,6 +15,11 @@ public:
 	SlashEffect& operator=(const SlashEffect& _Other) = delete;
 	SlashEffect& operator=(SlashEffect&& _Other) noexcept = delete;
 
+	bool GetIsHit()
+	{
+		return IsHit;
+	}
+
 	void SetSlashEffect(PlayerSlashAnimation _SlashType, float4 _Pos, float _Damage);
 
 protected:
@@ -31,6 +36,8 @@ private:
 	const float4 DownSlashCollisionScale = {140, 165};
 	const float4 SlashCollisionPos = {-87, 62, -70.0f};
 	const float4 SlashCollisionScale = {130, 115, 1};
+
+	bool IsHit = false;
 
 	float SlashDamage = 0.0f;
 };

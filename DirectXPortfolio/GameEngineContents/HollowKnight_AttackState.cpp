@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 #include "RoarEffect.h"
 #include "Player.h"
@@ -280,6 +281,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Name = "AnticCounter",
 			.Start = [this]()
 		{
+			IsCounter = false;
 			BossRenderer->ChangeAnimation("AnticCounter");
 			SetCollisionValue(HollowKnightCollisionIdleScale, float4{ -90.0f, HollowKnightCollisionIdlePos.y , -70.0f });
 		},
@@ -306,6 +308,12 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("ReadyCounter");
+			SetCounterCollision(true);
+			CurrentState = "ReadyCounter";
+			//Èò»öÀ¸·Î Àá±ñ ¹ÝÂ¦°Å¸²
+			SetCounterFlashEffect();
+			CounterTime = 1.0f;
+
 
 			StateCalTime = 0.0f;
 		},
@@ -315,11 +323,13 @@ void HollowKnightBoss::AttackStateInit()
 
 			if (true == CounterAvailability())
 			{
+				BossNoneDamageState = true;
+
 				FSM.ChangeState("BlockCounter");
 				return;
 			}
 
-			if (0.7f <= StateCalTime)
+			if (1.0f <= StateCalTime)
 			{
 				FSM.ChangeState("NoneBlockCounter");
 				return;
@@ -329,6 +339,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
+			SetCounterCollision(false);
 		},
 
 		}
@@ -370,6 +381,9 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("BlockCounter");
+
+			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(0.2f);
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -384,8 +398,9 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.End = [this]()
 		{
-			SetIdleCollision();
 
+			SetIdleCollision();
+			BossNoneDamageState = false;
 		},
 
 		}
