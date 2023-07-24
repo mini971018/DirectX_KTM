@@ -270,6 +270,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerHPUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerUIManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrecompileHeader.h">
       <SubType>
       </SubType>
@@ -416,6 +424,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerHitSlashEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerHPUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerUIManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>

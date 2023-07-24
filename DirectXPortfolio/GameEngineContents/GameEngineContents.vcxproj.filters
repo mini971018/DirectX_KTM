@@ -106,6 +106,12 @@
     <ClInclude Include="GetDamageEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerUIManager.h">
+      <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHPUI.h">
+      <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -225,6 +231,12 @@
     <ClCompile Include="GetDamageEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerUIManager.cpp">
+      <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHPUI.cpp">
+      <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -259,6 +271,9 @@
     </Filter>
     <Filter Include="Levels\PlayLevel\Player\Effect">
       <UniqueIdentifier>{57e85f66-e9b0-4f82-acd9-3ef9f8ab6d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\Player\UI">
+      <UniqueIdentifier>{f01ca582-eaad-448c-a98b-49b5fd068985}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@
 #include "PlayerHitEffect.h"
 #include "PlayerHitSlashEffect.h"
 #include "GetDamageEffect.h"
+#include "PlayerUIManager.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -48,6 +49,7 @@ void Player::Start()
 	StateInit();
 	EffectInit();
 	CollisionInit();
+	UIInit();
 }
 
 void Player::Update(float _Delta)
@@ -413,6 +415,11 @@ void Player::CollisionInit()
 	PlayerCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Player));
 }
 
+void Player::UIInit()
+{
+	PlayerUIManagerActor = GetLevel()->CreateActor<PlayerUIManager>();
+}
+
 void Player::SetCameraShakeOff()
 {
 	CameraShakeTime = 0.0f;
@@ -677,7 +684,7 @@ void Player::SetPlayerColor(float _Delta)
 {
 	if (PlayerDamagedTime >= 0)
 	{
-		DamagedColorAlpha += DamagedColorValue * _Delta * 1.85f;
+		DamagedColorAlpha += DamagedColorValue * _Delta * 1.85 * 2.0f;
 
 		if (DamagedColorAlpha >= 1.0f)
 		{

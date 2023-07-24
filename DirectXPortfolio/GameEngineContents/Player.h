@@ -19,6 +19,16 @@ public:
 	// 레벨 변경 시, 레벨의 메인 플레이어를 넣어 줌.
 	static void SetCurrentLevelPlayer(std::shared_ptr<Player> _Player);
 
+	int GetPlayerMaxHp()
+	{
+		return PlayerMaxHP;
+	}
+
+	int GetCurrentPlayerHP()
+	{
+		return CurrentPlayerHP;
+	}
+
 	void SetCameraShakeOnce(float _Force);
 	void SetCameraShakeOff();
 	void SetCameraShakeLoop(float _Force);
@@ -69,6 +79,9 @@ private:
 	float4 PlayerDir = float4::Right;
 
 	void SetPlayerRendererPivot();
+
+	//UI
+	std::shared_ptr<class PlayerUIManager> PlayerUIManagerActor = nullptr;
 
 	//전투 관련
 	const int PlayerMaxHP = 7;
@@ -157,6 +170,7 @@ private:
 	void AnimationInit();
 	void EffectInit();
 	void CollisionInit();
+	void UIInit();
 
 	//카메라 관련
 	float CamDeltaTime = 0.0f;
