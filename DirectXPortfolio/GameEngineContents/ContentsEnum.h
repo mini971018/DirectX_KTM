@@ -114,3 +114,9 @@ enum class CameraClampType
 	HollowKnightBossRoom,
 	HollowKnightInBoss,
 };
+
+enum class HealthUIType
+{
+	Idle,
+	Break,
+};

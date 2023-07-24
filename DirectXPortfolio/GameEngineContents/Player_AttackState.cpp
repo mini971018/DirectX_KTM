@@ -202,6 +202,7 @@ void Player::AttackStateInit()
 			if (StateCalTime >= 1.0f)
 			{
 				//체력회복
+				PlayerGetHealed();
 				PlayerRenderer->ChangeAnimation("GetOnFocus");
 				SetHealingEffect();
 				StateCalTime = 0.0f;

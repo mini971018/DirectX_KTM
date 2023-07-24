@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+
+
 // Ό³Έν :
 class GameEngineUIRenderer;
 class PlayerHPUI : public GameEngineActor
@@ -16,11 +18,18 @@ public:
 	PlayerHPUI& operator=(const PlayerHPUI& _Other) = delete;
 	PlayerHPUI& operator=(PlayerHPUI&& _Other) noexcept = delete;
 
+	void HealthBreak();
+	void HealthRefill();
+
 protected:
 	void Start();
 	void Update(float _Delta) override;
 
 private:
+
+
+	HealthUIType CurrentType = HealthUIType::Idle;
+
 	std::shared_ptr<GameEngineUIRenderer> HPUIRenderer;
 };
 

@@ -199,6 +199,7 @@ void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType)
 	}
 
 	ClampType = _ClampType;
+	
 	CurrentPlayerHP = PlayerMaxHP;
 
 }
@@ -418,6 +419,7 @@ void Player::CollisionInit()
 void Player::UIInit()
 {
 	PlayerUIManagerActor = GetLevel()->CreateActor<PlayerUIManager>();
+	PlayerUIManagerActor->SetHPUIManager(PlayerMaxHP);
 }
 
 void Player::SetCameraShakeOff()
@@ -817,7 +819,22 @@ void Player::PlayerGetDamage(int _Damage, float4 _Dir)
 	DamagedColorAlpha = 0.0f;
 	DamagedColorValue = 1.0f;
 
-	CurrentPlayerHP -= _Damage;
+	if (CurrentPlayerHP - _Damage < 0)
+	{
+		CurrentPlayerHP = 0;
+	}
+	else
+	{
+		CurrentPlayerHP -= _Damage;
+	}
 
 	FSM.ChangeState("GetDamaged");
+}
+
+void Player::PlayerGetHealed()
+{
+	if (CurrentPlayerHP  < PlayerMaxHP)
+	{
+		++CurrentPlayerHP;
+	}
 }

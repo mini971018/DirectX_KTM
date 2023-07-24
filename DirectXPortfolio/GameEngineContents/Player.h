@@ -85,7 +85,7 @@ private:
 
 	//전투 관련
 	const int PlayerMaxHP = 7;
-	int CurrentPlayerHP = 0;
+	int CurrentPlayerHP = PlayerMaxHP;
 
 	const float PlayerDamage = 13.0f;
 	const float PlayerSkillDamage = 20.0f;
@@ -95,6 +95,7 @@ private:
 
 	void PlayerGetDamagedCheck();
 	void PlayerGetDamage(int _Damage, float4 _Dir);
+	void PlayerGetHealed();
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;
