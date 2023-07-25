@@ -16,8 +16,7 @@ public:
 	PlayerUIManager& operator=(const PlayerUIManager& _Other) = delete;
 	PlayerUIManager& operator=(PlayerUIManager&& _Other) noexcept = delete;
 
-	void SetHPUIManager(int _PlayerHP);
-
+	void SetUIManager(int _PlayerHP, int _PlayerMaxMP, int _PlayerCurrentMP);
 
 protected:
 	void Start();
@@ -26,11 +25,15 @@ protected:
 private:
 	std::shared_ptr<GameEngineUIRenderer> UIHud;
 	std::vector<std::shared_ptr<class PlayerHPUI>> HPUIVector;
+	std::shared_ptr<GameEngineUIRenderer> MPUIRenderer;
 
 	float4 HPUIStartPos = { 55, 15, 0 };
 	const float HPUIInterval = 60.0f;
 
 	int PlayerMaxHP = 0;
 	int CurrentPlayerHP = 0;
+
+	int PlayerMaxMP = 0;
+	int CurrentPlayerMP = 0;
 };
 

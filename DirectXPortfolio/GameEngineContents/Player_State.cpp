@@ -38,19 +38,19 @@ void Player::StateInit()
 					SkillCalTime = 0.0f;
 				}
 
-				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp") && SkillStateCheck(SkillCost))
 				{
 					FSM.ChangeState("Scream");
 					return;
 				}
 
-				if (true == GameEngineInput::IsUp("Skill"))
+				if (true == GameEngineInput::IsUp("Skill") && SkillStateCheck(SkillCost) && SkillStateCheck(SkillCost))
 				{
 					FSM.ChangeState("Fireball");
 					return;
 				}
 
-				if (SkillCalTime >= 0.3f)
+				if (SkillCalTime >= 0.3f && SkillStateCheck(HealingCost))
 				{
 					FSM.ChangeState("Healing");
 					return;
@@ -142,13 +142,13 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Scream");
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill"))
+			if (true == GameEngineInput::IsUp("Skill") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Fireball");
 				return;
@@ -329,13 +329,13 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Scream");
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill"))
+			if (true == GameEngineInput::IsUp("Skill") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Fireball");
 				return;
@@ -430,13 +430,13 @@ void Player::StateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+			if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Scream");
 				return;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill"))
+			if (true == GameEngineInput::IsUp("Skill") && SkillStateCheck(SkillCost))
 			{
 				FSM.ChangeState("Fireball");
 				return;
@@ -541,13 +541,13 @@ void Player::StateInit()
 					return;
 				}
 
-				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp"))
+				if (true == GameEngineInput::IsUp("Skill") && true == GameEngineInput::IsPress("MoveUp") && SkillStateCheck(SkillCost))
 				{
 					FSM.ChangeState("Scream");
 					return;
 				}
 
-				if (true == GameEngineInput::IsUp("Skill"))
+				if (true == GameEngineInput::IsUp("Skill") && SkillStateCheck(SkillCost))
 				{
 					FSM.ChangeState("Fireball");
 					return;

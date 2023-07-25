@@ -419,7 +419,7 @@ void Player::CollisionInit()
 void Player::UIInit()
 {
 	PlayerUIManagerActor = GetLevel()->CreateActor<PlayerUIManager>();
-	PlayerUIManagerActor->SetHPUIManager(PlayerMaxHP);
+	PlayerUIManagerActor->SetUIManager(PlayerMaxHP, PlayerMaxMP, CurrentPlayerMP);
 }
 
 void Player::SetCameraShakeOff()
@@ -836,5 +836,17 @@ void Player::PlayerGetHealed()
 	if (CurrentPlayerHP  < PlayerMaxHP)
 	{
 		++CurrentPlayerHP;
+	}
+}
+
+bool Player::SkillStateCheck(int cost)
+{
+	if (CurrentPlayerMP >= cost)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

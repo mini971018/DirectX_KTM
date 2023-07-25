@@ -52,13 +52,22 @@ void PlayerUIManager::Start()
 
 		UIHud->CreateAnimation({ .AnimationName = "UIHudOn", .SpriteName = "00.UIHudOn", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
 		UIHud->ChangeAnimation("UIHudOn");	
+
+		MPUIRenderer = CreateComponent<GameEngineUIRenderer>();
+
+		MPUIRenderer->CreateAnimation({ .AnimationName = "SoulOrb", .SpriteName = "02.SoulOrb", .FrameInter = 0.06f, .Loop = false, .ScaleToTexture = true });
+		MPUIRenderer->GetTransform()->SetLocalPosition({ -54.0f, -15.0f });
+		MPUIRenderer->ChangeAnimation("SoulOrb");
 	}
 }
 
-void PlayerUIManager::SetHPUIManager(int _PlayerHP)
+void PlayerUIManager::SetUIManager(int _PlayerHP, int _PlayerMaxMP, int _PlayerCurrentMP)
 {
 	PlayerMaxHP = _PlayerHP;
 	CurrentPlayerHP = _PlayerHP;
+
+	PlayerMaxMP = _PlayerMaxMP;
+	CurrentPlayerMP = _PlayerCurrentMP;
 
 	HPUIVector.reserve(PlayerMaxHP);
 	for (int i = 0; i < PlayerMaxHP; ++i)
@@ -74,13 +83,11 @@ void PlayerUIManager::SetHPUIManager(int _PlayerHP)
 
 		HPUIVector.push_back(PlayerHPUIActor);
 	}
+
 }
 
 void PlayerUIManager::Update(float _Delta)
 {
-	int a = CurrentPlayerHP;
-	int b = Player::CurrentLevelPlayer->GetCurrentPlayerHP();
-
 	if (CurrentPlayerHP != Player::CurrentLevelPlayer->GetCurrentPlayerHP())
 	{
 		if (CurrentPlayerHP > Player::CurrentLevelPlayer->GetCurrentPlayerHP())
@@ -100,4 +107,29 @@ void PlayerUIManager::Update(float _Delta)
 
 		CurrentPlayerHP = Player::CurrentLevelPlayer->GetCurrentPlayerHP();
 	}
+
+	if (CurrentPlayerMP != Player::CurrentLevelPlayer->GetCurrentPlayerMP())
+	{
+		if (CurrentPlayerMP > Player::CurrentLevelPlayer->GetCurrentPlayerMP())
+		{
+			CurrentPlayerMP -= 1;
+
+			if (CurrentPlayerMP < 0)
+			{
+				CurrentPlayerMP = 0;
+			}
+		}
+		else
+		{
+			CurrentPlayerMP += 1;
+
+			if (CurrentPlayerMP > 100)
+			{
+				CurrentPlayerMP = 100;
+			}
+		}
+	}
+
+	MPUIRenderer->ImageClippingY(static_cast<float>(CurrentPlayerMP) / 100.0f, ClipYDir::Bot);
+	//MPUIRenderer->ImageClippingY(1.0f, ClipYDir::Bot);
 }

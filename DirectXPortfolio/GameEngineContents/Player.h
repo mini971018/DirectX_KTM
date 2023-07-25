@@ -29,6 +29,21 @@ public:
 		return CurrentPlayerHP;
 	}
 
+	int GetCurrentPlayerMP()
+	{
+		return CurrentPlayerMP;
+	}
+
+	void PlayerDrainMana()
+	{
+		CurrentPlayerMP += 10;
+
+		if (CurrentPlayerMP > PlayerMaxMP)
+		{
+			CurrentPlayerMP = PlayerMaxMP;
+		}
+	}
+
 	void SetCameraShakeOnce(float _Force);
 	void SetCameraShakeOff();
 	void SetCameraShakeLoop(float _Force);
@@ -87,6 +102,9 @@ private:
 	const int PlayerMaxHP = 7;
 	int CurrentPlayerHP = PlayerMaxHP;
 
+	const int PlayerMaxMP = 100;
+	int CurrentPlayerMP = 0;
+
 	const float PlayerDamage = 13.0f;
 	const float PlayerSkillDamage = 20.0f;
 
@@ -130,6 +148,10 @@ private:
 	void SetFireBall();
 	void SetFireBallCastEffect();
 	void SetShadowDashEffect();
+	bool SkillStateCheck(int cost);
+
+	const int SkillCost = 33;
+	const int HealingCost = 30;
 
 	//ÀÌÆåÆ® °ü·Ã
 	std::shared_ptr<class ShadowDashRechargedEffect> ShadowDashRechargedEffectActor = nullptr;

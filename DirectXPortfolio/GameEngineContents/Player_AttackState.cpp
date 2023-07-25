@@ -204,11 +204,12 @@ void Player::AttackStateInit()
 				//체력회복
 				PlayerGetHealed();
 				PlayerRenderer->ChangeAnimation("GetOnFocus");
+				CurrentPlayerMP -= HealingCost;
 				SetHealingEffect();
 				StateCalTime = 0.0f;
 			}
 
-			if (true == GameEngineInput::IsUp("Skill"))
+			if (true == GameEngineInput::IsUp("Skill") || SkillStateCheck(HealingCost) == false)
 			{
 				FSM.ChangeState("HealingEnd");
 				return;
@@ -256,6 +257,7 @@ void Player::AttackStateInit()
 		{
 			PlayerRenderer->ChangeAnimation("AnticScream");
 			SetCameraShakeLoop(20.0f);
+
 			SetScreamSkillEffect();
 			StateCalTime = 0.0f;
 		},
@@ -266,7 +268,7 @@ void Player::AttackStateInit()
 			if (StateCalTime >= 0.4f)
 			{
 				SetCameraShakeOff();
-
+				CurrentPlayerMP -= HealingCost;
 				FSM.ChangeState("EndScream");
 				return;
 			}
@@ -324,6 +326,7 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("FireballCast");
+			CurrentPlayerMP -= HealingCost;
 			SetCameraShakeOnce(20.0f);
 			SetFireBallCastEffect();
 			SetFireBall();

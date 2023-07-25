@@ -824,6 +824,7 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 		HollowKnightHitEffect();
 		Player::CurrentLevelPlayer->SetEnemyHitEffect(EffectPos, float4{ 3 , 3 });
 		Player::CurrentLevelPlayer->SetEnemyHitSlashEffect(EffectPos, float4{ 1 ,1 });
+		Player::CurrentLevelPlayer->PlayerDrainMana();
 		break;
 	case PlayerAttackType::Skill:
 		HollowKnightHitEffect();
