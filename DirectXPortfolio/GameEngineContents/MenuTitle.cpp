@@ -22,3 +22,4 @@ void MenuTitle::Start()
 
 	TitleImage->GetTransform()->AddLocalPosition({ 0, 200, -70 });
 }
+

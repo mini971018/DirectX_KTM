@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 
 #include "TestObject1.h"
+#include <GameEngineCore/GameEngineVideo.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
@@ -14,21 +15,19 @@ TestObject1::~TestObject1()
 
 void TestObject1::Start()
 {
-	Render0 = CreateComponent<GameEngineRenderer>();
-	Render0->SetPipeLine("2DTexture");
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
 
-	//std::shared_ptr<GameEngineTexture> Ptr = GameEngineTexture::Find("AAAA.png");
-	//GameEnginePixelColor Pixel = Ptr->GetPixel(356, 329);
+	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".avi", });
 
-	float4 TestColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-	Render0->GetShaderResHelper().SetTexture("DiffuseTex", "Test.png");
-	//Render0->GetShaderResHelper().SetConstantBufferLink("OutPixelColor", TestColor);
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineVideo::Load(File[i].GetFullPath());
+	}
 
-	Render0->GetTransform()->SetLocalScale({ 61.0f, 130.0f , 100.0f });
-
-	//Render1->GetTransform()->DebugOn();
-	//Render0->GetTransform()->SetLocalPosition({ -200.0f, 0.0f, 0.0f });
-	//Render2->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
+	std::shared_ptr<GameEngineVideo> Video = GameEngineVideo::Find("Ending-1_-The-Hollow-Knight-FinalA.avi");
+	Video->Play();
 }
 
 void TestObject1::Render(float _DeltaTime)

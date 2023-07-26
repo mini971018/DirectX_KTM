@@ -16,6 +16,9 @@ public:
 	HollowKnightBoss& operator=(const HollowKnightBoss& _Other) = delete;
 	HollowKnightBoss& operator=(HollowKnightBoss&& _Other) noexcept = delete;
 
+	//보스를 리셋시킴
+	void ResetBoss();
+
 protected:
 	void Start();
 	void Update(float _Delta) override;
@@ -26,7 +29,6 @@ private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BossRenderer;
 	std::shared_ptr<class GameEngineComponent> Pivot; //보스 렌더러의 피봇
 
-	void ResetBoss(); //보스를 리셋시킴
 
 	float4 PivotPos = float4::Zero; //보스 렌더러의 애니메이션의 각 중심이 될 위치
 	void SetBossRendererPivot();
@@ -86,6 +88,7 @@ private:
 	bool DamageReduceState = false;
 	bool BossNoneDamageState = false;
 	bool IsCounter = false;
+	bool IsDeath = false;
 
 	//SlamEffect
 	void SetSlamEffect();
@@ -128,6 +131,7 @@ private:
 	// Dash Attack 
 	const float DashSpeed = 2500.0f;
 	float CurrentDashSpeed = DashSpeed;
+	void SetDashEffect();
 
 	// Slash Attack
 	const float Slash1Speed = 2500.0f;
@@ -170,6 +174,9 @@ private:
 	bool BossStageStart();
 	const float StartDistanceX = 600.0f;
 
+	//Death
+	void SetDeathEffect();
+	
 	float4 ReturnPatternDir(); //보스의 방향에 따라 left or right 반환
 	float4 ReturnClampBossPos(float4 _Pos); //패턴 중 순간이동 
 	std::string_view CurrentState = "";

@@ -332,7 +332,8 @@ void Player::AnimationInit()
 	PlayerRenderer->CreateAnimation({ .AnimationName = "UpSlash", .SpriteName = "11.UpSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DownSlash", .SpriteName = "12.DownSlash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 
-	//Dash
+	
+
 	PlayerRenderer->CreateAnimation({ .AnimationName = "Dash", .SpriteName = "14.Dash",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DashToIdle", .SpriteName = "15.DashToIdle",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
 	PlayerRenderer->CreateAnimation({ .AnimationName = "DashDown", .SpriteName = "16.DashDown",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });

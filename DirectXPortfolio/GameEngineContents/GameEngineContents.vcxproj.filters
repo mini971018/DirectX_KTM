@@ -34,9 +34,6 @@
     <ClInclude Include="HollowKnightBoss.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
-    <ClInclude Include="BindBreakEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
     <ClInclude Include="ShadowDashRechargedEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
@@ -64,9 +61,6 @@
     <ClInclude Include="SlashEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="RoarEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DashEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
@@ -91,18 +85,6 @@
     <ClInclude Include="HollowKnightSmallShotEffect.h">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ChestShotEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SlamEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SelfStabEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="HitDustEffect.h">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClInclude>
     <ClInclude Include="GetDamageEffect.h">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClInclude>
@@ -111,6 +93,33 @@
     </ClInclude>
     <ClInclude Include="PlayerHPUI.h">
       <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BindBreakEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestShotEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HitDustEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="RoarEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfStabEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SlamEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="HollowKnightDashEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="BossDeathEffect.h">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EndLevel.h">
+      <Filter>Levels\EndingLevel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,12 +156,6 @@
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
     <ClCompile Include="HollowKnight_State.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="RoarEffect.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="BindBreakEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
     <ClCompile Include="HollowKnight_AttackState.cpp">
@@ -216,18 +219,6 @@
     <ClCompile Include="HollowKnightSmallShotEffect.cpp">
       <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
     </ClCompile>
-    <ClCompile Include="ChestShotEffect.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="SlamEffect.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="SelfStabEffect.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="HitDustEffect.cpp">
-      <Filter>Levels\PlayLevel\HollowKnight\Object</Filter>
-    </ClCompile>
     <ClCompile Include="GetDamageEffect.cpp">
       <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
@@ -236,6 +227,33 @@
     </ClCompile>
     <ClCompile Include="PlayerHPUI.cpp">
       <Filter>Levels\PlayLevel\Player\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BindBreakEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestShotEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HitDustEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="RoarEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfStabEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SlamEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="HollowKnightDashEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="BossDeathEffect.cpp">
+      <Filter>Levels\PlayLevel\HollowKnight\HollowKnightEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="EndLevel.cpp">
+      <Filter>Levels\EndingLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +292,12 @@
     </Filter>
     <Filter Include="Levels\PlayLevel\Player\UI">
       <UniqueIdentifier>{f01ca582-eaad-448c-a98b-49b5fd068985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\PlayLevel\HollowKnight\HollowKnightEffect">
+      <UniqueIdentifier>{142ee0e5-6a21-48e1-bd07-e217268d8aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\EndingLevel">
+      <UniqueIdentifier>{72dd979e-c71b-4427-add1-7832502e1e0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -21,9 +21,6 @@ protected:
 	void Render(float _Delta) override;
 
 private:
-	std::shared_ptr<class GameEngineRenderer> Render0;
-	std::shared_ptr<class GameEngineRenderer> Render1;
-	std::shared_ptr<class GameEngineRenderer> Render2;
 
 
 };

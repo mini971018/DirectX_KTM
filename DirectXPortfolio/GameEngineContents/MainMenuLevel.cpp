@@ -7,6 +7,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore\GameEngineCore.h>
 
+#include "TestObject1.h"
 #include "MenuBG.h"
 #include "MenuTitle.h"
 #include "ContentsEnum.h"

@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineVideo.h>
 
 #include "Player.h"
 #include "HollowKnightBossRoom.h"
@@ -39,6 +40,8 @@ void HollowKnightLevel::Start()
 		}
 	}
 
+
+
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
@@ -58,7 +61,7 @@ void HollowKnightLevel::Start()
 
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
-		std::shared_ptr BossActor = CreateActor<HollowKnightBoss>();
+		HollowKnightLevelBoss = CreateActor<HollowKnightBoss>();
 	}
 }
 
@@ -66,11 +69,18 @@ void HollowKnightLevel::Update(float _DeltaTime)
 {
 	if (GameEngineInput::IsDown("ChangeNextLevel"))
 	{
-		GameEngineCore::ChangeLevel("MainMenuLevel");
+		GameEngineCore::ChangeLevel("EndLevel");
 	}
 }
 
 void HollowKnightLevel::LevelChangeStart()
 {
 	Player::SetCurrentLevelPlayer(HollowKnightLevelPlayer);
+
+	HollowKnightLevelBoss->ResetBoss();
+}
+
+void HollowKnightLevel::LevelChangeEnd()
+{
+
 }

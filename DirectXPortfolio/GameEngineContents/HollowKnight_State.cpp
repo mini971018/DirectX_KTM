@@ -809,6 +809,92 @@ void HollowKnightBoss::StateInit()
 		}
 	);
 
+	//Death
+	FSM.CreateState(
+		{
+			.Name = "AnticDeath",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("AnticDeath");
+
+			StateCalTime = 0.0f;
+
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (StateCalTime >= 1.5f)
+			{
+				FSM.ChangeState("LoopDeath");
+				return;
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "LoopDeath",
+			.Start = [this]()
+		{
+			BossRenderer->ChangeAnimation("LoopDeath");
+			StateCalTime = 0.0f;
+			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (StateCalTime >= 5.0f)
+			{
+				FSM.ChangeState("EndDeath");
+				return;
+			}
+				
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "EndDeath",
+			.Start = [this]()
+		{
+			//이펙트로 변경
+			SetDeathEffect();
+			BossRenderer->Off();
+			HollowKnightCollision->Off();
+			Player::CurrentLevelPlayer->SetCameraShakeOff();
+			StateCalTime = 0.0f;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (StateCalTime >= 1.0f)
+			{
+				//페이드아웃 후 EndLevel로 변경
+				GameEngineCore::ChangeLevel("EndLevel");
+			}
+
+			StateCalTime += _DeltaTime;
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
 	FSM.ChangeState("ChainIdle");
 }
 

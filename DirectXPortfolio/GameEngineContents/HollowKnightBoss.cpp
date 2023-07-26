@@ -11,6 +11,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineBase/GameEngineTime.h>
 
+#include "TestObject1.h"
 #include "Player.h"
 #include "RoarEffect.h"
 #include "BindBreakEffect.h"
@@ -22,6 +23,8 @@
 #include "SlamEffect.h"
 #include "SelfStabEffect.h"
 #include "HitDustEffect.h"
+#include "HollowKnightDashEffect.h"
+#include "BossDeathEffect.h"
 
 HollowKnightBoss::HollowKnightBoss() 
 {
@@ -40,6 +43,7 @@ void HollowKnightBoss::Start()
 	AttackStateInit();
 	BossPatternInit();
 	EffectInit();
+
 
 	//To do : 이후 레벨 들어올 때 
 	ResetBoss();
@@ -235,6 +239,11 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "AnticChestShot", .SpriteName = "46.AnticChestShot", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
 		BossRenderer->CreateAnimation({ .AnimationName = "ShotChest", .SpriteName = "47.ShotChest", .FrameInter = 0.1f,  .ScaleToTexture = true });
 
+		//Death
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticDeath", .SpriteName = "49.AnticDeath", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "LoopDeath", .SpriteName = "50.LoopDeath", .FrameInter = 0.07f, .ScaleToTexture = true });
+		
+
 		//Jump
 		BossRenderer->CreateAnimation({ .AnimationName = "Jump", .SpriteName = "55.Jump", .FrameInter = 0.07f, .ScaleToTexture = true });
 
@@ -358,14 +367,13 @@ void HollowKnightBoss::Update(float _Delta)
 {
 	FSM.Update(_Delta);
 
-	if (GameEngineInput::IsUp("TestButton1"))
-	{
-		//SetBullet();
-	}
-
 	if (GameEngineInput::IsUp("TestButton2"))
 	{
+		// GameEngineCore::ChangeLevel("HollowKnightLevel");
+
 		ResetBoss();
+
+		Player::CurrentLevelPlayer->SetPlayerCanMoveState(true);
 	}
 
 	if (GameEngineInput::IsUp("TestButton3"))
@@ -376,6 +384,12 @@ void HollowKnightBoss::Update(float _Delta)
 	if (GameEngineInput::IsUp("TestButton4"))
 	{
 		CurrentHp -= 400.0f;
+	}
+
+	if (CurrentHp <= 0.0f && IsDeath == false && IsGround(GetTransform()->GetWorldPosition()))
+	{
+		IsDeath = true;
+		FSM.ChangeState("AnticDeath");
 	}
 
 	DamagedTime += _Delta;
@@ -495,6 +509,7 @@ void HollowKnightBoss::ResetBoss()
 	HollowKnightCollision->Off();
 	
 	BossNoneDamageState = false;
+	IsDeath = false;
 }
 
 void HollowKnightBoss::SetRandomPattern()
@@ -530,7 +545,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::SelfStab;
+	PatternNum = HollowKnightNoneAttackState::AttackReady;
 
 	switch (PatternNum)
 	{
@@ -577,7 +592,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::Counter;
+	PatternNum = HollowKnightAttackState::DashAttack;
 
 	switch (PatternNum)
 	{
@@ -1041,4 +1056,36 @@ void HollowKnightBoss::SetHitEffect(float4 _Dir)
 		HitDustEffectActor->GetTransform()->SetWorldPosition(HollowKnightCollision->GetTransform()->GetWorldPosition());
 		HitDustEffectActor->SetHitDust(AngleDir);
 	}
+}
+
+void HollowKnightBoss::SetDashEffect()
+{
+	std::shared_ptr<class HollowKnightDashEffect> HollowKnightDashEffectActor = GetLevel()->CreateActor<HollowKnightDashEffect>();
+	
+	float4 EffectPos = Pivot->GetTransform()->GetWorldPosition();
+
+	HollowKnightDashEffectActor->GetTransform()->SetLocalScale({ 2.0f, 2.0f, 1.0f });
+
+	if (ReturnPatternDir() == float4::Right)
+	{
+		HollowKnightDashEffectActor->GetTransform()->SetLocalNegativeScaleX();
+		EffectPos += {-300.0f, -50.0f, 0.0f};
+	}
+	else
+	{
+		EffectPos += {300.0f, -50.0f, 0.0f};
+	}
+
+	HollowKnightDashEffectActor->GetTransform()->SetLocalPosition(EffectPos);
+
+}
+
+void HollowKnightBoss::SetDeathEffect()
+{
+	std::shared_ptr<class BossDeathEffect> BossDeathEffectActor = GetLevel()->CreateActor<BossDeathEffect>();
+
+	float4 EffectPos = Pivot->GetTransform()->GetWorldPosition();
+
+	BossDeathEffectActor->GetTransform()->SetLocalScale({ 2.0f, 2.0f, 1.0f });
+	BossDeathEffectActor->GetTransform()->SetWorldPosition(EffectPos);
 }

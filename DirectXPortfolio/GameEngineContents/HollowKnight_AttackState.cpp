@@ -50,6 +50,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("DashAttack");
 			SetIdleCollision();
+			SetDashEffect();
 			StateCalTime = 0.0f;
 			CurrentDashSpeed = DashSpeed;
 		},

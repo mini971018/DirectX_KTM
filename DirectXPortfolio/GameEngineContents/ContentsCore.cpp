@@ -10,6 +10,7 @@
 #include "MainMenuLevel.h"
 #include "HollowKnightLevel.h"
 #include "TestLevel3D.h"
+#include "EndLevel.h"
 
 ContentsCore::ContentsCore() 
 {
@@ -25,6 +26,8 @@ void ContentsCore::GameStart()
 
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<HollowKnightLevel>();
+	GameEngineCore::CreateLevel<EndLevel>();
+	
 	//GameEngineCore::CreateLevel<TestLevel3D>();
 	GameEngineCore::ChangeLevel("MainMenuLevel");
 }

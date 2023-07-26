@@ -20,9 +20,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void LevelChangeStart() override;
-	void LevelChangeEnd() override {}
+	void LevelChangeEnd() override;
 
 private:
 	std::shared_ptr<class Player> HollowKnightLevelPlayer = nullptr;
+	std::shared_ptr<class HollowKnightBoss> HollowKnightLevelBoss = nullptr;
 };
 
