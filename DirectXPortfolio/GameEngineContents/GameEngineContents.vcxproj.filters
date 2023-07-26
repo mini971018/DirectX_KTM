@@ -121,6 +121,9 @@
     <ClInclude Include="EndLevel.h">
       <Filter>Levels\EndingLevel</Filter>
     </ClInclude>
+    <ClInclude Include="EndingVideo.h">
+      <Filter>Levels\EndingLevel\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -255,6 +258,9 @@
     <ClCompile Include="EndLevel.cpp">
       <Filter>Levels\EndingLevel</Filter>
     </ClCompile>
+    <ClCompile Include="EndingVideo.cpp">
+      <Filter>Levels\EndingLevel\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -298,6 +304,9 @@
     </Filter>
     <Filter Include="Levels\EndingLevel">
       <UniqueIdentifier>{72dd979e-c71b-4427-add1-7832502e1e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\EndingLevel\Object">
+      <UniqueIdentifier>{409981c4-698a-45ad-95a2-25683bcfd0a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -46,6 +46,7 @@ void HollowKnightBoss::StateInit()
 			BossRenderer->ChangeAnimation("ChainIdle");
 			Player::CurrentLevelPlayer->SetPlayerCanMoveState(false);
 			Player::CurrentLevelPlayer->SetCameraShakeLoop(30.0f);
+			GameEngineSoundPlayer HollowKnightIntroSound = GameEngineSound::Play("HollowKnightIntro.wav");
 			//float4 EffectPos = GetTransform()->GetWorldPosition();
 			//EffectPos += {-10, 300};
 			//RoarEffectPos = EffectPos;
@@ -69,7 +70,7 @@ void HollowKnightBoss::StateInit()
 				StateCalTime = 0.0f;
 			}
 
-			if (StateCalTime2 >= 1.0f)
+			if (StateCalTime2 >= 4.5f)
 			{
 				FSM.ChangeState("BreakChain");
 				return;
@@ -153,6 +154,7 @@ void HollowKnightBoss::StateInit()
 			BossWeaponRenderer->Off();
 
 			Player::CurrentLevelPlayer->SetCameraShakeOnce(20.0f);
+			SetSoundPlayOnce("HollowKnightLand.wav");
 
 			StateCalTime = 0.0f;
 		},
@@ -183,6 +185,12 @@ void HollowKnightBoss::StateInit()
 			SetCollisionValue({287, 304, 1}, float4{-70.0f, HollowKnightCollisionIdlePos.y , -70.0f});
 			HollowKnightCollision->On();
 
+			if (IsBGMPlay == true && CurrentPhase == HollowKnightPatternEnum::Phase3)
+			{
+				BGMPlayer.SoundFadeOut(2.0);
+				IsBGMPlay = false;
+			}
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -208,6 +216,16 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f; //로어이펙트 주기
 			StateCalTime2 = 0.0f;  //다음 스테이트로 넘어가는 시간
 			
+
+			if (IsBGMPlay != true && CurrentPhase == HollowKnightPatternEnum::Phase1)
+			{
+				IsBGMPlay = true;
+				BGMPlayer = GameEngineSound::Play("HollowKnightPhase1.wav");
+			}
+
+
+			SetSoundPlayOnce("HollowKnightScream.wav");
+
 			float4 RoarLockDir;
 			float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
 
@@ -401,6 +419,7 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticTeleport");
+			SetSoundPlayOnce("HollowKnightTeleport.wav");
 			HollowKnightCollision->Off();
 			StateCalTime = 0.0f;
 		},
@@ -439,6 +458,7 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->On();
 			BossRenderer->ChangeAnimation("EndTeleport");
+			SetSoundPlayOnce("HollowKnightTeleport.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -514,6 +534,8 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("Evade");
 
+			SetSoundPlayOnce("HollowKnightEvade.wav");
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -521,6 +543,9 @@ void HollowKnightBoss::StateInit()
 			if (0.15f <= StateCalTime)
 			{
 				FSM.ChangeState("Recover");
+				SetSoundPlayOnce("HollowKnightLand.wav");
+
+				return;
 			}
 			
 			GetTransform()->AddWorldPosition( -ReturnPatternDir()* EvadeSpeed* _DeltaTime);
@@ -573,6 +598,14 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f;
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
 
+			if (IsBGMPlay == false)
+			{
+				BGMPlayer = GameEngineSound::Play("HollowKnightPhase2.mp3");
+				IsBGMPlay = true;
+			}
+
+			SetSoundPlayOnce("HollowKnightSelfStabPrepare.wav");
+
 			CurrentState = "SelfStab";
 		},
 			.Update = [this](float _DeltaTime)
@@ -608,6 +641,8 @@ void HollowKnightBoss::StateInit()
 			SetStabEffect();
 			GetDamage(1.0f, PlayerAttackType::SelfStab);
 
+			SetSoundPlayOnce("HollowKnightSelfStab.wav");
+
 			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 
 			StateCalTime = 0.0f;
@@ -640,6 +675,8 @@ void HollowKnightBoss::StateInit()
 			.Name = "ReAnticSelfStab",
 			.Start = [this]()
 		{
+			SetSoundPlayOnce("HollowKnightSelfStabPrepare.wav");
+
 			BossRenderer->ChangeAnimation("ReAnticSelfStab");
 			SetCollisionValue(float4{ 195,380,1 }, float4{ -30.0f, HollowKnightCollisionIdlePos.y + 40, -70.0f });
 			CurrentState = "SelfStab";
@@ -670,7 +707,7 @@ void HollowKnightBoss::StateInit()
 			SetStabEffect();
 			GetDamage(1.0f, PlayerAttackType::SelfStab);
 			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
-
+			SetSoundPlayOnce("HollowKnightSelfStab.wav");
 			DamageReduceState = true;
 		},
 			.Update = [this](float _DeltaTime)
@@ -739,6 +776,7 @@ void HollowKnightBoss::StateInit()
 			.Name = "StunLand",
 			.Start = [this]()
 		{
+			SetSoundPlayOnce("HollowKnightLand.wav");
 			CurrentState = "StunLand";
 			DamageReduceState = false;
 			BossRenderer->ChangeAnimation("StunLand");
@@ -816,7 +854,8 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticDeath");
-
+			SetSoundPlayOnce("BossAnticDeath.wav");
+			
 			StateCalTime = 0.0f;
 
 		},
@@ -845,18 +884,30 @@ void HollowKnightBoss::StateInit()
 		{
 			BossRenderer->ChangeAnimation("LoopDeath");
 			StateCalTime = 0.0f;
+			StateCalTime2 = 0.0f;
+
+			SetSoundPlayOnce("HollowKnightScream.wav");
+
 			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (StateCalTime >= 5.0f)
+			if (StateCalTime2 >= 0.2f)
+			{
+				CreateRoarEffect(RoarType::Black, RoarEffectPos);
+
+				StateCalTime2 = 0.0f;
+			}
+
+			if (StateCalTime >= 4.0f)
 			{
 				FSM.ChangeState("EndDeath");
 				return;
 			}
 				
 			StateCalTime += _DeltaTime;
-		},
+			StateCalTime2 += _DeltaTime;
+ 		},
 			.End = [this]()
 		{
 
@@ -871,15 +922,22 @@ void HollowKnightBoss::StateInit()
 			.Start = [this]()
 		{
 			//이펙트로 변경
+			SetSoundPlayOnce("HollowKnightDeath.wav");
 			SetDeathEffect();
 			BossRenderer->Off();
 			HollowKnightCollision->Off();
 			Player::CurrentLevelPlayer->SetCameraShakeOff();
 			StateCalTime = 0.0f;
+
+			if (IsBGMPlay == true)
+			{
+				IsBGMPlay = false;
+				BGMPlayer.SoundFadeOut(5.0);
+			}
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			if (StateCalTime >= 1.0f)
+			if (StateCalTime >= 8.0f)
 			{
 				//페이드아웃 후 EndLevel로 변경
 				GameEngineCore::ChangeLevel("EndLevel");

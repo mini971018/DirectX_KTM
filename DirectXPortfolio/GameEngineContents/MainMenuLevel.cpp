@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore\GameEngineCore.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 
 #include "TestObject1.h"
 #include "MenuBG.h"
@@ -37,6 +38,22 @@ void MainMenuLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".mp3", ".wav"});
+
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineSound::Load(File[i].GetFullPath());
+		}
+	}
+
+
 
 	//GetMainCamera()->SetSortType(0, SortType::ZSort);
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);

@@ -26,9 +26,15 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
+	void SoundPlayerCheck(float _Delta);
+	bool IsBGMPlay = false;
+	float CheckSoundPlayerTime = 0.0f;
+	void SetSoundPlayOnce(std::string_view _Name);
+	void SetRandomPuppetSlamSound();
+
 	std::shared_ptr<class GameEngineSpriteRenderer> BossRenderer;
 	std::shared_ptr<class GameEngineComponent> Pivot; //보스 렌더러의 피봇
-
 
 	float4 PivotPos = float4::Zero; //보스 렌더러의 애니메이션의 각 중심이 될 위치
 	void SetBossRendererPivot();
@@ -167,7 +173,7 @@ private:
 	void SetStabEffect();
 
 	//SwapPhase
-	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase4; //현재 패턴의 번호
+	HollowKnightPatternEnum CurrentPhase = HollowKnightPatternEnum::Phase1; //현재 패턴의 번호
 	bool IsNextPhase();
 
 	//StageStart

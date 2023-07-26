@@ -165,7 +165,9 @@ void HollowKnightBoss::AnimationInit()
 			{
 				std::shared_ptr BreakShieldEffect = GetLevel()->CreateActor<BindBreakEffect>();
 				BreakShieldEffect->SetBindBreakRenderer(GetTransform()->GetWorldPosition() + PivotPos);
-				
+				GameEngineSoundPlayer BossChainCutSound = GameEngineSound::Play("BossChainCut.wav");
+				SetCounterFlashEffect();
+
 				Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 			});
 		BossRenderer->CreateAnimation({ .AnimationName = "BreakChainFall", .SpriteName = "03.HollowKnightBreakChainFall",.Loop = false, .ScaleToTexture = true });
@@ -240,8 +242,8 @@ void HollowKnightBoss::AnimationInit()
 		BossRenderer->CreateAnimation({ .AnimationName = "ShotChest", .SpriteName = "47.ShotChest", .FrameInter = 0.1f,  .ScaleToTexture = true });
 
 		//Death
-		BossRenderer->CreateAnimation({ .AnimationName = "AnticDeath", .SpriteName = "49.AnticDeath", .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true });
-		BossRenderer->CreateAnimation({ .AnimationName = "LoopDeath", .SpriteName = "50.LoopDeath", .FrameInter = 0.07f, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "AnticDeath", .SpriteName = "49.AnticDeath", .FrameInter = 0.1f, .Loop = false, .ScaleToTexture = true });
+		BossRenderer->CreateAnimation({ .AnimationName = "LoopDeath", .SpriteName = "50.LoopDeath", .FrameInter = 0.1f, .ScaleToTexture = true });
 		
 
 		//Jump
@@ -261,9 +263,9 @@ void HollowKnightBoss::AnimationInit()
 			BossRenderer->GetTransform()->SetParent(Pivot->GetTransform());
 		}
 
-		std::shared_ptr<class GameEngineSpriteRenderer> BossPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
-		BossPosRender->GetTransform()->SetLocalScale({ 10, 10, 1 });
-		BossPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });
+		//std::shared_ptr<class GameEngineSpriteRenderer> BossPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
+		//BossPosRender->GetTransform()->SetLocalScale({ 10, 10, 1 });
+		//BossPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });
 	}
 
 
@@ -398,6 +400,8 @@ void HollowKnightBoss::Update(float _Delta)
 	GetDamageCheck();
 	SetBossColor();
 	//SetCounterColor();
+
+	SoundPlayerCheck(_Delta);
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -509,7 +513,16 @@ void HollowKnightBoss::ResetBoss()
 	HollowKnightCollision->Off();
 	
 	BossNoneDamageState = false;
+
+	if (IsBGMPlay == true)
+	{
+		BGMPlayer.Stop();
+	}
+
 	IsDeath = false;
+	IsBGMPlay = false;
+
+	CheckSoundPlayerTime = 0.0f;
 }
 
 void HollowKnightBoss::SetRandomPattern()
@@ -545,7 +558,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	PatternNum = HollowKnightNoneAttackState::AttackReady;
+	//PatternNum = HollowKnightNoneAttackState::Evade;
 
 	switch (PatternNum)
 	{
@@ -592,7 +605,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	PatternNum = HollowKnightAttackState::DashAttack;
+	//PatternNum = HollowKnightAttackState::DashAttack;
 
 	switch (PatternNum)
 	{
@@ -856,6 +869,7 @@ void HollowKnightBoss::GetDamage(float _Damage, PlayerAttackType _Type, float4 _
 		break;
 	}
 
+	GameEngineSoundPlayer BossDamagedSound = GameEngineSound::Play("BossDamaged.wav");
 	StateCalBool = true; //stunland 상태에서 데미지를 체크하기 위해
 	DamagedTime = 0.0f;
 }
@@ -1088,4 +1102,34 @@ void HollowKnightBoss::SetDeathEffect()
 
 	BossDeathEffectActor->GetTransform()->SetLocalScale({ 2.0f, 2.0f, 1.0f });
 	BossDeathEffectActor->GetTransform()->SetWorldPosition(EffectPos);
+}
+
+void HollowKnightBoss::SoundPlayerCheck(float _Delta)
+{
+
+}
+
+void HollowKnightBoss::SetSoundPlayOnce(std::string_view _Name)
+{
+	GameEngineSoundPlayer SoundPlayer = GameEngineSound::Play(_Name);
+}
+
+void HollowKnightBoss::SetRandomPuppetSlamSound()
+{
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+	switch (RandomValue)
+	{
+	case 0:
+		SetSoundPlayOnce("HollowKnightPuppetLand1.wav");
+		break;
+	case 1:
+		SetSoundPlayOnce("HollowKnightPuppetLand2.wav");
+		break;
+	case 2:
+		SetSoundPlayOnce("HollowKnightPuppetLand3.wav");
+		break;
+	default:
+		break;
+	}
 }

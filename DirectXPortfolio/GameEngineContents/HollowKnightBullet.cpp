@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
@@ -63,6 +64,8 @@ void HollowKnightBullet::Update(float _Delta)
 				BulletRenderer->ColorOptionValue.MulColor.a = 1.0f;
 
 				IsWall = true;
+
+				GameEngineSoundPlayer SoundPlayer = GameEngineSound::Play("HollowKnightBulletEnd.wav");
 			}
 		}
 	}

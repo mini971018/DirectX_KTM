@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineFSM.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 
 class Player : public GameEngineActor
 {
@@ -76,6 +77,7 @@ public:
 	void SetFireballHitEffect(float4 _Pos, float4 _Scale);
 	void SetEnemyHitSlashEffect(float4 _Pos, float4 _Scale);
 	void SetEnemyHitEffect(float4 _Pos, float4 _Scale);
+	void ResetPlayer();
 
 protected:
 	void Start();
@@ -194,6 +196,7 @@ private:
 	void EffectInit();
 	void CollisionInit();
 	void UIInit();
+	//void LoopSoundInit();
 
 	//카메라 관련
 	float CamDeltaTime = 0.0f;
@@ -222,5 +225,8 @@ private:
 	float StateCalFloat = 0.0f;
 	int StateCalCount = 0;
 	float4 StateCalDir = float4::Null;
+
+	GameEngineSoundPlayer SprintSoundPlayer;
+	GameEngineSoundPlayer HealingFocusSound;
 };
 

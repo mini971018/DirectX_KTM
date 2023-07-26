@@ -21,6 +21,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Name = "AnticDashAttack",
 			.Start = [this]()
 		{
+			SetSoundPlayOnce("HollowKnightPrepare.wav");
 			BossRenderer->ChangeAnimation("AnticDashAttack");
 			SetCollisionValue(float4{ 295,290,1 }, float4{ -75.0f, HollowKnightCollisionIdlePos.y - 20.0f , -70.0f });
 			StateCalTime = 0.0f;
@@ -49,6 +50,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("DashAttack");
+			SetSoundPlayOnce("HollowKnightDashAttack.wav");
 			SetIdleCollision();
 			SetDashEffect();
 			StateCalTime = 0.0f;
@@ -150,6 +152,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("Slash1");
 			SetSlashAttackCollision();
+			SetSoundPlayOnce("HollowKnightSlash.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -207,6 +210,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("Slash2");
 			SetSlashAttackCollision();
+			SetSoundPlayOnce("HollowKnightSlash.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -256,6 +260,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("Slash3");
 			SetSlashAttackCollision();
+			SetSoundPlayOnce("HollowKnightSlash.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -314,7 +319,7 @@ void HollowKnightBoss::AttackStateInit()
 			//Èò»öÀ¸·Î Àá±ñ ¹ÝÂ¦°Å¸²
 			SetCounterFlashEffect();
 			CounterTime = 1.0f;
-
+			SetSoundPlayOnce("HollowKnightParryPrepare.wav");
 
 			StateCalTime = 0.0f;
 		},
@@ -353,6 +358,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("NoneBlockCounter");
 
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -382,6 +388,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("BlockCounter");
+			SetSoundPlayOnce("HollowKnightParry.wav");
 
 			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(0.2f);
 
@@ -498,6 +505,7 @@ void HollowKnightBoss::AttackStateInit()
 			BossRenderer->ChangeAnimation("SmallShot");
 			SmallShotEffectActor->OnEffect();
 			StateCalPos = SmallShotEffectActor->GetTransform()->GetWorldPosition();
+			SetSoundPlayOnce("HollowKnightLand.wav");
 
 			if (float4::Left == ReturnPatternDir())
 			{
@@ -591,7 +599,7 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticBlasts");
-
+			SetSoundPlayOnce("HollowKnightPrepare2.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -649,13 +657,20 @@ void HollowKnightBoss::AttackStateInit()
 			SetBlasts();
 			SetSlamEffect();
 			BossRenderer->ChangeAnimation("LandBlasts");
-
+			SetSoundPlayOnce("HollowKnightBlastLand.wav");
 			Player::CurrentLevelPlayer->SetCameraShakeOnce(20.0f);
+			StateCalBool = false;
 
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (StateCalBool == false && 0.45f <= StateCalTime)
+			{
+				SetSoundPlayOnce("HollowKnightBlastsSound.wav");
+				StateCalBool = true;
+			}
+
 			if (0.7f <= StateCalTime)
 			{
 				FSM.ChangeState("Recover");
@@ -679,7 +694,8 @@ void HollowKnightBoss::AttackStateInit()
 			.Start = [this]()
 		{
 			BossRenderer->ChangeAnimation("AnticPuppet");
-			
+
+
 			StateCalTime = 0.0f;
 			StateCalInt = 0;
 		},
@@ -869,6 +885,8 @@ void HollowKnightBoss::AttackStateInit()
 
 			Player::CurrentLevelPlayer->SetCameraShakeOnce(25.0f);
 
+			SetRandomPuppetSlamSound();
+
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -933,7 +951,7 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			BossRenderer->ChangeAnimation("AnticChestShot");
 			SetCollisionValue(float4{ 257,337,1 }, float4{ -10.0f, HollowKnightCollisionIdlePos.y , -70.0f });
-
+			SetSoundPlayOnce("HollowKnightPrepare.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -959,6 +977,9 @@ void HollowKnightBoss::AttackStateInit()
 			BossRenderer->ChangeAnimation("ShotChest");
 
 			StateCalBool = false;
+
+			SetSoundPlayOnce("HollowKnightScream.wav");
+			SetSoundPlayOnce("HollowKnightChestShotSound.wav");
 
 			StateCalTime = 0.0f;
 			StateCalTime2 = 0.0f;

@@ -40,8 +40,6 @@ void HollowKnightLevel::Start()
 		}
 	}
 
-
-
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
@@ -77,6 +75,7 @@ void HollowKnightLevel::LevelChangeStart()
 {
 	Player::SetCurrentLevelPlayer(HollowKnightLevelPlayer);
 
+	HollowKnightLevelPlayer->ResetPlayer();
 	HollowKnightLevelBoss->ResetBoss();
 }
 

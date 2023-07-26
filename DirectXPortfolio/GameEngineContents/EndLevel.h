@@ -23,6 +23,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	std::shared_ptr<class GameEngineVideo> EndingVideo;
+	std::shared_ptr<class EndingVideo> EndingVideoObject;
 };
 

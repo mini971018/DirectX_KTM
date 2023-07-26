@@ -17,6 +17,7 @@
 #include "GetDamageEffect.h"
 #include "PlayerUIManager.h"
 
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -376,9 +377,9 @@ void Player::AnimationInit()
 	PlayerRenderer->GetTransform()->SetParent(Pivot->GetTransform());
 	Pivot->GetTransform()->SetLocalNegativeScaleX();
 
-	std::shared_ptr<class GameEngineSpriteRenderer> PlayerPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
+	/*std::shared_ptr<class GameEngineSpriteRenderer> PlayerPosRender = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Test);
 	PlayerPosRender->GetTransform()->SetLocalScale({ 10, 10, 1 });
-	PlayerPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });
+	PlayerPosRender->GetTransform()->SetLocalPosition({ 0, 0, -70 });*/
 }
 
 void Player::EffectInit()
@@ -850,4 +851,14 @@ bool Player::SkillStateCheck(int cost)
 	{
 		return false;
 	}
+}
+
+void Player::ResetPlayer()
+{
+	FSM.ChangeState("Idle");
+
+	GetTransform()->SetWorldPosition({ 694 , -1348, 0 });
+
+	CurrentPlayerHP = PlayerMaxHP;
+	CurrentPlayerMP = 0;
 }

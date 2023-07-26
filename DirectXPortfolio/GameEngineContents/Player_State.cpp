@@ -122,12 +122,16 @@ void Player::StateInit()
 		{
 			SetPlayerCollisionPos(10);
 			PlayerRenderer->ChangeAnimation("AnticSprint");
+			SprintSoundPlayer = GameEngineSound::Play("PlayerSprint.wav");
+			SprintSoundPlayer.SetLoop();
+
 		},
 			.Update = [this](float _DeltaTime)
 		{
 			if (true == PlayerRenderer->IsAnimationEnd())
 			{
 				PlayerRenderer->ChangeAnimation("Sprint");
+
 			}
 
 			if (false == IsGround(GetTransform()->GetWorldPosition()))
@@ -220,6 +224,8 @@ void Player::StateInit()
 		{
 			CurrentState = PlayerState::Sprint;
 			SetPlayerCollisionPos(0);
+
+			SprintSoundPlayer.SetPause(true);
 		},
 
 		}
@@ -301,7 +307,7 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("Jump");
-
+			GameEngineSoundPlayer JumpSound = GameEngineSound::Play("PlayerJump.wav");
 			if (CurrentState != PlayerState::Slash)
 			{
 				ResetFallValue();
@@ -401,6 +407,8 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("DoubleJump");
+
+			GameEngineSoundPlayer DoubleJumpSound = GameEngineSound::Play("PlayerDoubleJump.wav");
 
 			JumpEffectActor->JumpEffectOn();
 
@@ -600,7 +608,7 @@ void Player::StateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("Land");
-
+			GameEngineSoundPlayer LandSound = GameEngineSound::Play("PlayerLand.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -657,6 +665,8 @@ void Player::StateInit()
 			PlayerRenderer->ChangeAnimation("Dash");
 			SetPlayerCollisionPos(20);
 			DashEffectActor->OnDashEffect();
+
+			GameEngineSoundPlayer DashSound = GameEngineSound::Play("PlayerDash.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -717,6 +727,7 @@ void Player::StateInit()
 			.Name = "ShadowDash",
 			.Start = [this]()
 		{
+			GameEngineSoundPlayer ShadowDashSound = GameEngineSound::Play("PlayerShadowDash.wav");
 			PlayerRenderer->ChangeAnimation("ShadowDash");
 			PlayerCollision->Off();
 			SetShadowDashEffect();
@@ -892,6 +903,7 @@ void Player::StateInit()
 				PlayerDir = float4::Right;
 			}
 
+			GameEngineSoundPlayer GetDamageSound = GameEngineSound::Play("PlayerGetDamage.wav");
 			PlayerRenderer->ChangeAnimation("GetDamaged");
 			SetGetDamagedEffect();
 

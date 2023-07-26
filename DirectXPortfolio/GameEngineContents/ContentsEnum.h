@@ -20,7 +20,7 @@ enum class PlayRenderOrder
 	BFPF_Effect,
 	UpperLayer,
 	UpperEffect,
-	Test,
+	Video,
 };
 
 enum class OrangeBlobType

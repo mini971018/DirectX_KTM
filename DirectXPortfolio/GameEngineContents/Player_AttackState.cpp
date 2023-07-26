@@ -24,21 +24,33 @@ void Player::AttackStateInit()
 			switch (CurrentSlash)
 			{
 			case PlayerSlashAnimation::Slash1:
+			{
+				GameEngineSoundPlayer SlashSound = GameEngineSound::Play("PlayerSlash1.wav");
 				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash1, NormalSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("Slash1");
 				break;
+			}
 			case PlayerSlashAnimation::Slash2:
+			{
+				GameEngineSoundPlayer SlashSound = GameEngineSound::Play("PlayerSlash2.wav");
 				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::Slash2, NormalSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("Slash2");
 				break;
+			}
 			case PlayerSlashAnimation::UpperSlash:
+			{
+				GameEngineSoundPlayer SlashSound = GameEngineSound::Play("PlayerUpperSlash.wav");
 				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::UpperSlash, UpperSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("UpSlash");
 				break;
+			}
 			case PlayerSlashAnimation::DownSlash:
+			{
+				GameEngineSoundPlayer SlashSound = GameEngineSound::Play("PlayerLowerSlash.wav");
 				SlashEffectActor->SetSlashEffect(PlayerSlashAnimation::DownSlash, DownSlashPos, PlayerDamage);
 				PlayerRenderer->ChangeAnimation("DownSlash");
 				break;
+			}
 			default:
 				MsgAssert("잘못된 플레이어 Slash 애니메이션을 호출했습니다.");
 				break;
@@ -186,6 +198,9 @@ void Player::AttackStateInit()
 			.Name = "Healing",
 			.Start = [this]()
 		{
+			HealingFocusSound = GameEngineSound::Play("PlayerHealFocus.wav");
+			HealingFocusSound.SetLoop();
+
 			PlayerRenderer->ChangeAnimation("AnticFocus");
 			FocusEffectActor->OnFocusEffect();
 			StateCalTime = 0.0f;
@@ -202,6 +217,7 @@ void Player::AttackStateInit()
 			if (StateCalTime >= 1.0f)
 			{
 				//체력회복
+				GameEngineSoundPlayer HealingSound = GameEngineSound::Play("PlayerHealed.wav");
 				PlayerGetHealed();
 				PlayerRenderer->ChangeAnimation("GetOnFocus");
 				CurrentPlayerMP -= HealingCost;
@@ -218,7 +234,8 @@ void Player::AttackStateInit()
 		},
 			.End = [this]()
 		{
-
+			HealingFocusSound.Stop();
+			FocusEffectActor->OffFocusEffect();
 		},
 
 		}
@@ -230,7 +247,6 @@ void Player::AttackStateInit()
 			.Start = [this]()
 		{
 			PlayerRenderer->ChangeAnimation("EndFocus");
-			FocusEffectActor->OffFocusEffect();
 			StateCalTime = 0.0f;
 		},
 			.Update = [this](float _DeltaTime)
@@ -255,11 +271,14 @@ void Player::AttackStateInit()
 			.Name = "Scream",
 			.Start = [this]()
 		{
+
 			PlayerRenderer->ChangeAnimation("AnticScream");
 			SetCameraShakeLoop(20.0f);
 
 			SetScreamSkillEffect();
 			StateCalTime = 0.0f;
+
+			GameEngineSoundPlayer SlashSound = GameEngineSound::Play("PlayerScreamSpell.wav");
 		},
 			.Update = [this](float _DeltaTime)
 		{
@@ -327,6 +346,7 @@ void Player::AttackStateInit()
 		{
 			PlayerRenderer->ChangeAnimation("FireballCast");
 			CurrentPlayerMP -= HealingCost;
+			GameEngineSoundPlayer FireballSound = GameEngineSound::Play("PlayerFireball.wav");
 			SetCameraShakeOnce(20.0f);
 			SetFireBallCastEffect();
 			SetFireBall();
