@@ -778,9 +778,46 @@ void HollowKnightBossRoom::CreateMap()
 		WallCollision->GetTransform()->SetWorldPosition({ 4810, -889 , -70.0f });
 		WallCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
 	}
+	{
+		BossRoomOnCollision = CreateComponent<GameEngineCollision>();
+		BossRoomOnCollision->SetColType(ColType::AABBBOX2D);
+		BossRoomOnCollision->GetTransform()->SetWorldScale({ 100, 1500, 1.0f });
+		BossRoomOnCollision->GetTransform()->SetWorldPosition({ 2000, -750 , -70.0f });
+		BossRoomOnCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::OnBossRoomDoor));
+		BossRoomOnCollision->On();
+	}
+	{
+		BossRoomDoorCollision = CreateComponent<GameEngineCollision>();
+		BossRoomDoorCollision->SetColType(ColType::AABBBOX2D);
+		BossRoomDoorCollision->GetTransform()->SetWorldScale({ 100, 330, 1.0f });
+		BossRoomDoorCollision->GetTransform()->SetWorldPosition({ 1458, -1179 , -70.0f });
+		BossRoomDoorCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
+		BossRoomDoorCollision->Off();
+	}
+
+	BossRoomDoorRenderer = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Map);
+
+	BossRoomDoorRenderer->CreateAnimation({ .AnimationName = "OnDoor", .SpriteName = "101.FinalBossRoom", .Loop = false , .ScaleToTexture = true });
+	BossRoomDoorRenderer->GetTransform()->SetWorldPosition(BossRoomDoorCollision->GetTransform()->GetWorldPosition());
+	BossRoomDoorRenderer->Off();
 }
 
 void HollowKnightBossRoom::Update(float _Delta)
 {
+	std::shared_ptr<GameEngineCollision> RoomOnCollision = BossRoomOnCollision->Collision(HollowKnightCollisionType::Player);
 
+	if (RoomOnCollision != nullptr && false == IsDoorOn)
+	{
+		BossRoomDoorRenderer->ChangeAnimation("OnDoor");
+		BossRoomDoorRenderer->On();
+		BossRoomDoorCollision->On();
+		IsDoorOn = true;
+	}
+}
+
+void HollowKnightBossRoom::ResetBossRoom()
+{
+	BossRoomDoorRenderer->Off();
+	BossRoomDoorCollision->Off();
+	IsDoorOn = false;
 }

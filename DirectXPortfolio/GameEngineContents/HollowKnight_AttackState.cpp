@@ -64,7 +64,15 @@ void HollowKnightBoss::AttackStateInit()
 			//	return;
 			//}
 
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			}
+
+			if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			}
 
 			if (StateCalTime >= 0.3f)
 			{
@@ -94,7 +102,16 @@ void HollowKnightBoss::AttackStateInit()
 			.Update = [this](float _DeltaTime)
 		{
 			CurrentDashSpeed -= (DashSpeed * 3.0f * _DeltaTime);
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			
+			if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			}
+
+			if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * CurrentDashSpeed * _DeltaTime);
+			}
 
 			if (CurrentDashSpeed <= 300.0f)
 			{
@@ -158,7 +175,15 @@ void HollowKnightBoss::AttackStateInit()
 		{
 			if (CurrentPhase != HollowKnightPatternEnum::Phase4)
 			{
-				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed* _DeltaTime);
+				if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+				{
+					GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed* _DeltaTime);
+				}
+
+				if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+				{
+					GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash1Speed* _DeltaTime);
+				}
 			}
 
 			if (true == BossRenderer->IsAnimationEnd())
@@ -214,7 +239,17 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * Slash2Speed * _DeltaTime);
+
+
+			if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash2Speed* _DeltaTime);
+			}
+
+			if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash2Speed* _DeltaTime);
+			}
 
 			if (true == BossRenderer->IsAnimationEnd())
 			{
@@ -264,7 +299,15 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * Slash3Speed * _DeltaTime);
+			if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * Slash3Speed * _DeltaTime);
+			}
+
+			if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir()* Slash3Speed* _DeltaTime);
+			}
 
 			if (true == BossRenderer->IsAnimationEnd())
 			{
@@ -426,7 +469,14 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddWorldPosition(ReturnPatternDir() * CounterSlash2Speed * _DeltaTime);
+			if (IsLeftWallCheck() == false && ReturnPatternDir() == float4::Left)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir() * CounterSlash2Speed * _DeltaTime);
+			}
+			if (IsRightWallCheck() == false && ReturnPatternDir() == float4::Right)
+			{
+				GetTransform()->AddWorldPosition(ReturnPatternDir()* CounterSlash2Speed* _DeltaTime);
+			}
 
 			if (true == BossRenderer->IsAnimationEnd())
 			{
@@ -775,13 +825,24 @@ void HollowKnightBoss::AttackStateInit()
 
 			float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
 
-			if (BossToPlayerDir.x < 0.0f)
+			if (BossToPlayerDir.x < 0.0f && IsLeftWallCheck() == false )
 			{
 				StateCalDir += float4::Left * Speed * _DeltaTime;
 			}
-			else
+			
+			if (BossToPlayerDir.x < 0.0f && IsLeftWallCheck() == true)
+			{
+				StateCalDir.x = 0.0f;
+			}
+
+			if (BossToPlayerDir.x > 0.0f && IsRightWallCheck() == false)
 			{
 				StateCalDir += float4::Right * Speed * _DeltaTime;
+			}
+			
+			if (BossToPlayerDir.x > 0.0f && IsRightWallCheck() == true)
+			{
+				StateCalDir.x = 0.0f;
 			}
 
 			if (StateCalDir.x >= Clamp)
@@ -840,13 +901,24 @@ void HollowKnightBoss::AttackStateInit()
 
 				float4 BossToPlayerDir = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
 
-				if (BossToPlayerDir.x < 0.0f)
+				if (BossToPlayerDir.x < 0.0f && IsLeftWallCheck() == false)
 				{
 					StateCalDir += float4::Left * Speed * _DeltaTime;
 				}
-				else
+
+				if (BossToPlayerDir.x < 0.0f && IsLeftWallCheck() == true)
+				{
+					StateCalDir.x = 0.0f;
+				}
+
+				if (BossToPlayerDir.x > 0.0f && IsRightWallCheck() == false)
 				{
 					StateCalDir += float4::Right * Speed * _DeltaTime;
+				}
+
+				if (BossToPlayerDir.x > 0.0f && IsRightWallCheck() == true)
+				{
+					StateCalDir.x = 0.0f;
 				}
 
 				if (StateCalDir.x >= Clamp)

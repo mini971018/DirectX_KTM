@@ -56,15 +56,17 @@ void HollowKnightLevel::Start()
 	//오브젝트 생성
 	{
 		HollowKnightLevelPlayer = CreateActor<Player>();
-		HollowKnightLevelPlayer->InitPlayer("HollowKnightPlayColmap.bmp", CameraClampType::HollowKnightBossRoom);
+		HollowKnightLevelPlayer->InitPlayer("HollowKnightPlayColmap.bmp", CameraClampType::HollowKnightBossRoom, FEffect);
 
 		HollowKnightLevelPlayer->GetTransform()->SetWorldPosition({ 694 , -1348, 0 });
 
-		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
-		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
-
 		HollowKnightLevelBoss = CreateActor<HollowKnightBoss>();
 		HollowKnightLevelBoss->InitBoss(FEffect);
+
+		HollowKnightBossRoomActor = CreateActor<HollowKnightBossRoom>();
+		HollowKnightBossRoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
+
+
 	}
 }
 
@@ -84,6 +86,7 @@ void HollowKnightLevel::LevelChangeStart()
 
 	HollowKnightLevelPlayer->ResetPlayer();
 	HollowKnightLevelBoss->ResetBoss();
+	HollowKnightBossRoomActor->ResetBossRoom();
 }
 
 void HollowKnightLevel::LevelChangeEnd()

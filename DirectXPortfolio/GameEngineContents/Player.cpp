@@ -16,6 +16,7 @@
 #include "PlayerHitSlashEffect.h"
 #include "GetDamageEffect.h"
 #include "PlayerUIManager.h"
+#include "PlayerDeathEffect.h"
 
 #include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineBase/GameEngineRandom.h>
@@ -82,6 +83,15 @@ void Player::Update(float _Delta)
 	PlayerDamagedTime -= _Delta;
 	PlayerGetDamagedCheck();
 	SetPlayerColor(_Delta);
+
+	//플레이어 보스룸에 들어갔는지 확인
+	std::shared_ptr<GameEngineCollision> InBossRoomCollision = PlayerCollision->Collision(HollowKnightCollisionType::OnBossRoomDoor);
+
+	if (InBossRoomCollision != nullptr && CameraClampType::HollowKnightInBoss != ClampType)
+	{
+		ClampType = CameraClampType::HollowKnightInBoss;
+	}
+
 
 	Test();
 }
@@ -192,7 +202,7 @@ void Player::SetPlayerRendererPivot()
 	Pivot->GetTransform()->SetLocalPosition({ PivotPos.x, PivotPos.y, -70.0f });
 }
 
-void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType)
+void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType, std::shared_ptr<class FadeEffect> _FEffect)
 {
 	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find(ColMap);
 
@@ -205,6 +215,7 @@ void Player::InitPlayer(std::string_view ColMap, CameraClampType _ClampType)
 	
 	CurrentPlayerHP = PlayerMaxHP;
 
+	FEffect = _FEffect;
 }
 
 void Player::SpriteInit()
@@ -265,6 +276,9 @@ void Player::SpriteInit()
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("32.FireballCast").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("33.GetDamaged").GetFullPath());
+
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("34.PlayerDeath").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("80.PlayerDeathEffect").GetFullPath());
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("81.GetDamagedEffect").GetFullPath());
 
@@ -360,6 +374,13 @@ void Player::AnimationInit()
 
 	//Fireball
 	PlayerRenderer->CreateAnimation({ .AnimationName = "FireballCast", .SpriteName = "32.FireballCast",  .FrameInter = 0.055f, .Loop = false, .ScaleToTexture = true, });
+
+	//Death
+	PlayerRenderer->CreateAnimation({ .AnimationName = "PlayerDeath", .SpriteName = "34.PlayerDeath",  .FrameInter = 0.07f, .Loop = false, .ScaleToTexture = true, });
+	PlayerRenderer->SetAnimationStartEvent("PlayerDeath", 1, [this]
+		{
+			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(1.0f);
+		});
 
 	//Roarlock
 	PlayerRenderer->CreateAnimation({ .AnimationName = "RoarLock", .SpriteName = "20.RoarLock",  .FrameInter = 0.065f, .Loop = true, .ScaleToTexture = true, });
@@ -538,6 +559,18 @@ float4 Player::SetCameraClamp(float4 _Pos)
 
 		break;
 	case CameraClampType::HollowKnightInBoss:
+
+		if (_Pos.x < 2300.0f)
+		{
+			_Pos.x = 2300.0f;
+		}
+
+		if (_Pos.x > 3850.0f)
+		{
+			_Pos.x = 3850.0f;
+		}
+
+		_Pos.y = -960.0f;
 		break;
 	default:
 		break;
@@ -704,6 +737,16 @@ void Player::SetGetDamagedEffect()
 	GetDamageEffectActor->GetTransform()->SetLocalPosition(PivotPos);
 }
 
+void Player::SetDeathEffect()
+{
+	float4 PivotPos = Pivot->GetTransform()->GetWorldPosition();
+	//float4 EffectPos = { PivotPos.x, PivotPos.y + 130.0f, -70.0f };
+
+	std::shared_ptr<class PlayerDeathEffect> DeathEffectActor = GetLevel()->CreateActor<PlayerDeathEffect>();
+	//GetDamageEffectActor->GetTransform()->SetLocalScale({ 2.5f, 2.5f, 1.0f });
+	DeathEffectActor->GetTransform()->SetLocalPosition(PivotPos);
+}
+
 void Player::SetPlayerColor(float _Delta)
 {
 	if (PlayerDamagedTime >= 0)
@@ -803,7 +846,7 @@ void Player::SetEnemyHitEffect(float4 _Pos, float4 _Scale)
 
 void Player::PlayerGetDamagedCheck()
 {
-	if (PlayerDamagedTime > 0.0f)
+	if (PlayerDamagedTime > 0.0f || true == IsDeath)
 	{
 		return;
 	}
@@ -850,7 +893,14 @@ void Player::PlayerGetDamage(int _Damage, float4 _Dir)
 		CurrentPlayerHP -= _Damage;
 	}
 
-	FSM.ChangeState("GetDamaged");
+	if (CurrentPlayerHP <= 0)
+	{
+		FSM.ChangeState("Death");
+	}
+	else
+	{
+		FSM.ChangeState("GetDamaged");
+	}
 }
 
 void Player::PlayerGetHealed()
@@ -881,6 +931,10 @@ void Player::ResetPlayer()
 
 	CurrentPlayerHP = PlayerMaxHP;
 	CurrentPlayerMP = 0;
+
+	ClampType = CameraClampType::HollowKnightBossRoom;
+
+	IsDeath = false;
 }
 
 bool Player::IsLeftWallCheck()

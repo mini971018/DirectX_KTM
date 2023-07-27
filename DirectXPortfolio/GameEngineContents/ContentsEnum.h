@@ -100,6 +100,7 @@ enum class HollowKnightCollisionType
 	PlayerAttack,
 	PlayerSkill,
 	CounterCheck,
+	OnBossRoomDoor,
 	WallCheck,
 	Wall,
 };

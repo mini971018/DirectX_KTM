@@ -8,6 +8,7 @@
 
 #include "DoubleJumpEffect.h"
 #include "DashEffect.h"
+#include "FadeEffect.h"
 
 #include "Player.h"
 
@@ -960,6 +961,46 @@ void Player::StateInit()
 					return;
 				}
 			}
+		},
+			.End = [this]()
+		{
+
+		},
+
+		}
+	);
+
+	FSM.CreateState(
+		{
+			.Name = "Death",
+			.Start = [this]()
+		{
+			PlayerRenderer->ChangeAnimation("PlayerDeath");
+			SetDeathEffect();
+
+			IsDeath = true;
+			GameEngineSoundPlayer DeathSound = GameEngineSound::Play("PlayerDeath.wav");
+			GameEngineSoundPlayer GetDamageSound = GameEngineSound::Play("PlayerGetHardDamage.wav");
+			
+			GameEngineTime::GlobalTime.SetAllUpdateOrderTimeScale(0.2f);
+
+			StateCalTime = 0.0f;
+			StateCalBool = false;
+		},
+			.Update = [this](float _DeltaTime)
+		{
+			if (false == StateCalBool && StateCalTime > 1.0f)
+			{
+				FEffect->FadeIn();
+				StateCalBool = true;
+			}
+			
+			if (StateCalTime >= 5.0f)
+			{
+				GameEngineCore::ChangeLevel("MainMenuLevel");
+			}
+
+			StateCalTime += _DeltaTime;
 		},
 			.End = [this]()
 		{

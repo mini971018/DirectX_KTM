@@ -54,13 +54,17 @@ public:
 		CameraShakeForce = _Force;
 	}
 
-	void InitPlayer(std::string_view ColMap, CameraClampType _ClampType);
+	void InitPlayer(std::string_view ColMap, CameraClampType _ClampType, std::shared_ptr<class FadeEffect> _FEffect);
 	void SetPlayerCanMoveState(bool _State)
 	{
 		CanMoveState = _State;
 	}
 	void OnRoarLockState(float4 _PlayerDir);
 	void OffRoarLockState();
+	bool GetPlayerIsDeath()
+	{
+		return IsDeath;
+	}
 
 	float GetPlayerDamage()
 	{
@@ -87,6 +91,8 @@ protected:
 private:
 	void CreateKey();
 	void Test();
+
+	std::shared_ptr<class FadeEffect> FEffect;
 
 	std::shared_ptr<class GameEngineSpriteRenderer> PlayerRenderer;
 	std::shared_ptr<class GameEngineComponent> Pivot; //플레이어 렌더러의 피봇
@@ -116,6 +122,8 @@ private:
 	void PlayerGetDamagedCheck();
 	void PlayerGetDamage(int _Damage, float4 _Dir);
 	void PlayerGetHealed();
+
+	bool IsDeath = false;
 
 	//이동 관련
 	const float MoveSpeed = 400.0f;
@@ -169,6 +177,7 @@ private:
 	void SetScreamSkillEffect();
 	void SetHealingEffect();
 	void SetGetDamagedEffect();
+	void SetDeathEffect();
 
 	void SetPlayerColor(float _Delta);
 	const float4 PlayerDamagedColor = { 0, 0, 0, 0 };
@@ -226,8 +235,9 @@ private:
 	//스테이트 관련
 	GameEngineFSM FSM;
 	PlayerState CurrentState = PlayerState::Idle;
-
+	
 	//스테이트 에서 사용하는 변수
+	bool StateCalBool = false;
 	float StateCalTime = 0.0f;
 	float StateCalFloat = 0.0f;
 	int StateCalCount = 0;

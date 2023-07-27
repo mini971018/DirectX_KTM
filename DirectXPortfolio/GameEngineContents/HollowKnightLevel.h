@@ -27,5 +27,6 @@ protected:
 private:
 	std::shared_ptr<class Player> HollowKnightLevelPlayer = nullptr;
 	std::shared_ptr<class HollowKnightBoss> HollowKnightLevelBoss = nullptr;
+	std::shared_ptr<class HollowKnightBossRoom> HollowKnightBossRoomActor = nullptr;
 };
 

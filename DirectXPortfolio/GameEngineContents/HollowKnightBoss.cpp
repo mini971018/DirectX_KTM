@@ -147,7 +147,7 @@ void HollowKnightBoss::SpriteInit()
 
 		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("100.HitDust").GetFullPath());
 
-		//GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("100.HitDust").GetFullPath());
+		GameEngineSprite::LoadFolder(NewDir.GetPlusFileName("101.FinalBossRoom").GetFullPath());
 
 	}
 }
@@ -167,6 +167,9 @@ void HollowKnightBoss::AnimationInit()
 				BreakShieldEffect->SetBindBreakRenderer(GetTransform()->GetWorldPosition() + PivotPos);
 				GameEngineSoundPlayer BossChainCutSound = GameEngineSound::Play("BossChainCut.wav");
 				SetCounterFlashEffect();
+
+				BossChainRenderer1->Off();
+				BossChainRenderer2->Off();
 
 				Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
 			});
@@ -278,7 +281,22 @@ void HollowKnightBoss::AnimationInit()
 		BossWeaponRenderer->GetTransform()->SetWorldPosition({ 3190, -1200, -70 });
 		BossWeaponRenderer->GetTransform()->SetWorldRotation({ 0, 0, -10 });
 
+		//¿ìÃø
+		BossChainRenderer1 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+
+		BossChainRenderer1->SetScaleToTexture("BossChain.png");
+		BossChainRenderer1->GetTransform()->SetLocalPosition({ 335, 660, -70 });
+		BossChainRenderer1->GetTransform()->SetLocalRotation({ 0, 0, -40 });
+
+		BossChainRenderer2 = CreateComponent<GameEngineSpriteRenderer>(PlayRenderOrder::Background);
+
+		//ÁÂÃø
+		BossChainRenderer2->SetScaleToTexture("BossChain.png");
+		//BossChainRenderer2->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+		BossChainRenderer2->GetTransform()->AddLocalPosition({ -400, 660, -70 });
+		BossChainRenderer2->GetTransform()->SetLocalRotation({ 0, 0, 40 });
 	}
+
 
 	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find("HollowKnightBossColmap.bmp");
 	std::shared_ptr<GameEngineTexture> ColmapTexture2 = GameEngineTexture::Find("HollowKnightPlayColmap.bmp");
@@ -330,6 +348,24 @@ void HollowKnightBoss::CollisionInit()
 	CounterCollision2->Off();
 
 	CounterCollision2->SetOrder(static_cast<int>(HollowKnightCollisionType::CounterCheck));
+
+	LeftWallCheck = CreateComponent<GameEngineCollision>();
+	LeftWallCheck->SetColType(ColType::AABBBOX2D);
+	LeftWallCheck->GetTransform()->SetLocalScale({ 10.0f, 290.0f, 1.0f });
+	LeftWallCheck->GetTransform()->SetLocalPosition({ -92.5f, 145.0f , -70.0f });
+	LeftWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
+
+	RightWallCheck = CreateComponent<GameEngineCollision>();
+	RightWallCheck->SetColType(ColType::AABBBOX2D);
+	RightWallCheck->GetTransform()->SetLocalScale({ 10.0f, 290.0f, 1.0f });
+	RightWallCheck->GetTransform()->SetLocalPosition({ 92.5f, 145.0f , -70.0f });
+	RightWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
+
+	UpperWallCheck = CreateComponent<GameEngineCollision>();
+	UpperWallCheck->SetColType(ColType::AABBBOX2D);
+	UpperWallCheck->GetTransform()->SetLocalScale({ 175.0f, 10.0f, 1.0f });
+	UpperWallCheck->GetTransform()->SetLocalPosition({ 0.0f, 295.0f , -70.0f });
+	UpperWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
 }
  
 void HollowKnightBoss::SetBossColor()
@@ -404,6 +440,12 @@ void HollowKnightBoss::Update(float _Delta)
 	//SetCounterColor();
 
 	SoundPlayerCheck(_Delta);
+
+	if (true == Player::CurrentLevelPlayer->GetPlayerIsDeath() && true == IsBGMPlay)
+	{
+		BGMPlayer.SoundFadeOut(3.0);
+		IsBGMPlay = false;
+	}
 }
 
 void HollowKnightBoss::LevelChangeStart()
@@ -524,6 +566,9 @@ void HollowKnightBoss::ResetBoss()
 	IsDeath = false;
 	IsBGMPlay = false;
 
+	BossChainRenderer1->On();
+	BossChainRenderer2->On();
+
 	CheckSoundPlayerTime = 0.0f;
 }
 
@@ -560,7 +605,7 @@ void HollowKnightBoss::SetRandomPattern()
 	int max = BossPatterns[static_cast<short>(HollowKnightPatternEnum::BeforeAttack)].size() - 1;
 
 	HollowKnightNoneAttackState PatternNum = static_cast<HollowKnightNoneAttackState>(GameEngineRandom::MainRandom.RandomInt(min, max));
-	//PatternNum = HollowKnightNoneAttackState::Evade;
+	//PatternNum = HollowKnightNoneAttackState::Teleport;
 
 	switch (PatternNum)
 	{
@@ -607,7 +652,7 @@ void HollowKnightBoss::SetRandomAttackPattern()
 
 	HollowKnightAttackState PatternNum = static_cast<HollowKnightAttackState>(CurrentPhaseVector[RandomValue]);
 
-	//PatternNum = HollowKnightAttackState::DashAttack;
+	//PatternNum = HollowKnightAttackState::PuppetSlam;
 
 	switch (PatternNum)
 	{
@@ -651,13 +696,25 @@ void HollowKnightBoss::SetRandomTeleportPos()
 {
 	int Value = GameEngineRandom::MainRandom.RandomInt(0, 1);
 	float RandomPositionValue = GameEngineRandom::MainRandom.RandomFloat(MinTeleportDistance, MaxTeleportDistance);
+	RandomPositionValue += Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition().x;
 
 	if (0 == Value % 2)
 	{
 		RandomPositionValue *= -1.0f;
 	}
 
-	GetTransform()->AddWorldPosition({ RandomPositionValue, 0.0f });
+	if (RandomPositionValue < MinTeleportX)
+	{
+		RandomPositionValue = MinTeleportX;
+	}
+
+	if (RandomPositionValue > MaxTeleportX)
+	{
+		RandomPositionValue = MaxTeleportX;
+	}
+
+
+	GetTransform()->SetWorldPosition({ RandomPositionValue, GetTransform()->GetWorldPosition().y});
 
 	if (true == CheckRenderRotationValue())
 	{
@@ -1138,4 +1195,38 @@ void HollowKnightBoss::SetRandomPuppetSlamSound()
 void HollowKnightBoss::InitBoss(std::shared_ptr<class FadeEffect> _FEffect)
 {
 	FEffect = _FEffect;
+}
+
+bool HollowKnightBoss::IsLeftWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> LeftCollision = LeftWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (LeftCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
+}
+bool HollowKnightBoss::IsRightWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> RightCollision = RightWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (RightCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
+}
+bool HollowKnightBoss::IsUpperWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> UpperCollision = UpperWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (UpperCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
 }

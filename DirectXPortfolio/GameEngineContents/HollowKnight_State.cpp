@@ -439,6 +439,16 @@ void HollowKnightBoss::StateInit()
 			{
 				float4 PlayerPos = Player::CurrentLevelPlayer->GetTransform()->GetWorldPosition();
 
+				if (PlayerPos.x < MinTeleportX)
+				{
+					PlayerPos.x = MinTeleportX;
+				}
+
+				if (PlayerPos.x > MaxTeleportX)
+				{
+					PlayerPos.x = MaxTeleportX;
+				}
+
 				GetTransform()->SetWorldPosition({ PlayerPos.x, -1000.0f}); 
 			}
 			else
@@ -549,7 +559,15 @@ void HollowKnightBoss::StateInit()
 				return;
 			}
 			
-			GetTransform()->AddWorldPosition( -ReturnPatternDir()* EvadeSpeed* _DeltaTime);
+			if (-ReturnPatternDir() == float4::Right && IsRightWallCheck() == false)
+			{
+				GetTransform()->AddWorldPosition(-ReturnPatternDir() * EvadeSpeed * _DeltaTime);
+			}
+
+			if (-ReturnPatternDir() == float4::Left && IsLeftWallCheck() == false)
+			{
+				GetTransform()->AddWorldPosition(-ReturnPatternDir() * EvadeSpeed * _DeltaTime);
+			}
 
 			StateCalTime += _DeltaTime;
 		},

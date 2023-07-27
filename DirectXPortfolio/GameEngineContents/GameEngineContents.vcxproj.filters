@@ -133,6 +133,9 @@
     <ClInclude Include="MainMenuUIButton.h">
       <Filter>Levels\MainMenu\Object</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDeathEffect.h">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -278,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="MainMenuUIButton.cpp">
       <Filter>Levels\MainMenu\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDeathEffect.cpp">
+      <Filter>Levels\PlayLevel\Player\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,6 +43,8 @@ private:
 	void SetBossRendererPivot();
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer; 
+	std::shared_ptr<class GameEngineSpriteRenderer> BossChainRenderer1;
+	std::shared_ptr<class GameEngineSpriteRenderer> BossChainRenderer2;
 	std::shared_ptr<class GameEngineTexture> BossColmapTexture;
 	std::shared_ptr<class GameEngineTexture> BossPlayColmapTexture;
 
@@ -71,6 +73,14 @@ private:
 	std::shared_ptr<class GameEngineCollision> CounterCollision2 = nullptr;
 	const float4 CounterCollision2Scale = { 200,280,1 };
 	const float4 CounterCollision2Pos = { 150, -110 , 0 };
+
+	std::shared_ptr<class GameEngineCollision> LeftWallCheck = nullptr;
+	std::shared_ptr<class GameEngineCollision> RightWallCheck = nullptr;
+	std::shared_ptr<class GameEngineCollision> UpperWallCheck = nullptr;
+
+	bool IsLeftWallCheck();
+	bool IsRightWallCheck();
+	bool IsUpperWallCheck();
 
 	void SetCounterCollision(bool _Value);
 
@@ -159,6 +169,8 @@ private:
 	const float MinTeleportDistance = 150.0f;
 	const float MaxTeleportDistance = 500.0f;
 	void SetRandomTeleportPos();
+	const float MinTeleportX = 1700.0f;
+	const float MaxTeleportX = 4300.0f;
 
 	//Jump
 	const float MaxJumpForceX = 1000.0f;
