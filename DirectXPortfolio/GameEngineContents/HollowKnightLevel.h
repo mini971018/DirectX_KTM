@@ -15,6 +15,8 @@ public:
 	HollowKnightLevel& operator=(const HollowKnightLevel& _Other) = delete;
 	HollowKnightLevel& operator=(HollowKnightLevel&& _Other) noexcept = delete;
 
+	std::shared_ptr<class FadeEffect> FEffect;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

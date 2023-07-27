@@ -1040,7 +1040,7 @@ void HollowKnightBoss::AttackStateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
-			GetTransform()->AddWorldPosition(float4::Down * Gravity* _DeltaTime);
+			GetTransform()->AddWorldPosition(float4::Down * Gravity * _DeltaTime);
 
 			if (true == IsGround(GetTransform()->GetWorldPosition()))
 			{

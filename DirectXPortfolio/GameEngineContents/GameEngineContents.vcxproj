@@ -198,6 +198,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FadeEffect.h" />
     <ClInclude Include="FireballCastEffect.h">
       <SubType>
       </SubType>
@@ -259,6 +260,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MainMenuLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MainMenuUIButton.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MainMenuUIManager.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -369,6 +378,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="FireballCastEffect.cpp">
       <SubType>
       </SubType>
@@ -432,6 +442,14 @@
     <ClCompile Include="HollowKnight_AttackState.cpp" />
     <ClCompile Include="HollowKnight_State.cpp" />
     <ClCompile Include="MainMenuLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MainMenuUIButton.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MainMenuUIManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -16,7 +16,7 @@ MenuTitle::~MenuTitle()
 
 void MenuTitle::Start()
 {
-	TitleImage = CreateComponent<GameEngineSpriteRenderer>();
+	TitleImage = CreateComponent<GameEngineSpriteRenderer>(UIRenderOrder::Title);
 
 	TitleImage->SetScaleToTexture("MenuTitle.png");
 

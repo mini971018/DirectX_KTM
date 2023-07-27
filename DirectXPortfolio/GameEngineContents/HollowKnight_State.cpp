@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "FadeEffect.h"
 #include "RoarEffect.h"
 #include "Player.h"
 #include "HollowKnightBoss.h"
@@ -601,6 +602,7 @@ void HollowKnightBoss::StateInit()
 			if (IsBGMPlay == false)
 			{
 				BGMPlayer = GameEngineSound::Play("HollowKnightPhase2.mp3");
+				BGMPlayer.SetLoop();
 				IsBGMPlay = true;
 			}
 
@@ -886,6 +888,8 @@ void HollowKnightBoss::StateInit()
 			StateCalTime = 0.0f;
 			StateCalTime2 = 0.0f;
 
+			RoarEffectPos = Pivot->GetTransform()->GetWorldPosition();
+
 			SetSoundPlayOnce("HollowKnightScream.wav");
 
 			Player::CurrentLevelPlayer->SetCameraShakeLoop(25.0f);
@@ -928,6 +932,8 @@ void HollowKnightBoss::StateInit()
 			HollowKnightCollision->Off();
 			Player::CurrentLevelPlayer->SetCameraShakeOff();
 			StateCalTime = 0.0f;
+			StateCalBool = false;
+			
 
 			if (IsBGMPlay == true)
 			{
@@ -937,6 +943,12 @@ void HollowKnightBoss::StateInit()
 		},
 			.Update = [this](float _DeltaTime)
 		{
+			if (StateCalTime >= 4.0f && false == StateCalBool)
+			{
+				FEffect->FadeIn();
+				StateCalBool = true;
+			}
+
 			if (StateCalTime >= 8.0f)
 			{
 				//페이드아웃 후 EndLevel로 변경

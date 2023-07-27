@@ -18,6 +18,7 @@ public:
 
 	//보스를 리셋시킴
 	void ResetBoss();
+	void InitBoss(std::shared_ptr<class FadeEffect> _FEffect);
 
 protected:
 	void Start();
@@ -26,6 +27,8 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	std::shared_ptr<class FadeEffect> FEffect;
+
 	GameEngineSoundPlayer BGMPlayer;
 	void SoundPlayerCheck(float _Delta);
 	bool IsBGMPlay = false;

@@ -124,6 +124,15 @@
     <ClInclude Include="EndingVideo.h">
       <Filter>Levels\EndingLevel\Object</Filter>
     </ClInclude>
+    <ClInclude Include="FadeEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuUIManager.h">
+      <Filter>Levels\MainMenu\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuUIButton.h">
+      <Filter>Levels\MainMenu\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp" />
@@ -261,6 +270,15 @@
     <ClCompile Include="EndingVideo.cpp">
       <Filter>Levels\EndingLevel\Object</Filter>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuUIManager.cpp">
+      <Filter>Levels\MainMenu\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuUIButton.cpp">
+      <Filter>Levels\MainMenu\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -307,6 +325,9 @@
     </Filter>
     <Filter Include="Levels\EndingLevel\Object">
       <UniqueIdentifier>{409981c4-698a-45ad-95a2-25683bcfd0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{bd46c994-ff1e-4c71-8772-9082cbc66a2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

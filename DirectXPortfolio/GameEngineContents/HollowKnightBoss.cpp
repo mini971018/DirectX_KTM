@@ -1133,3 +1133,8 @@ void HollowKnightBoss::SetRandomPuppetSlamSound()
 		break;
 	}
 }
+
+void HollowKnightBoss::InitBoss(std::shared_ptr<class FadeEffect> _FEffect)
+{
+	FEffect = _FEffect;
+}

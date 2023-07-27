@@ -109,6 +109,8 @@ void Player::CreateKey()
 		GameEngineInput::CreateKey("MoveRight", VK_RIGHT);
 		GameEngineInput::CreateKey("MoveLeft", VK_LEFT);
 
+		GameEngineInput::CreateKey("EnterKey", VK_RETURN);
+
 		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'Z');
 		GameEngineInput::CreateKey("Dash", 'C');

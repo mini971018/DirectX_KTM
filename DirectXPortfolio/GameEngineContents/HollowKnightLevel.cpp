@@ -8,6 +8,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineVideo.h>
 
+#include "FadeEffect.h"
 #include "Player.h"
 #include "HollowKnightBossRoom.h"
 #include "HollowKnightBoss.h"
@@ -40,6 +41,8 @@ void HollowKnightLevel::Start()
 		}
 	}
 
+	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->SetSortType(PlayRenderOrder::Background, SortType::ZSort);
@@ -59,7 +62,9 @@ void HollowKnightLevel::Start()
 
 		std::shared_ptr RoomActor = CreateActor<HollowKnightBossRoom>();
 		RoomActor->GetTransform()->SetWorldPosition({ 2500, -750, 0 });
+
 		HollowKnightLevelBoss = CreateActor<HollowKnightBoss>();
+		HollowKnightLevelBoss->InitBoss(FEffect);
 	}
 }
 
@@ -74,6 +79,8 @@ void HollowKnightLevel::Update(float _DeltaTime)
 void HollowKnightLevel::LevelChangeStart()
 {
 	Player::SetCurrentLevelPlayer(HollowKnightLevelPlayer);
+
+	FEffect->FadeOut();
 
 	HollowKnightLevelPlayer->ResetPlayer();
 	HollowKnightLevelBoss->ResetBoss();

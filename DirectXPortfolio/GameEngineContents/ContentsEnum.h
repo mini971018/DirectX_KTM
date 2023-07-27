@@ -4,6 +4,7 @@ enum class UIRenderOrder
 {
 	None,
 	Background,
+	Button,
 	Title,
 };
 
