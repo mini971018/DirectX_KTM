@@ -64,7 +64,7 @@ void Player::AttackStateInit()
 				return;
 			}
 
-			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight") && false == IsLeftWallCheck())
 			{
 				if (float4::Right == PlayerDir)
 				{
@@ -74,7 +74,7 @@ void Player::AttackStateInit()
 
 				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
 			}
-			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && false == IsRightWallCheck())
 			{
 				if (float4::Left == PlayerDir)
 				{
@@ -87,7 +87,10 @@ void Player::AttackStateInit()
 
 			if (CurrentSlash == PlayerSlashAnimation::DownSlash && true == SlashEffectActor->GetIsHit())
 			{
-				GetTransform()->AddWorldPosition(float4::Up * 650.0f * _DeltaTime);
+				if (false == IsUpperWallCheck())
+				{
+					GetTransform()->AddWorldPosition(float4::Up * 650.0f * _DeltaTime);
+				}
 
 				CurrentState = PlayerState::Fall;
 
@@ -98,8 +101,6 @@ void Player::AttackStateInit()
 					FSM.ChangeState("Fall");
 					return;
 				}
-
-
 				return;
 			}
 
@@ -114,7 +115,6 @@ void Player::AttackStateInit()
 				{
 					CurrentState = PlayerState::Fall;
 				}
-
 				else if (StateCalTime >= 0.35f)
 				{
 					StateCalFloat = StateCalFloat - (7000.0f * _DeltaTime);
@@ -124,11 +124,25 @@ void Player::AttackStateInit()
 						CurrentState = PlayerState::Fall;
 					}
 
-					GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+					if (false == IsUpperWallCheck())
+					{
+						GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+					}
+					else
+					{
+						CurrentState = PlayerState::Fall;
+					}
 				}
 				else
 				{
-					GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+					if (false == IsUpperWallCheck())
+					{
+						GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
+					}
+					else
+					{
+						CurrentState = PlayerState::Fall;
+					}
 				}
 
 				StateCalTime += _DeltaTime;

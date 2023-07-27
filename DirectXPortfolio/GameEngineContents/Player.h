@@ -178,7 +178,14 @@ private:
 
 	//Collision°ü·Ã
 	std::shared_ptr<class GameEngineCollision> PlayerCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> LeftWallCheck = nullptr;
+	std::shared_ptr<class GameEngineCollision> RightWallCheck = nullptr;
+	std::shared_ptr<class GameEngineCollision> UpperWallCheck = nullptr;
 	
+	bool IsLeftWallCheck();
+	bool IsRightWallCheck();
+	bool IsUpperWallCheck();
+
 	const float4 PlayerCollisionPos = { 0.0f, 65.0f , -70.0f };
 
 	void SetPlayerCollisionPos(float _Value = 0.0f);

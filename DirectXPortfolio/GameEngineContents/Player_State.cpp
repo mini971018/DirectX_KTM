@@ -62,7 +62,7 @@ void Player::StateInit()
 					return;
 				}
 
-				if (true == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft"))
+				if (true == GameEngineInput::IsPress("MoveRight") && false == GameEngineInput::IsPress("MoveLeft") && false == IsRightWallCheck())
 				{
 					PlayerDir = float4::Right;
 
@@ -70,7 +70,7 @@ void Player::StateInit()
 					return;
 				}
 
-				if (false == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft"))
+				if (false == GameEngineInput::IsPress("MoveRight") && true == GameEngineInput::IsPress("MoveLeft")&& false == IsLeftWallCheck())
 				{
 					PlayerDir = float4::Left;
 
@@ -197,9 +197,15 @@ void Player::StateInit()
 					FSM.ChangeState("Turn");
 					return;
 				}
-				else
+				
+				if (false == IsLeftWallCheck())
 				{
 					GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
+				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
 				}
 			}
 			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
@@ -211,14 +217,17 @@ void Player::StateInit()
 					FSM.ChangeState("Turn");
 					return;
 				}
-				else
+
+				if (false == IsRightWallCheck())
 				{
 					GetTransform()->AddWorldPosition(float4::Right * MoveSpeed * _DeltaTime);
 				}
+				else
+				{
+					FSM.ChangeState("Idle");
+					return;
+				}
 			}
-
-
-
 		},
 			.End = [this]()
 		{
@@ -323,6 +332,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == IsUpperWallCheck())
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+
 			if (false == CanMoveState)
 			{
 				FSM.ChangeState("Fall");
@@ -369,7 +384,7 @@ void Player::StateInit()
 				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
 			}
 
-			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight") && false == IsLeftWallCheck())
 			{
 				if (float4::Right == PlayerDir)
 				{
@@ -379,7 +394,7 @@ void Player::StateInit()
 
 				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
 			}
-			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && false == IsRightWallCheck())
 			{
 				if (float4::Left == PlayerDir)
 				{
@@ -426,6 +441,12 @@ void Player::StateInit()
 				return;
 			}
 
+			if (true == IsUpperWallCheck())
+			{
+				FSM.ChangeState("Fall");
+				return;
+			}
+
 			if (false == CanMoveState)
 			{
 				FSM.ChangeState("Fall");
@@ -472,7 +493,7 @@ void Player::StateInit()
 				GetTransform()->AddWorldPosition(float4::Up * StateCalFloat * _DeltaTime);
 			}
 
-			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+			if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight") && false == IsLeftWallCheck())
 			{
 				if (float4::Right == PlayerDir)
 				{
@@ -482,7 +503,7 @@ void Player::StateInit()
 
 				GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
 			}
-			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+			else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && false == IsRightWallCheck())
 			{
 				if (float4::Left == PlayerDir)
 				{
@@ -568,7 +589,7 @@ void Player::StateInit()
 					return;
 				}
 
-				if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight"))
+				if (true == GameEngineInput::IsPress("MoveLeft") && false == GameEngineInput::IsPress("MoveRight") && false == IsLeftWallCheck())
 				{
 					if (float4::Right == PlayerDir)
 					{
@@ -578,7 +599,7 @@ void Player::StateInit()
 
 					GetTransform()->AddWorldPosition(float4::Left * MoveSpeed * _DeltaTime);
 				}
-				else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight"))
+				else if (false == GameEngineInput::IsPress("MoveLeft") && true == GameEngineInput::IsPress("MoveRight") && false == IsRightWallCheck())
 				{
 					if (float4::Left == PlayerDir)
 					{
@@ -702,11 +723,12 @@ void Player::StateInit()
 				}
 			}
 
-			if (float4::Left == PlayerDir)
+			if (float4::Left == PlayerDir && false == IsLeftWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Left* DashSpeed * _DeltaTime);
 			}
-			else
+			
+			if (float4::Right == PlayerDir && false == IsRightWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Right* DashSpeed* _DeltaTime);
 			}
@@ -765,11 +787,12 @@ void Player::StateInit()
 				}
 			}
 
-			if (float4::Left == PlayerDir)
+			if (float4::Left == PlayerDir && false == IsLeftWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Left * DashSpeed * _DeltaTime);
 			}
-			else
+
+			if (float4::Right == PlayerDir && false == IsRightWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Right * DashSpeed * _DeltaTime);
 			}
@@ -871,11 +894,11 @@ void Player::StateInit()
 			{
 				SetGravity(_DeltaTime);
 
-				if (PlayerDir == float4::Left)
+				if (PlayerDir == float4::Left && false == IsLeftWallCheck())
 				{
 					GetTransform()->AddWorldPosition(float4::Right * 50.0f * _DeltaTime);
 				}
-				else
+				if (PlayerDir == float4::Right && false == IsRightWallCheck())
 				{
 					GetTransform()->AddWorldPosition(float4::Right * 50.0f * _DeltaTime);
 				}
@@ -913,11 +936,11 @@ void Player::StateInit()
 			.Update = [this](float _DeltaTime)
 		{
 
-			if (float4::Left == PlayerDir)
+			if (float4::Left == PlayerDir && false == IsLeftWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Left * 300.0f * _DeltaTime);
 			}
-			else
+			if (float4::Right == PlayerDir && false == IsRightWallCheck())
 			{
 				GetTransform()->AddWorldPosition(float4::Right * 300.0f * _DeltaTime);
 			}

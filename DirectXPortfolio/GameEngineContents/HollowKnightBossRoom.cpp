@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "HollowKnightBossOrangeBlob.h"
 #include "ContentsEnum.h"
@@ -748,7 +749,35 @@ void HollowKnightBossRoom::CreateMap()
 		UpperImage->GetTransform()->SetLocalPosition({ 0, -40, -70 });
 	}
 
-
+	//¸Ê ÄÝ¸®Àü Init
+	{
+		std::shared_ptr<GameEngineCollision> WallCollision = CreateComponent<GameEngineCollision>();
+		WallCollision->SetColType(ColType::AABBBOX2D);
+		WallCollision->GetTransform()->SetWorldScale({ 200.0f, 746.0f, 1.0f });
+		WallCollision->GetTransform()->SetWorldPosition({ 487.0f, -1123.0f , -70.0f });
+		WallCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
+	}
+	{
+		std::shared_ptr<GameEngineCollision> WallCollision = CreateComponent<GameEngineCollision>();
+		WallCollision->SetColType(ColType::AABBBOX2D);
+		WallCollision->GetTransform()->SetWorldScale({ 1272, 593, 1.0f });
+		WallCollision->GetTransform()->SetWorldPosition({ 876, -717 , -70.0f });
+		WallCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
+	}
+	{
+		std::shared_ptr<GameEngineCollision> WallCollision = CreateComponent<GameEngineCollision>();
+		WallCollision->SetColType(ColType::AABBBOX2D);
+		WallCollision->GetTransform()->SetWorldScale({ 5000, 420, 1.0f });
+		WallCollision->GetTransform()->SetWorldPosition({ 2500, -210 , -70.0f });
+		WallCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
+	}
+	{
+		std::shared_ptr<GameEngineCollision> WallCollision = CreateComponent<GameEngineCollision>();
+		WallCollision->SetColType(ColType::AABBBOX2D);
+		WallCollision->GetTransform()->SetWorldScale({ 380, 938, 1.0f });
+		WallCollision->GetTransform()->SetWorldPosition({ 4810, -889 , -70.0f });
+		WallCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Wall));
+	}
 }
 
 void HollowKnightBossRoom::Update(float _Delta)

@@ -418,6 +418,24 @@ void Player::CollisionInit()
 	PlayerCollision->GetTransform()->SetLocalScale({ 52.0f, 114.0f, 1.0f});
 	PlayerCollision->GetTransform()->SetLocalPosition({ 0.0f, 65.0f , -70.0f});
 	PlayerCollision->SetOrder(static_cast<int>(HollowKnightCollisionType::Player));
+
+	LeftWallCheck = CreateComponent<GameEngineCollision>();
+	LeftWallCheck->SetColType(ColType::AABBBOX2D);
+	LeftWallCheck->GetTransform()->SetLocalScale({ 10.0f, 114.0f, 1.0f });
+	LeftWallCheck->GetTransform()->SetLocalPosition({ -26.0f, 65.0f , -70.0f });
+	LeftWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
+
+	RightWallCheck = CreateComponent<GameEngineCollision>();
+	RightWallCheck->SetColType(ColType::AABBBOX2D);
+	RightWallCheck->GetTransform()->SetLocalScale({ 10.0f, 114.0f, 1.0f });
+	RightWallCheck->GetTransform()->SetLocalPosition({ 26.0f, 65.0f , -70.0f });
+	RightWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
+
+	UpperWallCheck = CreateComponent<GameEngineCollision>();
+	UpperWallCheck->SetColType(ColType::AABBBOX2D);
+	UpperWallCheck->GetTransform()->SetLocalScale({ 52.0f, 10.0f, 1.0f });
+	UpperWallCheck->GetTransform()->SetLocalPosition({ 0.0f, 119.0f , -70.0f });
+	UpperWallCheck->SetOrder(static_cast<int>(HollowKnightCollisionType::WallCheck));
 }
 
 void Player::UIInit()
@@ -863,4 +881,38 @@ void Player::ResetPlayer()
 
 	CurrentPlayerHP = PlayerMaxHP;
 	CurrentPlayerMP = 0;
+}
+
+bool Player::IsLeftWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> LeftCollision = LeftWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (LeftCollision != nullptr)
+	{
+		return true;
+	}
+	
+	return false;
+}
+bool Player::IsRightWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> RightCollision = RightWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (RightCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
+}
+bool Player::IsUpperWallCheck()
+{
+	std::shared_ptr<GameEngineCollision> UpperCollision = UpperWallCheck->Collision(HollowKnightCollisionType::Wall);
+
+	if (UpperCollision != nullptr)
+	{
+		return true;
+	}
+
+	return false;
 }

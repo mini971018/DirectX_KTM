@@ -281,10 +281,12 @@ void HollowKnightBoss::AnimationInit()
 	}
 
 	std::shared_ptr<GameEngineTexture> ColmapTexture = GameEngineTexture::Find("HollowKnightBossColmap.bmp");
+	std::shared_ptr<GameEngineTexture> ColmapTexture2 = GameEngineTexture::Find("HollowKnightPlayColmap.bmp");
 
 	if (nullptr != ColmapTexture)
 	{
 		BossColmapTexture = ColmapTexture;
+		BossPlayColmapTexture = ColmapTexture2;
 	}
 }
 
@@ -435,11 +437,11 @@ void HollowKnightBoss::CreateRoarEffect(RoarType _Type, float4 _Pos)
 
 bool HollowKnightBoss::IsGround(float4 _Pos)
 {
-	if (nullptr != BossColmapTexture)
+	if (nullptr != BossPlayColmapTexture)
 	{
 		float4 CheckPos = GetTransform()->GetWorldPosition();
 
-		if (GameEnginePixelColor::Black == BossColmapTexture->GetPixel(_Pos.x,  -_Pos.y ))
+		if (GameEnginePixelColor::Black == BossPlayColmapTexture->GetPixel(_Pos.x,  -_Pos.y ))
 		{
 			return true;
 		}
@@ -798,7 +800,6 @@ bool HollowKnightBoss::BossStageStart()
 		return false;
 	}
 
-	
 
 }
 

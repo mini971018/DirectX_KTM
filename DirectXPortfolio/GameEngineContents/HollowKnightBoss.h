@@ -44,6 +44,7 @@ private:
 	
 	std::shared_ptr<class GameEngineSpriteRenderer> BossWeaponRenderer; 
 	std::shared_ptr<class GameEngineTexture> BossColmapTexture;
+	std::shared_ptr<class GameEngineTexture> BossPlayColmapTexture;
 
 	//º¸½º Init
 	void SpriteInit();

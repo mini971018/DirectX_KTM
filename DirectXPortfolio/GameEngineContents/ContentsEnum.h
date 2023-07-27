@@ -100,6 +100,8 @@ enum class HollowKnightCollisionType
 	PlayerAttack,
 	PlayerSkill,
 	CounterCheck,
+	WallCheck,
+	Wall,
 };
 
 enum class PlayerAttackType

@@ -56,7 +56,7 @@ void HollowKnightLevel::Start()
 	//오브젝트 생성
 	{
 		HollowKnightLevelPlayer = CreateActor<Player>();
-		HollowKnightLevelPlayer->InitPlayer("HollowKnightBossColmap.bmp", CameraClampType::HollowKnightBossRoom);
+		HollowKnightLevelPlayer->InitPlayer("HollowKnightPlayColmap.bmp", CameraClampType::HollowKnightBossRoom);
 
 		HollowKnightLevelPlayer->GetTransform()->SetWorldPosition({ 694 , -1348, 0 });
 
